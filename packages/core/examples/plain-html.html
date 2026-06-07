@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>webmcpui — plain HTML (no build)</title>
+
+    <!-- Theme tokens (CSS custom properties) -->
+    <link rel="stylesheet" href="../../tokens/dist/css/tokens.css" />
+
+    <!-- One script tag; auto-registers every <wmcp-*> element -->
+    <script src="../dist/webmcpui.global.js"></script>
+
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        background: var(--background);
+        color: var(--foreground);
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: stretch;
+      }
+      wmcp-input {
+        width: 100%;
+      }
+      button {
+        align-self: start;
+        height: 2.25rem;
+        padding: 0 1rem;
+        border: 0;
+        border-radius: var(--radius);
+        background: var(--primary);
+        color: var(--primary-foreground);
+        cursor: pointer;
+      }
+      pre {
+        background: var(--muted);
+        padding: 0.75rem;
+        border-radius: var(--radius);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Plain HTML, no build</h1>
+    <p>
+      These inputs are <code>&lt;wmcp-input&gt;</code> custom elements, themed by
+      token CSS variables and exposed to a WebMCP agent (when one is present).
+    </p>
+
+    <form id="demo">
+      <wmcp-input
+        label="Full name"
+        name="name"
+        helper-text="As it should appear on the booking"
+        expose
+      ></wmcp-input>
+
+      <wmcp-input
+        label="Email"
+        name="email"
+        type="email"
+        placeholder="you@example.com"
+        expose
+      ></wmcp-input>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <h2>Submitted values</h2>
+    <pre id="out">—</pre>
+
+    <script type="module">
+      // Demo: attach a Standard Schema validator (hand-rolled, no deps).
+      const email = document.querySelector('wmcp-input[name="email"]');
+      email.schema = {
+        '~standard': {
+          version: 1,
+          vendor: 'demo',
+          validate: (v) =>
+            typeof v === 'string' && v.includes('@')
+              ? { value: v }
+              : { issues: [{ message: 'Enter a valid email address' }] },
+        },
+      };
+
+      document.getElementById('demo').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        document.getElementById('out').textContent = JSON.stringify(
+          data,
+          null,
+          2,
+        );
+      });
+    </script>
+  </body>
+</html>
