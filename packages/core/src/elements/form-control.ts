@@ -1,0 +1,304 @@
+import {
+  LitElement,
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
+import { property, state } from 'lit/decorators.js';
+import {
+  isStandardSchema,
+  validateStandard,
+  type StandardSchemaV1,
+} from '../standard-schema.js';
+import { exposeTool, type JSONSchema, type ToolDisposer } from '../webmcp.js';
+
+/**
+ * Base class for form-associated, agent-operable controls.
+ *
+ * Owns everything shared across the form primitives:
+ * - native `<form>` participation via ElementInternals (`formAssociated`)
+ * - Standard Schema validation + a11y error wiring
+ * - imperative WebMCP exposure (feature-detected, no-op when absent)
+ * - label / control / message layout and the shared themed appearance
+ *
+ * Subclasses implement {@link renderControl} (the actual `<input>` /
+ * `<textarea>` / …) and may override {@link controlNoun} and
+ * {@link toolInputSchema}. Abstract — not registered on its own.
+ */
+export abstract class WmcpFormControl extends LitElement {
+  static formAssociated = true;
+
+  static styles: CSSResultGroup = css`
+    :host {
+      display: inline-flex;
+      flex-direction: column;
+      gap: var(--input-gap-label, 0.375rem);
+      font-family: var(
+        --input-font-family,
+        ui-sans-serif,
+        system-ui,
+        sans-serif
+      );
+    }
+    :host([hidden]) {
+      display: none;
+    }
+    label {
+      font-size: var(--input-font-size-label, 0.875rem);
+      font-weight: var(--input-font-weight-label, 500);
+      color: var(--input-label, var(--foreground, oklch(0.145 0 0)));
+    }
+    .control {
+      box-sizing: border-box;
+      width: 100%;
+      padding: var(--input-padding-y, 0.5rem) var(--input-padding-x, 0.75rem);
+      font-family: inherit;
+      font-size: var(--input-font-size, 0.875rem);
+      line-height: var(--input-line-height, 1.25rem);
+      color: var(--input-text, var(--foreground, oklch(0.145 0 0)));
+      background: var(--input-bg, var(--background, oklch(1 0 0)));
+      border: var(--input-border-width, 1px) solid
+        var(--input-border, var(--input, oklch(0.922 0 0)));
+      border-radius: var(--input-radius, var(--radius, 0.625rem));
+      transition: border-color var(--input-transition-duration, 150ms)
+          var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1)),
+        box-shadow var(--input-transition-duration, 150ms)
+          var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1));
+    }
+    .control::placeholder {
+      color: var(--input-placeholder, var(--muted-foreground, oklch(0.556 0 0)));
+    }
+    .control:hover:not(:disabled) {
+      border-color: var(--input-border-hover, var(--border, oklch(0.922 0 0)));
+    }
+    .control:focus-visible {
+      outline: none;
+      border-color: var(--input-border-focus, var(--ring, oklch(0.708 0 0)));
+      box-shadow: 0 0 0 var(--ring-width, 3px)
+        color-mix(in oklch, var(--ring, oklch(0.708 0 0)) 40%, transparent);
+    }
+    .control:disabled {
+      color: var(
+        --input-text-disabled,
+        var(--muted-foreground, oklch(0.556 0 0))
+      );
+      background: var(--input-bg-disabled, var(--muted, oklch(0.97 0 0)));
+      cursor: not-allowed;
+    }
+    :host([invalid]) .control {
+      border-color: var(
+        --input-border-error,
+        var(--destructive, oklch(0.577 0.245 27.325))
+      );
+    }
+    .message {
+      font-size: var(--input-font-size-helper, 0.8125rem);
+    }
+    .helper {
+      color: var(--input-helper, var(--muted-foreground, oklch(0.556 0 0)));
+    }
+    .error {
+      color: var(
+        --input-error-text,
+        var(--destructive, oklch(0.577 0.245 27.325))
+      );
+    }
+  `;
+
+  /** Visible label text. */
+  @property() label = '';
+
+  /** Form control name (used for submission and the default tool name). */
+  @property() name = '';
+
+  /** Current value (reflected to the form). */
+  @property() value = '';
+
+  @property() placeholder = '';
+
+  @property({ type: Boolean, reflect: true }) required = false;
+
+  @property({ type: Boolean, reflect: true }) disabled = false;
+
+  /** Helper text shown below the control when there is no error. */
+  @property({ attribute: 'helper-text' }) helperText = '';
+
+  /** Whether to expose this control as a WebMCP tool. */
+  @property({ type: Boolean }) expose = false;
+
+  /** Override the generated WebMCP tool name. */
+  @property({ attribute: 'tool-name' }) toolName = '';
+
+  /** Override the generated WebMCP tool description. */
+  @property({ attribute: 'tool-description' }) toolDescription = '';
+
+  /**
+   * Standard Schema validator (Zod, Valibot, ArkType, …). Set as a property,
+   * not an attribute. Validation runs on input and on form validation.
+   */
+  @property({ attribute: false })
+  schema?: StandardSchemaV1<unknown, unknown>;
+
+  @state() protected error = '';
+
+  protected readonly internals = this.attachInternals();
+  private toolDisposer: ToolDisposer = () => {};
+
+  /** Noun used in default tool names/descriptions when `name` is empty. */
+  protected get controlNoun(): string {
+    return 'field';
+  }
+
+  /** The rendered control element (`<input>` / `<textarea>` / …). */
+  protected get control(): HTMLInputElement | HTMLTextAreaElement | null {
+    return this.renderRoot?.querySelector('input, textarea') ?? null;
+  }
+
+  /** Id to point the control's `aria-describedby` at, if any. */
+  protected get describedBy(): string | undefined {
+    return this.error ? 'wmcp-error' : this.helperText ? 'wmcp-helper' : undefined;
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.internals.setFormValue(this.value);
+    if (this.expose) this.registerTool();
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.toolDisposer();
+    this.toolDisposer = () => {};
+  }
+
+  override updated(changed: Map<string, unknown>): void {
+    if (changed.has('value')) {
+      this.internals.setFormValue(this.value);
+    }
+    if (
+      this.expose &&
+      (changed.has('expose') ||
+        changed.has('name') ||
+        changed.has('toolName') ||
+        changed.has('toolDescription'))
+    ) {
+      this.registerTool();
+    }
+  }
+
+  /** The resolved WebMCP tool name. */
+  get resolvedToolName(): string {
+    return this.toolName || `fill_${this.name || this.controlNoun}`;
+  }
+
+  private registerTool(): void {
+    this.toolDisposer();
+    const noun = this.label || this.name || this.controlNoun;
+    this.toolDisposer = exposeTool({
+      name: this.resolvedToolName,
+      description:
+        this.toolDescription || `Set the value of the "${noun}" field.`,
+      inputSchema: this.toolInputSchema(),
+      execute: async (args) => {
+        const next = args.value;
+        await this.setValueFromAgent(next == null ? '' : String(next));
+        return {
+          content: [
+            {
+              type: 'text',
+              text: this.error
+                ? `Set "${noun}" but validation failed: ${this.error}`
+                : `Set "${noun}" to "${this.value}".`,
+            },
+          ],
+          isError: Boolean(this.error),
+        };
+      },
+    });
+  }
+
+  /** JSON Schema for the WebMCP tool's args. Defaults to a single string. */
+  protected toolInputSchema(): JSONSchema {
+    return {
+      type: 'object',
+      properties: {
+        value: {
+          type: 'string',
+          description: this.label || this.name || 'The value to set.',
+        },
+      },
+      required: ['value'],
+    };
+  }
+
+  /** Apply a value as if a user typed it: update, validate, announce. */
+  async setValueFromAgent(value: string): Promise<void> {
+    this.value = value;
+    await this.validate();
+    this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+  }
+
+  protected async onInput(event: Event): Promise<void> {
+    this.value = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+    await this.validate();
+  }
+
+  /** Run schema validation (if any) and reflect the result to the form. */
+  async validate(): Promise<boolean> {
+    if (!isStandardSchema(this.schema)) {
+      this.error = '';
+      this.toggleAttribute('invalid', false);
+      this.internals.setValidity({});
+      return true;
+    }
+    const outcome = await validateStandard(this.schema, this.value);
+    this.error = outcome.valid ? '' : (outcome.errors[0] ?? 'Invalid value');
+    this.toggleAttribute('invalid', !outcome.valid);
+    if (outcome.valid) {
+      this.internals.setValidity({});
+    } else {
+      this.internals.setValidity(
+        { customError: true },
+        this.error,
+        this.control ?? undefined,
+      );
+    }
+    return outcome.valid;
+  }
+
+  /** Called by the form when it resets. */
+  formResetCallback(): void {
+    this.value = '';
+    this.error = '';
+    this.toggleAttribute('invalid', false);
+    this.internals.setValidity({});
+  }
+
+  /** Subclasses render their control element here (id/class "control"). */
+  protected abstract renderControl(): TemplateResult;
+
+  protected renderMessage() {
+    return this.error
+      ? html`<span id="wmcp-error" class="message error" role="alert"
+          >${this.error}</span
+        >`
+      : this.helperText
+        ? html`<span id="wmcp-helper" class="message helper"
+            >${this.helperText}</span
+          >`
+        : nothing;
+  }
+
+  override render() {
+    return html`
+      ${this.label
+        ? html`<label for="control">${this.label}</label>`
+        : nothing}
+      ${this.renderControl()}
+      ${this.renderMessage()}
+    `;
+  }
+}

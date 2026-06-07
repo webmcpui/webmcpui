@@ -1,7 +1,11 @@
 # @webmcpui/core
 
 Framework-agnostic, WebMCP-native custom elements. Phase 1 ships form
-primitives; this is the `input` vertical slice that proves the architecture.
+primitives — shared behavior (form association, validation, WebMCP exposure,
+theming) lives in a `WmcpFormControl` base class; each element is a thin
+subclass that supplies its control and specifics.
+
+Shipped so far: `<wmcp-input>`, `<wmcp-textarea>`.
 
 One source of truth (vanilla custom elements built with [Lit](https://lit.dev)),
 two distribution channels: an ESM package for build tools, and a single-file

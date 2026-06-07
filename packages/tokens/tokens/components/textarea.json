@@ -1,0 +1,7 @@
+{
+  "components": {
+    "textarea": {
+      "min-height": { "$type": "dimension", "$value": "4.5rem" }
+    }
+  }
+}

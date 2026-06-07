@@ -1,7 +1,13 @@
 import { WmcpInput } from './elements/input.js';
+import { WmcpTextarea } from './elements/textarea.js';
 
-/** Every custom element this package ships, keyed by tag name. */
-const elements: Array<typeof WmcpInput> = [WmcpInput];
+interface WmcpElementCtor {
+  readonly tagName: string;
+  new (): HTMLElement;
+}
+
+/** Every custom element this package ships. */
+const elements: WmcpElementCtor[] = [WmcpInput, WmcpTextarea];
 
 /**
  * Register all webmcpui custom elements. Idempotent — safe to call more than

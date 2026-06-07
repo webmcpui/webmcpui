@@ -2,7 +2,9 @@
 // Importing this module does NOT register the custom elements — call
 // `defineComponents()` to opt in (the CDN bundle does this automatically).
 
+export { WmcpFormControl } from './elements/form-control.js';
 export { WmcpInput, type WmcpInputType } from './elements/input.js';
+export { WmcpTextarea } from './elements/textarea.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer
