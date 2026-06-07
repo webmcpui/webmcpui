@@ -1,18 +1,25 @@
 {
-  "name": "@webmcpui/tokens",
+  "name": "webmcpui",
   "version": "0.0.0",
   "private": true,
-  "description": "Design token dictionary for webmcpui — source of truth in tokens/*.json, built with Style Dictionary into CSS custom properties, TS types, and a Figma import.",
+  "description": "The agent-aware web component library for WebMCP. Framework-agnostic core, first-class Vue and React bindings, Standard Schema validation.",
   "type": "module",
-  "scripts": {
-    "build": "node config/build.js",
-    "clean": "rm -rf dist"
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
   },
-  "files": [
-    "tokens",
-    "dist"
-  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
+  },
   "devDependencies": {
-    "style-dictionary": "^4.3.0"
+    "@changesets/cli": "^2.27.10",
+    "turbo": "^2.3.3"
   }
 }
