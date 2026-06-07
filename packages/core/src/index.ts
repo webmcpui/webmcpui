@@ -5,6 +5,12 @@
 export { WmcpFormControl } from './elements/form-control.js';
 export { WmcpInput, type WmcpInputType } from './elements/input.js';
 export { WmcpTextarea } from './elements/textarea.js';
+export {
+  WmcpSelect,
+  type WmcpSelectItem,
+  type WmcpSelectOption,
+  type WmcpSelectOptionGroup,
+} from './elements/select.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

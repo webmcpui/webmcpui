@@ -151,9 +151,13 @@ export abstract class WmcpFormControl extends LitElement {
     return 'field';
   }
 
-  /** The rendered control element (`<input>` / `<textarea>` / …). */
-  protected get control(): HTMLInputElement | HTMLTextAreaElement | null {
-    return this.renderRoot?.querySelector('input, textarea') ?? null;
+  /** The rendered control element (`<input>` / `<textarea>` / `<select>`). */
+  protected get control():
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement
+    | null {
+    return this.renderRoot?.querySelector('input, textarea, select') ?? null;
   }
 
   /** Id to point the control's `aria-describedby` at, if any. */
@@ -193,7 +197,7 @@ export abstract class WmcpFormControl extends LitElement {
     return this.toolName || `fill_${this.name || this.controlNoun}`;
   }
 
-  private registerTool(): void {
+  protected registerTool(): void {
     this.toolDisposer();
     const noun = this.label || this.name || this.controlNoun;
     this.toolDisposer = exposeTool({
@@ -242,7 +246,9 @@ export abstract class WmcpFormControl extends LitElement {
   }
 
   protected async onInput(event: Event): Promise<void> {
-    this.value = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+    this.value = (
+      event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    ).value;
     await this.validate();
   }
 

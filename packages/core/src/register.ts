@@ -1,5 +1,6 @@
 import { WmcpInput } from './elements/input.js';
 import { WmcpTextarea } from './elements/textarea.js';
+import { WmcpSelect } from './elements/select.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -7,7 +8,7 @@ interface WmcpElementCtor {
 }
 
 /** Every custom element this package ships. */
-const elements: WmcpElementCtor[] = [WmcpInput, WmcpTextarea];
+const elements: WmcpElementCtor[] = [WmcpInput, WmcpTextarea, WmcpSelect];
 
 /**
  * Register all webmcpui custom elements. Idempotent — safe to call more than
