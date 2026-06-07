@@ -84,6 +84,14 @@ export class WmcpCheckbox extends WmcpFormControl {
     return this.checked;
   }
 
+  protected override get isEmpty(): boolean {
+    return !this.checked;
+  }
+
+  protected override get requiredMessageDefault(): string {
+    return 'Please check this box.';
+  }
+
   protected override toolInputSchema(): JSONSchema {
     return {
       type: 'object',
@@ -115,7 +123,7 @@ export class WmcpCheckbox extends WmcpFormControl {
     this.checked = this.defaultChecked;
     this.error = '';
     this.toggleAttribute('invalid', false);
-    this.internals.setValidity({});
+    void this.validate(false);
   }
 
   private async onToggle(event: Event): Promise<void> {

@@ -133,6 +133,9 @@ export abstract class WmcpFormControl extends LitElement {
   /** Helper text shown below the control when there is no error. */
   @property({ attribute: 'helper-text' }) helperText = '';
 
+  /** Message shown when a `required` control is empty. */
+  @property({ attribute: 'required-message' }) requiredMessage = '';
+
   /** Whether to expose this control as a WebMCP tool. */
   @property({ type: Boolean }) expose = false;
 
@@ -176,6 +179,10 @@ export abstract class WmcpFormControl extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
     this.syncFormValue();
+    this.addEventListener('invalid', this.onInvalid);
+    // Establish initial validity (e.g. a required-empty field) without
+    // surfacing the message until the form is reported.
+    void this.validate(false);
     if (this.expose) this.registerTool();
   }
 
@@ -201,8 +208,22 @@ export abstract class WmcpFormControl extends LitElement {
     return this.value;
   }
 
+  /**
+   * Whether the control counts as empty for the `required` constraint.
+   * Defaults to an empty string value; boolean controls (checkbox) override.
+   */
+  protected get isEmpty(): boolean {
+    return this.value === '';
+  }
+
+  /** Default message for the `required` constraint when none is provided. */
+  protected get requiredMessageDefault(): string {
+    return 'This field is required.';
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.removeEventListener('invalid', this.onInvalid);
     this.toolDisposer();
     this.toolDisposer = () => {};
   }
@@ -296,35 +317,66 @@ export abstract class WmcpFormControl extends LitElement {
     await this.validate();
   }
 
-  /** Run schema validation (if any) and reflect the result to the form. */
-  async validate(): Promise<boolean> {
-    if (!isStandardSchema(this.schema)) {
-      this.error = '';
-      this.toggleAttribute('invalid', false);
-      this.internals.setValidity({});
-      return true;
+  /** Compute validity: the `required` constraint first, then the schema. */
+  private async computeValidity(): Promise<{
+    valid: boolean;
+    message: string;
+    flags: ValidityStateFlags;
+  }> {
+    if (this.required && this.isEmpty) {
+      return {
+        valid: false,
+        message: this.requiredMessage || this.requiredMessageDefault,
+        flags: { valueMissing: true },
+      };
     }
-    const outcome = await validateStandard(this.schema, this.validationValue);
-    this.error = outcome.valid ? '' : (outcome.errors[0] ?? 'Invalid value');
-    this.toggleAttribute('invalid', !outcome.valid);
-    if (outcome.valid) {
+    if (isStandardSchema(this.schema)) {
+      const outcome = await validateStandard(this.schema, this.validationValue);
+      if (!outcome.valid) {
+        return {
+          valid: false,
+          message: outcome.errors[0] ?? 'Invalid value',
+          flags: { customError: true },
+        };
+      }
+    }
+    return { valid: true, message: '', flags: {} };
+  }
+
+  /**
+   * Validate and reflect the result to the form via ElementInternals.
+   *
+   * @param show When true (default, on interaction) the error is also made
+   *   visible. When false (on connect/reset) validity is set for
+   *   `form.checkValidity()` but the message stays hidden until the form is
+   *   actually reported (native-style — the `invalid` event reveals it).
+   */
+  async validate(show = true): Promise<boolean> {
+    const { valid, message, flags } = await this.computeValidity();
+    if (valid) {
       this.internals.setValidity({});
     } else {
-      this.internals.setValidity(
-        { customError: true },
-        this.error,
-        this.control ?? undefined,
-      );
+      this.internals.setValidity(flags, message, this.control ?? undefined);
     }
-    return outcome.valid;
+    if (show) {
+      this.error = valid ? '' : message;
+      this.toggleAttribute('invalid', !valid);
+    }
+    return valid;
   }
+
+  /** Reveal the validation message when the form reports validity (submit). */
+  private readonly onInvalid = (): void => {
+    this.error = this.internals.validationMessage;
+    this.toggleAttribute('invalid', true);
+  };
 
   /** Called by the form when it resets. */
   formResetCallback(): void {
     this.value = '';
     this.error = '';
     this.toggleAttribute('invalid', false);
-    this.internals.setValidity({});
+    void this.validate(false);
   }
 
   /** Subclasses render their control element here (id/class "control"). */
