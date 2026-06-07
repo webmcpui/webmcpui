@@ -1,0 +1,7 @@
+{
+  "base": {
+    "radius": { "$type": "dimension", "$value": "0.625rem" },
+    "ring-width": { "$type": "dimension", "$value": "3px" },
+    "ring-offset": { "$type": "dimension", "$value": "2px" }
+  }
+}

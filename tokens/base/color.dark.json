@@ -1,0 +1,31 @@
+{
+  "base": {
+    "background": { "$type": "color", "$value": "oklch(0.145 0 0)" },
+    "foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "card": { "$type": "color", "$value": "oklch(0.205 0 0)" },
+    "card-foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "popover": { "$type": "color", "$value": "oklch(0.205 0 0)" },
+    "popover-foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "primary": { "$type": "color", "$value": "oklch(0.922 0 0)" },
+    "primary-foreground": { "$type": "color", "$value": "oklch(0.205 0 0)" },
+
+    "secondary": { "$type": "color", "$value": "oklch(0.269 0 0)" },
+    "secondary-foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "muted": { "$type": "color", "$value": "oklch(0.269 0 0)" },
+    "muted-foreground": { "$type": "color", "$value": "oklch(0.708 0 0)" },
+
+    "accent": { "$type": "color", "$value": "oklch(0.269 0 0)" },
+    "accent-foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "destructive": { "$type": "color", "$value": "oklch(0.704 0.191 22.216)" },
+    "destructive-foreground": { "$type": "color", "$value": "oklch(0.985 0 0)" },
+
+    "border": { "$type": "color", "$value": "oklch(1 0 0 / 10%)" },
+    "input": { "$type": "color", "$value": "oklch(1 0 0 / 15%)" },
+    "ring": { "$type": "color", "$value": "oklch(0.556 0 0)" }
+  }
+}
