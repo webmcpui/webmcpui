@@ -88,10 +88,20 @@ await agent.call('fill_email', { value: 'agent@webmcpui.com' });
 agent.restore();
 ```
 
-## Build
+## Build & test
 
 ```bash
 pnpm build        # tsup → dist/ (ESM + IIFE + d.ts)
-pnpm typecheck
-pnpm test         # runtime smoke checks (scripts/smoke.mjs)
+pnpm typecheck    # tsc --noEmit
+pnpm test         # @web/test-runner in real Chromium (form association,
+                  # validation a11y, WebMCP exposure)
+pnpm test:smoke   # node smoke check against the built dist
+```
+
+Tests run in a genuine browser via the Playwright launcher — form-associated
+custom elements and ElementInternals don't work under jsdom. First run needs
+the browser binary:
+
+```bash
+pnpm exec playwright install chromium
 ```
