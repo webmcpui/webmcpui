@@ -1,6 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { WmcpFormControl } from './form-control.js';
+import { WmcpFormControl, textFieldStyles } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
 
 export type WmcpInputType =
@@ -26,6 +26,7 @@ export class WmcpInput extends WmcpFormControl {
 
   static styles = [
     WmcpFormControl.styles,
+    textFieldStyles,
     css`
       .control {
         height: var(--input-height-md, 2.25rem);

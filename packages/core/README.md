@@ -5,7 +5,7 @@ primitives — shared behavior (form association, validation, WebMCP exposure,
 theming) lives in a `WmcpFormControl` base class; each element is a thin
 subclass that supplies its control and specifics.
 
-Shipped so far: `<wmcp-input>`, `<wmcp-textarea>`, `<wmcp-select>`.
+Shipped so far: `<wmcp-input>`, `<wmcp-textarea>`, `<wmcp-select>`, `<wmcp-checkbox>`.
 
 One source of truth (vanilla custom elements built with [Lit](https://lit.dev)),
 two distribution channels: an ESM package for build tools, and a single-file

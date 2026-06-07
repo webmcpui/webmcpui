@@ -1,7 +1,7 @@
 import { html, css, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { WmcpFormControl } from './form-control.js';
+import { WmcpFormControl, textFieldStyles } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
 
 export interface WmcpSelectOption {
@@ -40,6 +40,7 @@ export class WmcpSelect extends WmcpFormControl {
 
   static styles = [
     WmcpFormControl.styles,
+    textFieldStyles,
     css`
       .control {
         height: var(--input-height-md, 2.25rem);

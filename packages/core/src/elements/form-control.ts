@@ -27,9 +27,60 @@ import { exposeTool, type JSONSchema, type ToolDisposer } from '../webmcp.js';
  * `<textarea>` / …) and may override {@link controlNoun} and
  * {@link toolInputSchema}. Abstract — not registered on its own.
  */
+
+/**
+ * Text-field box appearance for the `.control` element. Used by input,
+ * textarea, and select — the controls that render as a bordered field.
+ */
+export const textFieldStyles = css`
+  .control {
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--input-padding-y, 0.5rem) var(--input-padding-x, 0.75rem);
+    font-family: inherit;
+    font-size: var(--input-font-size, 0.875rem);
+    line-height: var(--input-line-height, 1.25rem);
+    color: var(--input-text, var(--foreground, oklch(0.145 0 0)));
+    background: var(--input-bg, var(--background, oklch(1 0 0)));
+    border: var(--input-border-width, 1px) solid
+      var(--input-border, var(--input, oklch(0.922 0 0)));
+    border-radius: var(--input-radius, var(--radius, 0.625rem));
+    transition: border-color var(--input-transition-duration, 150ms)
+        var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1)),
+      box-shadow var(--input-transition-duration, 150ms)
+        var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  .control::placeholder {
+    color: var(--input-placeholder, var(--muted-foreground, oklch(0.556 0 0)));
+  }
+  .control:hover:not(:disabled) {
+    border-color: var(--input-border-hover, var(--border, oklch(0.922 0 0)));
+  }
+  .control:focus-visible {
+    outline: none;
+    border-color: var(--input-border-focus, var(--ring, oklch(0.708 0 0)));
+    box-shadow: 0 0 0 var(--ring-width, 3px)
+      color-mix(in oklch, var(--ring, oklch(0.708 0 0)) 40%, transparent);
+  }
+  .control:disabled {
+    color: var(--input-text-disabled, var(--muted-foreground, oklch(0.556 0 0)));
+    background: var(--input-bg-disabled, var(--muted, oklch(0.97 0 0)));
+    cursor: not-allowed;
+  }
+  :host([invalid]) .control {
+    border-color: var(
+      --input-border-error,
+      var(--destructive, oklch(0.577 0.245 27.325))
+    );
+  }
+`;
+
 export abstract class WmcpFormControl extends LitElement {
   static formAssociated = true;
 
+  // Shared by every control: host layout, label, and the message/error text.
+  // Text-field box styling lives in `textFieldStyles` (opted into by input /
+  // textarea / select) so non-text controls like checkbox don't inherit it.
   static styles: CSSResultGroup = css`
     :host {
       display: inline-flex;
@@ -49,49 +100,6 @@ export abstract class WmcpFormControl extends LitElement {
       font-size: var(--input-font-size-label, 0.875rem);
       font-weight: var(--input-font-weight-label, 500);
       color: var(--input-label, var(--foreground, oklch(0.145 0 0)));
-    }
-    .control {
-      box-sizing: border-box;
-      width: 100%;
-      padding: var(--input-padding-y, 0.5rem) var(--input-padding-x, 0.75rem);
-      font-family: inherit;
-      font-size: var(--input-font-size, 0.875rem);
-      line-height: var(--input-line-height, 1.25rem);
-      color: var(--input-text, var(--foreground, oklch(0.145 0 0)));
-      background: var(--input-bg, var(--background, oklch(1 0 0)));
-      border: var(--input-border-width, 1px) solid
-        var(--input-border, var(--input, oklch(0.922 0 0)));
-      border-radius: var(--input-radius, var(--radius, 0.625rem));
-      transition: border-color var(--input-transition-duration, 150ms)
-          var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1)),
-        box-shadow var(--input-transition-duration, 150ms)
-          var(--input-transition-easing, cubic-bezier(0.4, 0, 0.2, 1));
-    }
-    .control::placeholder {
-      color: var(--input-placeholder, var(--muted-foreground, oklch(0.556 0 0)));
-    }
-    .control:hover:not(:disabled) {
-      border-color: var(--input-border-hover, var(--border, oklch(0.922 0 0)));
-    }
-    .control:focus-visible {
-      outline: none;
-      border-color: var(--input-border-focus, var(--ring, oklch(0.708 0 0)));
-      box-shadow: 0 0 0 var(--ring-width, 3px)
-        color-mix(in oklch, var(--ring, oklch(0.708 0 0)) 40%, transparent);
-    }
-    .control:disabled {
-      color: var(
-        --input-text-disabled,
-        var(--muted-foreground, oklch(0.556 0 0))
-      );
-      background: var(--input-bg-disabled, var(--muted, oklch(0.97 0 0)));
-      cursor: not-allowed;
-    }
-    :host([invalid]) .control {
-      border-color: var(
-        --input-border-error,
-        var(--destructive, oklch(0.577 0.245 27.325))
-      );
     }
     .message {
       font-size: var(--input-font-size-helper, 0.8125rem);
@@ -167,8 +175,30 @@ export abstract class WmcpFormControl extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.internals.setFormValue(this.value);
+    this.syncFormValue();
     if (this.expose) this.registerTool();
+  }
+
+  /**
+   * The value contributed to the containing form. Defaults to the string
+   * `value`; controls with a conditional contribution (e.g. an unchecked
+   * checkbox) override this and may return `null` to contribute nothing.
+   */
+  protected getFormValue(): string | File | FormData | null {
+    return this.value;
+  }
+
+  /** Push the current form value into ElementInternals. */
+  protected syncFormValue(): void {
+    this.internals.setFormValue(this.getFormValue());
+  }
+
+  /**
+   * The value passed to the schema validator. Defaults to the string `value`;
+   * boolean controls (checkbox) override to validate their checked state.
+   */
+  protected get validationValue(): unknown {
+    return this.value;
   }
 
   override disconnectedCallback(): void {
@@ -178,9 +208,7 @@ export abstract class WmcpFormControl extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>): void {
-    if (changed.has('value')) {
-      this.internals.setFormValue(this.value);
-    }
+    this.syncFormValue();
     if (
       this.expose &&
       (changed.has('expose') ||
@@ -206,21 +234,37 @@ export abstract class WmcpFormControl extends LitElement {
         this.toolDescription || `Set the value of the "${noun}" field.`,
       inputSchema: this.toolInputSchema(),
       execute: async (args) => {
-        const next = args.value;
-        await this.setValueFromAgent(next == null ? '' : String(next));
+        await this.applyAgentValue(args);
         return {
           content: [
             {
               type: 'text',
               text: this.error
                 ? `Set "${noun}" but validation failed: ${this.error}`
-                : `Set "${noun}" to "${this.value}".`,
+                : `Set "${noun}" to "${this.stateDescription()}".`,
             },
           ],
           isError: Boolean(this.error),
         };
       },
     });
+  }
+
+  /**
+   * Apply the agent's tool arguments to component state. Defaults to treating
+   * `args.value` as the new string value; controls with a different shape
+   * (e.g. checkbox's `args.checked`) override this.
+   */
+  protected async applyAgentValue(
+    args: Record<string, unknown>,
+  ): Promise<void> {
+    const next = args.value;
+    await this.setValueFromAgent(next == null ? '' : String(next));
+  }
+
+  /** Human-readable current state, used in the tool's result message. */
+  protected stateDescription(): string {
+    return this.value;
   }
 
   /** JSON Schema for the WebMCP tool's args. Defaults to a single string. */
@@ -260,7 +304,7 @@ export abstract class WmcpFormControl extends LitElement {
       this.internals.setValidity({});
       return true;
     }
-    const outcome = await validateStandard(this.schema, this.value);
+    const outcome = await validateStandard(this.schema, this.validationValue);
     this.error = outcome.valid ? '' : (outcome.errors[0] ?? 'Invalid value');
     this.toggleAttribute('invalid', !outcome.valid);
     if (outcome.valid) {

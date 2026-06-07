@@ -1,6 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { WmcpFormControl } from './form-control.js';
+import { WmcpFormControl, textFieldStyles } from './form-control.js';
 
 /**
  * `<wmcp-textarea>` — a form-associated, agent-operable multi-line text input.
@@ -16,6 +16,7 @@ export class WmcpTextarea extends WmcpFormControl {
 
   static styles = [
     WmcpFormControl.styles,
+    textFieldStyles,
     css`
       .control {
         min-height: var(--textarea-min-height, 4.5rem);

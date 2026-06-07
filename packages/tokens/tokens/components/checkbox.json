@@ -1,0 +1,8 @@
+{
+  "components": {
+    "checkbox": {
+      "size": { "$type": "dimension", "$value": "1.05rem" },
+      "accent": { "$type": "color", "$value": "{base.primary}" }
+    }
+  }
+}
