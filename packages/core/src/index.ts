@@ -12,6 +12,11 @@ export {
   type WmcpSelectOptionGroup,
 } from './elements/select.js';
 export { WmcpCheckbox } from './elements/checkbox.js';
+export {
+  WmcpRadio,
+  WmcpRadioGroup,
+  type WmcpRadioOption,
+} from './elements/radio.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

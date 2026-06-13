@@ -2,6 +2,7 @@ import { WmcpInput } from './elements/input.js';
 import { WmcpTextarea } from './elements/textarea.js';
 import { WmcpSelect } from './elements/select.js';
 import { WmcpCheckbox } from './elements/checkbox.js';
+import { WmcpRadio, WmcpRadioGroup } from './elements/radio.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -14,6 +15,8 @@ const elements: WmcpElementCtor[] = [
   WmcpTextarea,
   WmcpSelect,
   WmcpCheckbox,
+  WmcpRadio,
+  WmcpRadioGroup,
 ];
 
 /**
