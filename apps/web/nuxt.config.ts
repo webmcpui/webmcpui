@@ -5,7 +5,22 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@nuxt/fonts'],
+  modules: ['@nuxt/content', '@nuxtjs/color-mode', '@nuxt/icon', '@nuxt/fonts'],
+
+  content: {
+    // Code blocks: Shiki themes for light + dark, driven by the `.dark` class.
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark',
+          },
+          langs: ['html', 'ts', 'js', 'bash', 'json', 'vue', 'css'],
+        },
+      },
+    },
+  },
 
   css: [
     // Component theme tokens (defines :root + .dark CSS custom properties that

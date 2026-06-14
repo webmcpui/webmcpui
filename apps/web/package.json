@@ -12,6 +12,7 @@
     "clean": "rm -rf .nuxt .output dist node_modules/.cache"
   },
   "dependencies": {
+    "@nuxt/content": "^3.14.0",
     "@webmcpui/core": "workspace:*",
     "@webmcpui/tokens": "workspace:*",
     "nuxt": "^4.0.0",
@@ -25,6 +26,7 @@
     "@nuxt/icon": "^1.10.0",
     "@nuxtjs/color-mode": "^3.5.2",
     "@tailwindcss/vite": "^4.0.0",
+    "better-sqlite3": "^12.10.1",
     "tailwindcss": "^4.0.0"
   }
 }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const nav = [
+  { label: 'Docs', to: '/docs' },
   { label: 'How it works', to: '/#how' },
   { label: 'Features', to: '/#features' },
-  { label: 'Install', to: '/#install' },
 ];
 
 const GITHUB_URL = 'https://github.com/webmcpui/webmcpui.com';
@@ -81,6 +81,12 @@ const year = 2026;
           </p>
         </div>
         <div class="flex flex-col gap-2 text-sm">
+          <NuxtLink
+            to="/docs"
+            class="bouncy text-muted-foreground hover:text-foreground"
+          >
+            Docs
+          </NuxtLink>
           <a
             :href="GITHUB_URL"
             target="_blank"
