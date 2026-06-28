@@ -1,0 +1,90 @@
+name: Release
+
+# Publishes @webmcpui/core and @webmcpui/tokens to npm (OIDC trusted
+# publishing, with provenance) and @webmcpui/core to JSR (tokenless OIDC).
+# No long-lived tokens are stored anywhere.
+#
+# Trigger: publish a GitHub Release (bump versions, tag e.g. v0.1.0, publish
+# the release). workflow_dispatch is provided for manual re-runs.
+#
+# One-time prerequisites in each registry's UI:
+#   npm  — add a Trusted Publisher for BOTH @webmcpui/core and @webmcpui/tokens:
+#          GitHub Actions · repo webmcpui/webmcpui · workflow "release.yml".
+#          Then set each package's publishing access to
+#          "Require two-factor authentication and disallow tokens".
+#   JSR  — link @webmcpui/core to the webmcpui/webmcpui repo
+#          (jsr.io package · Settings · GitHub repository).
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # Never let a fork run this.
+    if: github.repository == 'webmcpui/webmcpui'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+      id-token: write # OIDC — required for npm trusted publishing AND JSR
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      # OIDC trusted publishing needs npm >= 11.5.1; pin to latest to be safe.
+      - name: Upgrade npm
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # --- npm (OIDC trusted publishing; provenance is automatic) ---
+
+      - name: Publish @webmcpui/tokens to npm
+        working-directory: packages/tokens
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/tokens@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/tokens@$VER already on npm — skipping."
+          else
+            npm publish --access public
+          fi
+
+      - name: Publish @webmcpui/core to npm
+        working-directory: packages/core
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/core@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/core@$VER already on npm — skipping."
+          else
+            npm publish --access public
+          fi
+
+      # --- JSR (tokenless OIDC; core only — CSS can't live on JSR) ---
+
+      - name: Publish @webmcpui/core to JSR
+        working-directory: packages/core
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if curl -sfo /dev/null "https://jsr.io/@webmcpui/core/${VER}_meta.json"; then
+            echo "@webmcpui/core@$VER already on JSR — skipping."
+          else
+            npx jsr publish --allow-slow-types
+          fi
