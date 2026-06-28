@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@webmcpui/docs"]
+  "ignore": ["@webmcpui/docs", "@webmcpui/web"]
 }

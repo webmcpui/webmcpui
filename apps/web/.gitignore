@@ -1,0 +1,15 @@
+# Nuxt
+.nuxt
+.output
+.data
+dist
+
+# Cloudflare
+.wrangler
+
+# Local
+node_modules
+*.log
+.env
+.DS_Store
+public/webmcpui

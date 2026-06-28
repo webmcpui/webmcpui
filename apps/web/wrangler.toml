@@ -1,0 +1,7 @@
+# Cloudflare Pages config for the webmcpui.com site.
+# Build: `pnpm --filter @webmcpui/web build` (Turbo builds core + tokens first).
+# Output: apps/web/dist (Nuxt's cloudflare-pages preset).
+name = "webmcpui"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]

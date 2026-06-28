@@ -1,0 +1,13 @@
+{
+  "name": "@webmcpui/core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/testing.ts"
+  },
+  "publish": {
+    "include": ["src", "README.md", "LICENSE"],
+    "exclude": ["src/**/*.test.ts"]
+  }
+}

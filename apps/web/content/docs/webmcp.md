@@ -1,0 +1,60 @@
+---
+title: WebMCP exposure
+navTitle: WebMCP exposure
+description: How a form control becomes an imperative WebMCP tool an agent can discover and call.
+group: Getting started
+groupOrder: 1
+order: 4
+---
+
+# WebMCP exposure
+
+WebMCP is an imperative browser API — `document.modelContext.registerTool(...)` — that lets a page offer tools to an AI agent running in or alongside the browser. webmcpui controls can register themselves as tools.
+
+## Opt in with `expose`
+
+```html
+<wmcp-input label="Email" name="email" type="email" expose></wmcp-input>
+<!-- registers a "fill_email" tool an agent can call -->
+```
+
+On connect, the element registers an imperative WebMCP tool; on disconnect, it unregisters. It is **feature-detected** — a complete no-op when no agent/host is present (the common case today), so the control is always a good form control first.
+
+## The generated tool
+
+For the example above, the registered tool is:
+
+| Field | Value |
+| --- | --- |
+| `name` | `fill_email` (`fill_` + the `name` attribute) |
+| `description` | `Set the value of the "Email" field.` |
+| `inputSchema` | `{ type: 'object', properties: { value: { type: 'string' } }, required: ['value'] }` |
+
+When the agent calls the tool, the element applies the value exactly as if a user typed it — updating state, running validation, announcing errors, and firing `input`/`change` events.
+
+## Customizing the tool
+
+```html
+<wmcp-input
+  name="email"
+  label="Work email"
+  expose
+  tool-name="set_work_email"
+  tool-description="Set the customer's work email address."
+></wmcp-input>
+```
+
+- `tool-name` overrides the generated `fill_<name>`.
+- `tool-description` overrides the generated description.
+
+Controls with enumerated values (`<wmcp-select>`, `<wmcp-radio-group>`) generate an `enum`-typed schema so the agent knows the exact allowed values.
+
+> **Tool names are page-global.** Two `expose`d controls that resolve to the same tool name — say two fields that both become `fill_email` — collide, and the host rejects the duplicate, so the second control won't be agent-callable. webmcpui logs a console warning when it sees this; give one control a unique `name`, or override it with `tool-name`.
+
+## Only on a secure context
+
+WebMCP is a secure-context feature, so `document.modelContext` exists only on **HTTPS** pages — it's `undefined` on plain HTTP (`localhost` counts as secure). webmcpui's feature detection reads that as "no host present" and quietly does nothing, so your controls stay perfectly good form controls. If you're testing exposure on an `http://` staging box and see no tools, that's why.
+
+## Spec status
+
+As of mid-2026 WebMCP is early but moving: it's in a **public origin trial in Chrome 149+**, with Gemini in Chrome as the first consumer. The surface is still shifting month to month — the API moved to `document.modelContext` (with `navigator.modelContext` deprecated in Chrome 150), and it's `undefined` for almost everyone else. Everything here is additive and feature-detected, so adopting webmcpui costs nothing today and pays off as hosts ship. webmcpui detects both surfaces and prefers `document.modelContext`. To exercise exposure now, use the [fake agent](/docs/testing).

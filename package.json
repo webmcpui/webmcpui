@@ -23,6 +23,6 @@
     "turbo": "^2.3.3"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": ["esbuild", "better-sqlite3"]
   }
 }

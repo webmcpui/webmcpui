@@ -1,7 +1,28 @@
 {
   "name": "@webmcpui/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Framework-agnostic WebMCP-native custom elements. Form primitives with Standard Schema validation and imperative WebMCP tool exposure.",
+  "license": "MIT",
+  "author": "Gary Pfaff (Pfaff Digital)",
+  "homepage": "https://webmcpui.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmcpui/webmcpui.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/webmcpui/webmcpui/issues"
+  },
+  "keywords": [
+    "webmcp",
+    "web-components",
+    "custom-elements",
+    "ai-agents",
+    "modelcontext",
+    "forms",
+    "standard-schema",
+    "lit"
+  ],
   "type": "module",
   "exports": {
     ".": {
@@ -30,7 +51,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@webmcpui/tokens": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

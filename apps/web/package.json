@@ -1,0 +1,32 @@
+{
+  "name": "@webmcpui/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "clean": "rm -rf .nuxt .output dist node_modules/.cache"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.14.0",
+    "@webmcpui/core": "workspace:*",
+    "@webmcpui/tokens": "workspace:*",
+    "nuxt": "^4.0.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.18",
+    "@iconify-json/simple-icons": "^1.2.20",
+    "@nuxt/fonts": "^0.11.0",
+    "@nuxt/icon": "^1.10.0",
+    "@nuxtjs/color-mode": "^3.5.2",
+    "@tailwindcss/vite": "^4.0.0",
+    "better-sqlite3": "^12.10.1",
+    "tailwindcss": "^4.0.0"
+  }
+}

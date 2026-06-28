@@ -5,3 +5,13 @@ dist/
 .nuxt/
 *.log
 .DS_Store
+
+# Secrets & local env
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+
+# Cloudflare / Nuxt Content local state
+.wrangler/
+.data/
