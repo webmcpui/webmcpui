@@ -63,9 +63,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@webmcpui/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       lit:
         specifier: ^3.2.1
         version: 3.3.3

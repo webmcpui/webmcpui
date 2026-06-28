@@ -48,7 +48,7 @@ const steps = [
   {
     n: '03',
     title: 'Agents fill the form',
-    body: 'A WebMCP-aware agent discovers the tool and sets the value — validated, announced, and submitted like a human.',
+    body: 'A WebMCP-aware agent discovers the tool and sets the value exactly as if a user typed it — validated and announced. Submitting stays a deliberate step the browser can gate behind user consent.',
   },
 ];
 
@@ -307,7 +307,7 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
           <Icon name="lucide:arrow-right" class="h-4 w-4" />
         </NuxtLink>
         <a
-          href="https://github.com/webmcpui/webmcpui.com"
+          href="https://github.com/webmcpui/webmcpui"
           target="_blank"
           rel="noreferrer"
           class="bouncy glass flex items-center gap-2 rounded-full px-6 py-3 font-medium text-foreground hover:bg-surface-2 active:scale-[0.97]"

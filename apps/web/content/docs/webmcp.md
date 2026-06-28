@@ -9,7 +9,7 @@ order: 4
 
 # WebMCP exposure
 
-WebMCP is an imperative browser API — `navigator.modelContext.registerTool(...)` — that lets a page offer tools to an AI agent running in or alongside the browser. webmcpui controls can register themselves as tools.
+WebMCP is an imperative browser API — `document.modelContext.registerTool(...)` — that lets a page offer tools to an AI agent running in or alongside the browser. webmcpui controls can register themselves as tools.
 
 ## Opt in with `expose`
 
@@ -49,6 +49,12 @@ When the agent calls the tool, the element applies the value exactly as if a use
 
 Controls with enumerated values (`<wmcp-select>`, `<wmcp-radio-group>`) generate an `enum`-typed schema so the agent knows the exact allowed values.
 
+> **Tool names are page-global.** Two `expose`d controls that resolve to the same tool name — say two fields that both become `fill_email` — collide, and the host rejects the duplicate, so the second control won't be agent-callable. webmcpui logs a console warning when it sees this; give one control a unique `name`, or override it with `tool-name`.
+
+## Only on a secure context
+
+WebMCP is a secure-context feature, so `document.modelContext` exists only on **HTTPS** pages — it's `undefined` on plain HTTP (`localhost` counts as secure). webmcpui's feature detection reads that as "no host present" and quietly does nothing, so your controls stay perfectly good form controls. If you're testing exposure on an `http://` staging box and see no tools, that's why.
+
 ## Spec status
 
-As of 2026 WebMCP is early — behind a flag in Chrome and undefined for almost everyone, with no mainstream agent consuming it yet. Everything here is additive and feature-detected, so adopting webmcpui costs nothing today and pays off as hosts ship. To exercise exposure now, use the [fake agent](/docs/testing).
+As of mid-2026 WebMCP is early but moving: it's in a **public origin trial in Chrome 149+**, with Gemini in Chrome as the first consumer. The surface is still shifting month to month — the API moved to `document.modelContext` (with `navigator.modelContext` deprecated in Chrome 150), and it's `undefined` for almost everyone else. Everything here is additive and feature-detected, so adopting webmcpui costs nothing today and pays off as hosts ship. webmcpui detects both surfaces and prefers `document.modelContext`. To exercise exposure now, use the [fake agent](/docs/testing).

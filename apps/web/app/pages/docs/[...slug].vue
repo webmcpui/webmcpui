@@ -17,15 +17,29 @@ const { data: docs } = await useAsyncData('docs-sidebar', () =>
     .all(),
 );
 
-// Prev / next within the collection.
-const { data: surround } = await useAsyncData(`doc-surround-${route.path}`, () =>
-  queryCollectionItemSurroundings('docs', route.path, {
-    fields: ['title', 'path', 'navTitle'],
-  }),
+// Prev / next in *reading order* — the same (groupOrder, order) sort the
+// sidebar uses. queryCollectionItemSurroundings orders by file path, which
+// doesn't match the curated nav, so we compute neighbours from the nav list.
+const ordered = computed(() =>
+  [...(docs.value ?? [])].sort(
+    (a, b) =>
+      (a.groupOrder ?? 99) - (b.groupOrder ?? 99) ||
+      (a.order ?? 99) - (b.order ?? 99),
+  ),
 );
 
-const prev = computed(() => surround.value?.[0] ?? null);
-const next = computed(() => surround.value?.[1] ?? null);
+const currentIndex = computed(() =>
+  ordered.value.findIndex((d) => d.path === route.path),
+);
+
+const prev = computed(() => {
+  const i = currentIndex.value;
+  return i > 0 ? ordered.value[i - 1] : null;
+});
+const next = computed(() => {
+  const i = currentIndex.value;
+  return i >= 0 && i < ordered.value.length - 1 ? ordered.value[i + 1] : null;
+});
 
 const toc = computed(() => page.value?.body?.toc?.links ?? []);
 

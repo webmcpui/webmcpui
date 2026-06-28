@@ -5,7 +5,7 @@ const nav = [
   { label: 'Features', to: '/#features' },
 ];
 
-const GITHUB_URL = 'https://github.com/webmcpui/webmcpui.com';
+const GITHUB_URL = 'https://github.com/webmcpui/webmcpui';
 const year = 2026;
 </script>
 
