@@ -2,7 +2,7 @@
   "name": "webmcpui",
   "version": "0.0.0",
   "private": true,
-  "description": "The agent-aware web component library for WebMCP. Framework-agnostic core, first-class Vue and React bindings, Standard Schema validation.",
+  "description": "Agent-aware, framework-agnostic web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with Standard Schema validation.",
   "type": "module",
   "packageManager": "pnpm@10.28.0",
   "engines": {

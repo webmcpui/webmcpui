@@ -1,7 +1,7 @@
 {
   "name": "@webmcpui/core",
   "version": "0.1.2",
-  "description": "Framework-agnostic WebMCP-native custom elements. Form primitives with Standard Schema validation and imperative WebMCP tool exposure.",
+  "description": "Agent-aware, framework-agnostic web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with Standard Schema validation.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
   "homepage": "https://webmcpui.com",
