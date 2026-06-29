@@ -1,0 +1,8 @@
+# Cloudflare Pages build config. The CI build runs from the repo root and looks
+# for a Wrangler config here (not in apps/web), so this is where the Pages
+# output directory must be declared. The Nuxt site lives in apps/web and its
+# build output (Nitro cloudflare-pages preset) lands in apps/web/dist.
+name = "webmcpui"
+pages_build_output_dir = "apps/web/dist"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
