@@ -17,16 +17,19 @@
 /** A JSON-Schema-ish description of a tool's parameters. */
 export type JSONSchema = Record<string, unknown>;
 
+/** A single piece of a tool result. Today only `text` content is supported. */
 export interface WebMCPToolResultContent {
   type: 'text';
   text: string;
 }
 
+/** The value a tool's `execute` returns to the agent. */
 export interface WebMCPToolResult {
   content: WebMCPToolResultContent[];
   isError?: boolean;
 }
 
+/** Describes a WebMCP tool to register via {@link exposeTool}. */
 export interface WebMCPToolDefinition {
   /** Stable, unique tool name (snake_case by convention). */
   name: string;

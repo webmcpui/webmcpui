@@ -86,5 +86,5 @@ jobs:
           if curl -sfo /dev/null "https://jsr.io/@webmcpui/core/${VER}_meta.json"; then
             echo "@webmcpui/core@$VER already on JSR — skipping."
           else
-            npx jsr publish --allow-slow-types
+            npx jsr publish
           fi

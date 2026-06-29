@@ -8,6 +8,7 @@
 
 import type { WebMCPToolResult } from './webmcp.js';
 
+/** A tool an element registered with the {@link FakeAgent}, as recorded for inspection. */
 export interface RegisteredTool {
   name: string;
   description: string;
@@ -15,6 +16,7 @@ export interface RegisteredTool {
   execute: (args: Record<string, unknown>) => WebMCPToolResult | Promise<WebMCPToolResult>;
 }
 
+/** Handle to the fake WebMCP host returned by {@link installFakeAgent}. */
 export interface FakeAgent {
   /** All currently-registered tools, in registration order. */
   readonly tools: readonly RegisteredTool[];

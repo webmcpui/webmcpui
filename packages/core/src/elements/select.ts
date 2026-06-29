@@ -1,20 +1,29 @@
-import { html, css, nothing } from 'lit';
+import {
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpFormControl, textFieldStyles } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
 
+/** A single selectable option in a `<wmcp-select>`. */
 export interface WmcpSelectOption {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
+/** A labelled group of options (renders as an `<optgroup>`). */
 export interface WmcpSelectOptionGroup {
   label: string;
   options: WmcpSelectOption[];
 }
 
+/** An item in a `<wmcp-select>`'s `items` property — a plain option or a group. */
 export type WmcpSelectItem = WmcpSelectOption | WmcpSelectOptionGroup;
 
 function isGroup(item: WmcpSelectItem): item is WmcpSelectOptionGroup {
@@ -38,7 +47,7 @@ function isGroup(item: WmcpSelectItem): item is WmcpSelectOptionGroup {
 export class WmcpSelect extends WmcpFormControl {
   static readonly tagName = 'wmcp-select';
 
-  static styles = [
+  static styles: CSSResultGroup = [
     WmcpFormControl.styles,
     textFieldStyles,
     css`
@@ -151,7 +160,7 @@ export class WmcpSelect extends WmcpFormControl {
     </option>`;
   }
 
-  protected override renderControl() {
+  protected override renderControl(): TemplateResult {
     return html`
       <select
         id="control"

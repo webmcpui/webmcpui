@@ -1,6 +1,22 @@
-// Public API for @webmcpui/core.
-// Importing this module does NOT register the custom elements — call
-// `defineComponents()` to opt in (the CDN bundle does this automatically).
+/**
+ * Public API for `@webmcpui/core` — agent-aware, framework-agnostic form
+ * controls built on Lit.
+ *
+ * Importing this module does **not** register the custom elements; call
+ * {@link defineComponents} to opt in (the CDN bundle does it automatically).
+ * Each `<wmcp-*>` element is a good form control first and, when a WebMCP host
+ * is present, exposes itself as a tool an agent can call.
+ *
+ * @example
+ * ```ts
+ * import { defineComponents } from '@webmcpui/core';
+ * import '@webmcpui/tokens/css';
+ *
+ * defineComponents(); // registers <wmcp-input>, <wmcp-select>, …
+ * ```
+ *
+ * @module
+ */
 
 export { WmcpFormControl, textFieldStyles } from './elements/form-control.js';
 export { WmcpInput, type WmcpInputType } from './elements/input.js';

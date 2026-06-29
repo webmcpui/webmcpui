@@ -7,6 +7,10 @@
  * bespoke schema language, zero learning curve.
  */
 
+/**
+ * The minimal [Standard Schema](https://standardschema.dev) v1 surface this
+ * package relies on — implemented by Zod, Valibot, ArkType, and others.
+ */
 export interface StandardSchemaV1<Input = unknown, Output = Input> {
   readonly '~standard': StandardSchemaV1.Props<Input, Output>;
 }
@@ -47,6 +51,7 @@ export namespace StandardSchemaV1 {
   }
 }
 
+/** The normalized result of {@link validateStandard}: either a value or issues. */
 export interface ValidationOutcome<Output> {
   /** True when the value passed validation. */
   readonly valid: boolean;

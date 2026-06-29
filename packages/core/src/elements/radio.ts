@@ -1,9 +1,16 @@
-import { html, css, nothing } from 'lit';
+import {
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpFormControl } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
 
+/** One choice in a `<wmcp-radio-group>`, set declaratively via the `options` property. */
 export interface WmcpRadioOption {
   value: string;
   label: string;
@@ -51,7 +58,7 @@ export class WmcpRadio extends HTMLElement {
 export class WmcpRadioGroup extends WmcpFormControl {
   static readonly tagName = 'wmcp-radio-group';
 
-  static styles = [
+  static styles: CSSResultGroup = [
     WmcpFormControl.styles,
     css`
       .group-label {
@@ -171,7 +178,7 @@ export class WmcpRadioGroup extends WmcpFormControl {
     await this.validate();
   }
 
-  protected override renderControl() {
+  protected override renderControl(): TemplateResult {
     return html`
       <div
         class="group"
@@ -203,7 +210,7 @@ export class WmcpRadioGroup extends WmcpFormControl {
     `;
   }
 
-  override render() {
+  override render(): TemplateResult {
     return html`
       ${this.label
         ? html`<span id="group-label" class="group-label">${this.label}</span>`

@@ -1,4 +1,10 @@
-import { html, css, nothing } from 'lit';
+import {
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl, textFieldStyles } from './form-control.js';
 
@@ -14,7 +20,7 @@ import { WmcpFormControl, textFieldStyles } from './form-control.js';
 export class WmcpTextarea extends WmcpFormControl {
   static readonly tagName = 'wmcp-textarea';
 
-  static styles = [
+  static styles: CSSResultGroup = [
     WmcpFormControl.styles,
     textFieldStyles,
     css`
@@ -32,7 +38,7 @@ export class WmcpTextarea extends WmcpFormControl {
     return 'textarea';
   }
 
-  protected override renderControl() {
+  protected override renderControl(): TemplateResult {
     return html`
       <textarea
         id="control"

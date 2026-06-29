@@ -3,6 +3,7 @@ import {
   html,
   css,
   nothing,
+  type CSSResult,
   type CSSResultGroup,
   type TemplateResult,
 } from 'lit';
@@ -32,7 +33,7 @@ import { exposeTool, type JSONSchema, type ToolDisposer } from '../webmcp.js';
  * Text-field box appearance for the `.control` element. Used by input,
  * textarea, and select — the controls that render as a bordered field.
  */
-export const textFieldStyles = css`
+export const textFieldStyles: CSSResult = css`
   .control {
     box-sizing: border-box;
     width: 100%;
@@ -75,6 +76,13 @@ export const textFieldStyles = css`
   }
 `;
 
+/**
+ * Shared base for every `<wmcp-*>` form control: form association via
+ * `ElementInternals`, Standard Schema validation, accessible error messaging,
+ * and opt-in WebMCP tool exposure. Each concrete element is a thin subclass
+ * that supplies its control markup and tool schema. Abstract — not registered
+ * on its own.
+ */
 export abstract class WmcpFormControl extends LitElement {
   static formAssociated = true;
 
@@ -154,7 +162,7 @@ export abstract class WmcpFormControl extends LitElement {
 
   @state() protected error = '';
 
-  protected readonly internals = this.attachInternals();
+  protected readonly internals: ElementInternals = this.attachInternals();
   private toolDisposer: ToolDisposer = () => {};
 
   /** Noun used in default tool names/descriptions when `name` is empty. */
@@ -382,7 +390,7 @@ export abstract class WmcpFormControl extends LitElement {
   /** Subclasses render their control element here (id/class "control"). */
   protected abstract renderControl(): TemplateResult;
 
-  protected renderMessage() {
+  protected renderMessage(): TemplateResult | typeof nothing {
     return this.error
       ? html`<span id="wmcp-error" class="message error" role="alert"
           >${this.error}</span
@@ -394,7 +402,7 @@ export abstract class WmcpFormControl extends LitElement {
         : nothing;
   }
 
-  override render() {
+  override render(): TemplateResult {
     return html`
       ${this.label
         ? html`<label for="control">${this.label}</label>`

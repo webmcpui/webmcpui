@@ -1,4 +1,10 @@
-import { html, css, nothing } from 'lit';
+import {
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
@@ -18,7 +24,7 @@ import type { JSONSchema } from '../webmcp.js';
 export class WmcpCheckbox extends WmcpFormControl {
   static readonly tagName = 'wmcp-checkbox';
 
-  static styles = [
+  static styles: CSSResultGroup = [
     WmcpFormControl.styles,
     css`
       .row {
@@ -131,7 +137,7 @@ export class WmcpCheckbox extends WmcpFormControl {
     await this.validate();
   }
 
-  protected override renderControl() {
+  protected override renderControl(): TemplateResult {
     return html`
       <input
         id="control"
@@ -148,7 +154,7 @@ export class WmcpCheckbox extends WmcpFormControl {
     `;
   }
 
-  override render() {
+  override render(): TemplateResult {
     return html`
       <label class="row">
         ${this.renderControl()}

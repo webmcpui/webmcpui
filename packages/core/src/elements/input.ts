@@ -1,8 +1,15 @@
-import { html, css, nothing } from 'lit';
+import {
+  html,
+  css,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult,
+} from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl, textFieldStyles } from './form-control.js';
 import type { JSONSchema } from '../webmcp.js';
 
+/** The `type` variants `<wmcp-input>` supports (mirrors native input types). */
 export type WmcpInputType =
   | 'text'
   | 'email'
@@ -24,7 +31,7 @@ export type WmcpInputType =
 export class WmcpInput extends WmcpFormControl {
   static readonly tagName = 'wmcp-input';
 
-  static styles = [
+  static styles: CSSResultGroup = [
     WmcpFormControl.styles,
     textFieldStyles,
     css`
@@ -55,7 +62,7 @@ export class WmcpInput extends WmcpFormControl {
     };
   }
 
-  protected override renderControl() {
+  protected override renderControl(): TemplateResult {
     return html`
       <input
         id="control"
