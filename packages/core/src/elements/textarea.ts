@@ -50,9 +50,3 @@ export class WmcpTextarea extends WmcpFormControl {
     `;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'wmcp-textarea': WmcpTextarea;
-  }
-}

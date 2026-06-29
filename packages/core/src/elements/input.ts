@@ -73,9 +73,3 @@ export class WmcpInput extends WmcpFormControl {
     `;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'wmcp-input': WmcpInput;
-  }
-}

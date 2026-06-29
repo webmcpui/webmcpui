@@ -213,10 +213,3 @@ export class WmcpRadioGroup extends WmcpFormControl {
     `;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'wmcp-radio': WmcpRadio;
-    'wmcp-radio-group': WmcpRadioGroup;
-  }
-}

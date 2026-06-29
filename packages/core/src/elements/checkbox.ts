@@ -160,9 +160,3 @@ export class WmcpCheckbox extends WmcpFormControl {
     `;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'wmcp-checkbox': WmcpCheckbox;
-  }
-}

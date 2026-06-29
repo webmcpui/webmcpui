@@ -182,9 +182,3 @@ export class WmcpSelect extends WmcpFormControl {
     `;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'wmcp-select': WmcpSelect;
-  }
-}

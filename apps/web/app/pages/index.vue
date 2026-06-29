@@ -175,7 +175,7 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
         <div
           v-for="step in steps"
           :key="step.n"
-          class="bouncy rounded-card border border-border bg-card p-6 hover:-translate-y-1.5 hover:shadow-soft"
+          class="rounded-card border border-border bg-card p-6"
         >
           <span class="font-mono text-sm text-brand">{{ step.n }}</span>
           <h3 class="mt-3 text-lg font-medium text-foreground">
@@ -209,10 +209,10 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
         <div
           v-for="f in features"
           :key="f.title"
-          class="bouncy group rounded-card border border-border bg-card p-6 hover:-translate-y-1.5 hover:shadow-soft"
+          class="rounded-card border border-border bg-card p-6"
         >
           <span
-            class="bouncy flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand group-hover:scale-110"
+            class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand"
           >
             <Icon :name="f.icon" class="h-5 w-5" />
           </span>
