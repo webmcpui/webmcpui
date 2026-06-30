@@ -33,6 +33,12 @@ export {
   WmcpRadioGroup,
   type WmcpRadioOption,
 } from './elements/radio.js';
+export {
+  WmcpButton,
+  type WmcpButtonVariant,
+  type WmcpButtonSize,
+  type WmcpButtonType,
+} from './elements/button.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer
