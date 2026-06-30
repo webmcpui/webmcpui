@@ -49,6 +49,11 @@ export {
   type WmcpPopoverPlacement,
   type WmcpPopoverTrigger,
 } from './elements/popover.js';
+export {
+  WmcpToast,
+  type WmcpToastVariant,
+  type WmcpToastOptions,
+} from './elements/toast.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

@@ -8,6 +8,7 @@ import { WmcpDialog } from './elements/dialog.js';
 import { WmcpMenu } from './elements/menu.js';
 import { WmcpTabs } from './elements/tabs.js';
 import { WmcpPopover } from './elements/popover.js';
+import { WmcpToast } from './elements/toast.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -27,6 +28,7 @@ const elements: WmcpElementCtor[] = [
   WmcpMenu,
   WmcpTabs,
   WmcpPopover,
+  WmcpToast,
 ];
 
 /**
