@@ -42,6 +42,7 @@ export {
   type WmcpButtonType,
 } from './elements/button.js';
 export { WmcpDialog } from './elements/dialog.js';
+export { WmcpMenu, type WmcpMenuItem } from './elements/menu.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

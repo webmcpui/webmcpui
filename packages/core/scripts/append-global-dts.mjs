@@ -17,6 +17,7 @@ declare global {
     'wmcp-radio-group': import('./index.js').WmcpRadioGroup;
     'wmcp-button': import('./index.js').WmcpButton;
     'wmcp-dialog': import('./index.js').WmcpDialog;
+    'wmcp-menu': import('./index.js').WmcpMenu;
   }
 }
 `;
