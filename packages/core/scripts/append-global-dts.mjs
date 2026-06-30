@@ -19,6 +19,7 @@ declare global {
     'wmcp-dialog': import('./index.js').WmcpDialog;
     'wmcp-menu': import('./index.js').WmcpMenu;
     'wmcp-tabs': import('./index.js').WmcpTabs;
+    'wmcp-popover': import('./index.js').WmcpPopover;
   }
 }
 `;

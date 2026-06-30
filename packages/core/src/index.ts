@@ -44,6 +44,11 @@ export {
 export { WmcpDialog } from './elements/dialog.js';
 export { WmcpMenu, type WmcpMenuItem } from './elements/menu.js';
 export { WmcpTabs, type WmcpTabInfo } from './elements/tabs.js';
+export {
+  WmcpPopover,
+  type WmcpPopoverPlacement,
+  type WmcpPopoverTrigger,
+} from './elements/popover.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer
