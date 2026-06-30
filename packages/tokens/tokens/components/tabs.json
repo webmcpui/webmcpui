@@ -1,0 +1,23 @@
+{
+  "components": {
+    "tabs": {
+      "border": { "$type": "color", "$value": "{base.border}" },
+      "indicator": { "$type": "color", "$value": "{base.primary}" },
+      "tab-text": { "$type": "color", "$value": "{base.muted-foreground}" },
+      "tab-text-hover": { "$type": "color", "$value": "{base.foreground}" },
+      "tab-text-active": { "$type": "color", "$value": "{base.foreground}" },
+      "tab-disabled-opacity": { "$type": "number", "$value": 0.5 },
+
+      "gap": { "$type": "dimension", "$value": "0.25rem" },
+      "tab-padding": { "$type": "dimension", "$value": "0.5rem 0.875rem" },
+      "panel-padding-top": { "$type": "dimension", "$value": "1rem" },
+
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+      },
+      "font-size": { "$type": "dimension", "$value": "0.875rem" },
+      "font-weight": { "$type": "fontWeight", "$value": 500 }
+    }
+  }
+}

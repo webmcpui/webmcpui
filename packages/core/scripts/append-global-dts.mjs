@@ -18,6 +18,7 @@ declare global {
     'wmcp-button': import('./index.js').WmcpButton;
     'wmcp-dialog': import('./index.js').WmcpDialog;
     'wmcp-menu': import('./index.js').WmcpMenu;
+    'wmcp-tabs': import('./index.js').WmcpTabs;
   }
 }
 `;
