@@ -48,5 +48,25 @@ const groups = computed(() => {
         </li>
       </ul>
     </div>
+
+    <!-- Machine-readable docs for agents (llmstxt.org) -->
+    <div class="border-t border-border pt-5">
+      <p
+        class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+      >
+        For agents
+      </p>
+      <ul class="space-y-0.5">
+        <li v-for="file in ['llms.txt', 'llms-full.txt']" :key="file">
+          <a
+            :href="`/${file}`"
+            class="bouncy flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+          >
+            <Icon name="lucide:file-text" class="h-3.5 w-3.5 shrink-0 opacity-70" />
+            {{ file }}
+          </a>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
