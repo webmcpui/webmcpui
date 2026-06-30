@@ -210,7 +210,7 @@ export class WmcpButton extends WmcpAction {
     return `Click the "${this.actionNoun}" button.`;
   }
 
-  protected override runAction(): WebMCPToolResult {
+  protected override executeTool(): WebMCPToolResult {
     const noun = this.actionNoun;
     if (this.disabled) {
       return {

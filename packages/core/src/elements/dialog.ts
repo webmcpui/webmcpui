@@ -128,7 +128,7 @@ export class WmcpDialog extends WmcpAction {
     return `Open the "${this.actionNoun}" dialog for the user to review.`;
   }
 
-  protected override runAction(): WebMCPToolResult {
+  protected override executeTool(): WebMCPToolResult {
     const noun = this.actionNoun;
     if (this.open) {
       return {

@@ -33,6 +33,7 @@ export {
   WmcpRadioGroup,
   type WmcpRadioOption,
 } from './elements/radio.js';
+export { WmcpExposable } from './elements/exposable.js';
 export { WmcpAction } from './elements/action.js';
 export {
   WmcpButton,

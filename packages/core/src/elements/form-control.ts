@@ -1,5 +1,4 @@
 import {
-  LitElement,
   html,
   css,
   nothing,
@@ -13,7 +12,8 @@ import {
   validateStandard,
   type StandardSchemaV1,
 } from '../standard-schema.js';
-import { exposeTool, type JSONSchema, type ToolDisposer } from '../webmcp.js';
+import { WmcpExposable } from './exposable.js';
+import type { JSONSchema, WebMCPToolResult } from '../webmcp.js';
 
 /**
  * Base class for form-associated, agent-operable controls.
@@ -83,7 +83,7 @@ export const textFieldStyles: CSSResult = css`
  * that supplies its control markup and tool schema. Abstract — not registered
  * on its own.
  */
-export abstract class WmcpFormControl extends LitElement {
+export abstract class WmcpFormControl extends WmcpExposable {
   static formAssociated = true;
 
   // Shared by every control: host layout, label, and the message/error text.
@@ -144,14 +144,7 @@ export abstract class WmcpFormControl extends LitElement {
   /** Message shown when a `required` control is empty. */
   @property({ attribute: 'required-message' }) requiredMessage = '';
 
-  /** Whether to expose this control as a WebMCP tool. */
-  @property({ type: Boolean }) expose = false;
-
-  /** Override the generated WebMCP tool name. */
-  @property({ attribute: 'tool-name' }) toolName = '';
-
-  /** Override the generated WebMCP tool description. */
-  @property({ attribute: 'tool-description' }) toolDescription = '';
+  // `expose`, `tool-name`, and `tool-description` live on WmcpExposable.
 
   /**
    * Standard Schema validator (Zod, Valibot, ArkType, …). Set as a property,
@@ -163,7 +156,6 @@ export abstract class WmcpFormControl extends LitElement {
   @state() protected error = '';
 
   protected readonly internals: ElementInternals = this.attachInternals();
-  private toolDisposer: ToolDisposer = () => {};
 
   /** Noun used in default tool names/descriptions when `name` is empty. */
   protected get controlNoun(): string {
@@ -185,13 +177,12 @@ export abstract class WmcpFormControl extends LitElement {
   }
 
   override connectedCallback(): void {
-    super.connectedCallback();
+    super.connectedCallback(); // WmcpExposable registers the tool if [expose].
     this.syncFormValue();
     this.addEventListener('invalid', this.onInvalid);
     // Establish initial validity (e.g. a required-empty field) without
     // surfacing the message until the form is reported.
     void this.validate(false);
-    if (this.expose) this.registerTool();
   }
 
   /**
@@ -230,53 +221,43 @@ export abstract class WmcpFormControl extends LitElement {
   }
 
   override disconnectedCallback(): void {
-    super.disconnectedCallback();
+    super.disconnectedCallback(); // WmcpExposable disposes the tool.
     this.removeEventListener('invalid', this.onInvalid);
-    this.toolDisposer();
-    this.toolDisposer = () => {};
   }
 
   override updated(changed: Map<string, unknown>): void {
+    super.updated(changed); // WmcpExposable re-registers / disposes the tool.
     this.syncFormValue();
-    if (
-      this.expose &&
-      (changed.has('expose') ||
-        changed.has('name') ||
-        changed.has('toolName') ||
-        changed.has('toolDescription'))
-    ) {
-      this.registerTool();
-    }
   }
 
-  /** The resolved WebMCP tool name. */
-  get resolvedToolName(): string {
+  override get resolvedToolName(): string {
     return this.toolName || `fill_${this.name || this.controlNoun}`;
   }
 
-  protected registerTool(): void {
-    this.toolDisposer();
+  protected override get defaultToolDescription(): string {
+    return `Set the value of the "${this.label || this.name || this.controlNoun}" field.`;
+  }
+
+  protected override get toolReactiveProps(): readonly string[] {
+    return [...super.toolReactiveProps, 'name'];
+  }
+
+  protected override async executeTool(
+    args: Record<string, unknown>,
+  ): Promise<WebMCPToolResult> {
     const noun = this.label || this.name || this.controlNoun;
-    this.toolDisposer = exposeTool({
-      name: this.resolvedToolName,
-      description:
-        this.toolDescription || `Set the value of the "${noun}" field.`,
-      inputSchema: this.toolInputSchema(),
-      execute: async (args) => {
-        await this.applyAgentValue(args);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: this.error
-                ? `Set "${noun}" but validation failed: ${this.error}`
-                : `Set "${noun}" to "${this.stateDescription()}".`,
-            },
-          ],
-          isError: Boolean(this.error),
-        };
-      },
-    });
+    await this.applyAgentValue(args);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: this.error
+            ? `Set "${noun}" but validation failed: ${this.error}`
+            : `Set "${noun}" to "${this.stateDescription()}".`,
+        },
+      ],
+      isError: Boolean(this.error),
+    };
   }
 
   /**
@@ -297,7 +278,7 @@ export abstract class WmcpFormControl extends LitElement {
   }
 
   /** JSON Schema for the WebMCP tool's args. Defaults to a single string. */
-  protected toolInputSchema(): JSONSchema {
+  protected override toolInputSchema(): JSONSchema {
     return {
       type: 'object',
       properties: {
