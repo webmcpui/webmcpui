@@ -247,7 +247,9 @@ export class WmcpMenu extends WmcpAction {
     this.syncItems();
     super.connectedCallback();
     this.itemObserver = new MutationObserver(() => this.syncItems());
-    this.itemObserver.observe(this, { childList: true, subtree: true });
+    // Items are direct `<option>` children, so watch the child list only —
+    // no need to re-read on every nested mutation.
+    this.itemObserver.observe(this, { childList: true });
   }
 
   override disconnectedCallback(): void {

@@ -70,6 +70,34 @@ describe('wmcp-popover', () => {
       await opened;
       expect(el.open).to.be.true;
     });
+
+    it('stays open while the pointer crosses from trigger to panel', async () => {
+      const el = await fixture<WmcpPopover>(
+        html`<wmcp-popover label="Help" trigger="hover"><a href="#">link</a></wmcp-popover>`,
+      );
+      const trigger = el.shadowRoot!.querySelector('.trigger')!;
+      const panel = el.shadowRoot!.querySelector('.panel')!;
+      trigger.dispatchEvent(new Event('pointerenter'));
+      await oneEvent(el, 'open');
+
+      // Leave the trigger, then reach the panel before the grace delay elapses.
+      trigger.dispatchEvent(new Event('pointerleave'));
+      panel.dispatchEvent(new Event('pointerenter'));
+      await new Promise((r) => setTimeout(r, 160));
+      expect(el.open).to.be.true; // interactive panel content stays reachable
+    });
+
+    it('closes shortly after the pointer leaves', async () => {
+      const el = await fixture<WmcpPopover>(
+        html`<wmcp-popover label="Help" trigger="hover">Tip</wmcp-popover>`,
+      );
+      const trigger = el.shadowRoot!.querySelector('.trigger')!;
+      trigger.dispatchEvent(new Event('pointerenter'));
+      await oneEvent(el, 'open');
+      trigger.dispatchEvent(new Event('pointerleave'));
+      await new Promise((r) => setTimeout(r, 160));
+      expect(el.open).to.be.false;
+    });
   });
 
   describe('WebMCP exposure', () => {

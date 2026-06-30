@@ -74,6 +74,27 @@ describe('wmcp-dialog', () => {
       expect(el.open).to.be.false;
     });
 
+    it('closes on a backdrop click but not on a click inside the dialog', async () => {
+      const el = await fixture<WmcpDialog>(
+        html`<wmcp-dialog open><p>Body</p></wmcp-dialog>`,
+      );
+      await el.updateComplete;
+      const dialog = el.shadowRoot!.querySelector('dialog')!;
+
+      // A click on the panel / its content must NOT dismiss the dialog.
+      el.shadowRoot!.querySelector('.panel')!.dispatchEvent(
+        new MouseEvent('click', { bubbles: true }),
+      );
+      await el.updateComplete;
+      expect(el.open).to.be.true;
+
+      // A click whose target is the <dialog> itself is the backdrop → closes.
+      const closed = oneEvent(el, 'close');
+      dialog.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await closed;
+      expect(el.open).to.be.false;
+    });
+
     it('emits a composed open event', async () => {
       const el = await fixture<WmcpDialog>(html`<wmcp-dialog></wmcp-dialog>`);
       let opened = false;

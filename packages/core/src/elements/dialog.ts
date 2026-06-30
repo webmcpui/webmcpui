@@ -38,7 +38,6 @@ export class WmcpDialog extends WmcpAction {
       width: var(--dialog-width, min(92vw, 32rem));
       max-width: var(--dialog-max-width, 32rem);
       max-height: var(--dialog-max-height, 85dvh);
-      padding: var(--dialog-padding, 1.5rem);
       color: var(--dialog-text, var(--popover-foreground, oklch(0.145 0 0)));
       background: var(--dialog-bg, var(--popover, oklch(1 0 0)));
       border: var(--dialog-border-width, 1px) solid
@@ -62,6 +61,12 @@ export class WmcpDialog extends WmcpAction {
         --dialog-backdrop,
         color-mix(in oklch, oklch(0 0 0) 50%, transparent)
       );
+    }
+    /* Padding lives on the panel, not the dialog, so the dialog's box is the
+       panel's box — a click whose target is the <dialog> is unambiguously the
+       backdrop, never the dialog's own visible frame. */
+    .panel {
+      padding: var(--dialog-padding, 1.5rem);
     }
     /* Modern-CSS entrance: fade + lift, honoring reduced-motion. */
     @media (prefers-reduced-motion: no-preference) {
@@ -108,10 +113,6 @@ export class WmcpDialog extends WmcpAction {
 
   private get dialogEl(): HTMLDialogElement | null {
     return this.renderRoot?.querySelector('dialog') ?? null;
-  }
-
-  private get panelEl(): HTMLElement | null {
-    return this.renderRoot?.querySelector('.panel') ?? null;
   }
 
   // --- WmcpAction hooks ---------------------------------------------------
@@ -186,18 +187,14 @@ export class WmcpDialog extends WmcpAction {
     this.dispatchEvent(new Event('close', { bubbles: true, composed: true }));
   }
 
-  /** Close when the click lands on the backdrop (outside the panel). */
+  /**
+   * Close on a backdrop click. A click whose target is the `<dialog>` itself
+   * is the backdrop — content clicks retarget to `.panel` or its children — so
+   * this never fires on the dialog's own frame or a text drag-select.
+   */
   private onDialogClick(event: MouseEvent): void {
     if (this.staticBackdrop) return;
-    const panel = this.panelEl;
-    if (!panel) return;
-    const r = panel.getBoundingClientRect();
-    const outside =
-      event.clientX < r.left ||
-      event.clientX > r.right ||
-      event.clientY < r.top ||
-      event.clientY > r.bottom;
-    if (outside) this.close();
+    if (event.target === this.dialogEl) this.close();
   }
 
   override render(): TemplateResult {

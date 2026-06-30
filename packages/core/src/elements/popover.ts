@@ -184,12 +184,36 @@ export class WmcpPopover extends WmcpAction {
     );
   }
 
-  private onHoverEnter(): void {
-    if (this.trigger === 'hover') this.show();
+  private closeTimer?: ReturnType<typeof setTimeout>;
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.cancelScheduledClose();
   }
 
-  private onHoverLeave(): void {
-    if (this.trigger === 'hover') this.close();
+  /** Open on hover/focus of the trigger *or* the panel. */
+  private openOnHover(): void {
+    if (this.trigger !== 'hover') return;
+    this.cancelScheduledClose();
+    this.show();
+  }
+
+  /**
+   * Close on leave/blur — but on a short delay, so the pointer can cross the
+   * gap from the trigger to the panel (and reach interactive content inside it)
+   * without the popover vanishing. Re-entering either cancels the close.
+   */
+  private scheduleHoverClose(): void {
+    if (this.trigger !== 'hover') return;
+    this.cancelScheduledClose();
+    this.closeTimer = setTimeout(() => this.close(), 120);
+  }
+
+  private cancelScheduledClose(): void {
+    if (this.closeTimer) {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = undefined;
+    }
   }
 
   override render(): TemplateResult {
@@ -203,10 +227,10 @@ export class WmcpPopover extends WmcpAction {
         aria-haspopup=${isTooltip ? nothing : 'dialog'}
         aria-expanded=${isTooltip ? nothing : this.open ? 'true' : 'false'}
         aria-describedby=${isTooltip ? 'wmcp-pop' : nothing}
-        @pointerenter=${this.onHoverEnter}
-        @pointerleave=${this.onHoverLeave}
-        @focusin=${this.onHoverEnter}
-        @focusout=${this.onHoverLeave}
+        @pointerenter=${this.openOnHover}
+        @pointerleave=${this.scheduleHoverClose}
+        @focusin=${this.openOnHover}
+        @focusout=${this.scheduleHoverClose}
       >
         <slot name="trigger">${this.label}</slot>
       </button>
@@ -218,6 +242,10 @@ export class WmcpPopover extends WmcpAction {
         role=${isTooltip ? 'tooltip' : 'dialog'}
         aria-label=${this.label || this.actionNoun}
         @toggle=${this.onToggle}
+        @pointerenter=${this.openOnHover}
+        @pointerleave=${this.scheduleHoverClose}
+        @focusin=${this.openOnHover}
+        @focusout=${this.scheduleHoverClose}
       >
         <slot></slot>
       </div>
