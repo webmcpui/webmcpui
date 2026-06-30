@@ -7,11 +7,8 @@ import {
   type TemplateResult,
 } from 'lit';
 import { property } from 'lit/decorators.js';
-import {
-  exposeTool,
-  type JSONSchema,
-  type ToolDisposer,
-} from '../webmcp.js';
+import { WmcpAction } from './action.js';
+import type { WebMCPToolResult } from '../webmcp.js';
 
 /** Visual variants `<wmcp-button>` supports (shadcn-aligned). */
 export type WmcpButtonVariant =
@@ -50,7 +47,7 @@ export type WmcpButtonType = 'button' | 'submit' | 'reset';
  *
  * Not auto-registered — call `defineComponents()` (or load the CDN bundle).
  */
-export class WmcpButton extends LitElement {
+export class WmcpButton extends WmcpAction {
   static readonly tagName = 'wmcp-button';
 
   static formAssociated = true;
@@ -187,69 +184,60 @@ export class WmcpButton extends LitElement {
   /** Disables the button for both humans and agents. */
   @property({ type: Boolean, reflect: true }) disabled = false;
 
-  /** Identifier used for the default tool name. */
-  @property() name = '';
-
-  /**
-   * Accessible name. Falls back to the slotted text content when unset; set it
-   * when the button is icon-only or you want a name distinct from the content.
-   */
-  @property() label = '';
-
-  /** Whether to expose this button as a WebMCP tool. */
-  @property({ type: Boolean }) expose = false;
-
-  /** Override the generated WebMCP tool name. */
-  @property({ attribute: 'tool-name' }) toolName = '';
-
-  /** Override the generated WebMCP tool description. */
-  @property({ attribute: 'tool-description' }) toolDescription = '';
-
   private readonly internals: ElementInternals = this.attachInternals();
-  private toolDisposer: ToolDisposer = () => {};
 
   /** The inner native `<button>` that owns activation, focus, and a11y. */
   private get button(): HTMLButtonElement | null {
     return this.renderRoot?.querySelector('button') ?? null;
   }
 
-  /** Human-readable name for the action, used in tool naming/descriptions. */
-  private get actionLabel(): string {
+  // --- WmcpAction hooks ---------------------------------------------------
+
+  protected override get actionVerb(): string {
+    return 'click';
+  }
+
+  protected override get defaultNameSuffix(): string {
+    return 'button';
+  }
+
+  // A button's visible name is its slotted text, so fall back to that.
+  protected override get actionNoun(): string {
     return this.label || this.textContent?.trim() || this.name || 'button';
   }
 
-  /** The resolved WebMCP tool name. */
-  get resolvedToolName(): string {
-    return this.toolName || `click_${this.name || 'button'}`;
+  protected override get defaultToolDescription(): string {
+    return `Click the "${this.actionNoun}" button.`;
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    if (this.expose) this.registerTool();
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.toolDisposer();
-    this.toolDisposer = () => {};
-  }
-
-  override updated(changed: Map<string, unknown>): void {
-    if (
-      this.expose &&
-      (changed.has('expose') ||
-        changed.has('name') ||
-        changed.has('label') ||
-        changed.has('type') ||
-        changed.has('toolName') ||
-        changed.has('toolDescription'))
-    ) {
-      this.registerTool();
-    } else if (!this.expose && changed.has('expose')) {
-      this.toolDisposer();
-      this.toolDisposer = () => {};
+  protected override runAction(): WebMCPToolResult {
+    const noun = this.actionNoun;
+    if (this.disabled) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `The "${noun}" button is disabled and can't be activated.`,
+          },
+        ],
+        isError: true,
+      };
     }
+    this.activate();
+    const effect =
+      this.type === 'submit'
+        ? ' (submitted the form)'
+        : this.type === 'reset'
+          ? ' (reset the form)'
+          : '';
+    return {
+      content: [
+        { type: 'text', text: `Clicked the "${noun}" button${effect}.` },
+      ],
+    };
   }
+
+  // --- Activation ---------------------------------------------------------
 
   /**
    * Activate the button as if a human clicked it: routes through the inner
@@ -272,42 +260,6 @@ export class WmcpButton extends LitElement {
     } else if (this.type === 'reset') {
       this.internals.form?.reset();
     }
-  }
-
-  private registerTool(): void {
-    this.toolDisposer();
-    const noun = this.actionLabel;
-    this.toolDisposer = exposeTool({
-      name: this.resolvedToolName,
-      description:
-        this.toolDescription || `Click the "${noun}" button.`,
-      inputSchema: { type: 'object', properties: {} },
-      execute: () => {
-        if (this.disabled) {
-          return {
-            content: [
-              {
-                type: 'text',
-                text: `The "${noun}" button is disabled and can't be activated.`,
-              },
-            ],
-            isError: true,
-          };
-        }
-        this.activate();
-        const effect =
-          this.type === 'submit'
-            ? ' (submitted the form)'
-            : this.type === 'reset'
-              ? ' (reset the form)'
-              : '';
-        return {
-          content: [
-            { type: 'text', text: `Clicked the "${noun}" button${effect}.` },
-          ],
-        };
-      },
-    });
   }
 
   override render(): TemplateResult {
