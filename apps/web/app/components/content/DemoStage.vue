@@ -72,10 +72,11 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
 </script>
 
 <template>
-  <!-- Collapsed: the trigger -->
+  <!-- Collapsed: the trigger. Forced `dark` so the demo reads as a distinct
+       interactive surface even on light docs pages (it dissolves otherwise). -->
   <button
     type="button"
-    class="bouncy not-prose group my-6 flex w-full items-center gap-4 rounded-card border border-border bg-card p-5 text-left hover:-translate-y-1 hover:shadow-soft"
+    class="dark bouncy not-prose group my-6 flex w-full items-center gap-4 rounded-card border border-border bg-card p-5 text-left text-foreground hover:-translate-y-1 hover:shadow-soft"
     @click="launch"
   >
     <span
@@ -109,7 +110,7 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
     <Transition name="stage">
       <div
         v-if="open"
-        class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+        class="dark fixed inset-0 z-[100] flex items-center justify-center p-4 text-foreground sm:p-6"
         @click.self="dismiss"
       >
         <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" @click="dismiss" />
