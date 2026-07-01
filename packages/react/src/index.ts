@@ -17,6 +17,10 @@ export { Tabs } from './tabs.js';
 export { Switch } from './switch.js';
 export { Badge } from './badge.js';
 export { Separator } from './separator.js';
+export { Tooltip } from './tooltip.js';
+export { Alert } from './alert.js';
+export { Progress } from './progress.js';
+export { Avatar } from './avatar.js';
 
 // Re-export the element-level types so consumers can annotate props/values.
 export type {
@@ -25,4 +29,5 @@ export type {
   WmcpButtonType,
   WmcpInputType,
   WmcpBadgeVariant,
+  WmcpAlertVariant,
 } from '@webmcpui/core';

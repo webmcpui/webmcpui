@@ -30,7 +30,9 @@ export type WmcpPopoverTrigger = 'click' | 'hover';
  * Not auto-registered — call `defineComponents()` (or load the CDN bundle).
  */
 export class WmcpPopover extends WmcpAction {
-  static readonly tagName = 'wmcp-popover';
+  // Typed `string` (not the narrow literal) so subclasses like <wmcp-tooltip>
+  // can override it.
+  static readonly tagName: string = 'wmcp-popover';
 
   static styles: CSSResultGroup = css`
     :host {

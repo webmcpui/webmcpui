@@ -1,0 +1,12 @@
+{
+  "components": {
+    "avatar": {
+      "bg": { "$type": "color", "$value": "{base.muted}" },
+      "text": { "$type": "color", "$value": "{base.muted-foreground}" },
+      "size": { "$type": "dimension", "$value": "2.5rem" },
+      "radius": { "$type": "dimension", "$value": "50%" },
+      "font-size": { "$type": "dimension", "$value": "0.875rem" },
+      "font-weight": { "$type": "fontWeight", "$value": 500 }
+    }
+  }
+}

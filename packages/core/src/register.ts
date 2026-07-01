@@ -12,6 +12,10 @@ import { WmcpToast } from './elements/toast.js';
 import { WmcpSwitch } from './elements/switch.js';
 import { WmcpBadge } from './elements/badge.js';
 import { WmcpSeparator } from './elements/separator.js';
+import { WmcpTooltip } from './elements/tooltip.js';
+import { WmcpAlert } from './elements/alert.js';
+import { WmcpProgress } from './elements/progress.js';
+import { WmcpAvatar } from './elements/avatar.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -35,6 +39,10 @@ const elements: WmcpElementCtor[] = [
   WmcpSwitch,
   WmcpBadge,
   WmcpSeparator,
+  WmcpTooltip,
+  WmcpAlert,
+  WmcpProgress,
+  WmcpAvatar,
 ];
 
 /**
