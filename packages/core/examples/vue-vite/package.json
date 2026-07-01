@@ -1,0 +1,20 @@
+{
+  "name": "webmcpui-vue-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@webmcpui/core": "workspace:*",
+    "@webmcpui/tokens": "workspace:*",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  }
+}

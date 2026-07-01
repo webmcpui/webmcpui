@@ -127,7 +127,7 @@ export abstract class WmcpFormControl extends WmcpExposable {
   @property() label = '';
 
   /** Form control name (used for submission and the default tool name). */
-  @property() name = '';
+  @property({ reflect: true }) name = '';
 
   /** Current value (reflected to the form). */
   @property() value = '';
