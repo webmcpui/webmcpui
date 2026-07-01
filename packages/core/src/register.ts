@@ -3,6 +3,12 @@ import { WmcpTextarea } from './elements/textarea.js';
 import { WmcpSelect } from './elements/select.js';
 import { WmcpCheckbox } from './elements/checkbox.js';
 import { WmcpRadio, WmcpRadioGroup } from './elements/radio.js';
+import { WmcpButton } from './elements/button.js';
+import { WmcpDialog } from './elements/dialog.js';
+import { WmcpMenu } from './elements/menu.js';
+import { WmcpTabs } from './elements/tabs.js';
+import { WmcpPopover } from './elements/popover.js';
+import { WmcpToast } from './elements/toast.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -17,6 +23,12 @@ const elements: WmcpElementCtor[] = [
   WmcpCheckbox,
   WmcpRadio,
   WmcpRadioGroup,
+  WmcpButton,
+  WmcpDialog,
+  WmcpMenu,
+  WmcpTabs,
+  WmcpPopover,
+  WmcpToast,
 ];
 
 /**

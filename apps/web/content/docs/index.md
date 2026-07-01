@@ -1,7 +1,7 @@
 ---
 title: Introduction
 navTitle: Introduction
-description: Agent-aware web components for the WebMCP era — framework-agnostic form primitives with Standard Schema validation.
+description: Agent-aware web components for the WebMCP era — framework-agnostic form and interaction primitives with Standard Schema validation.
 group: Getting started
 groupOrder: 1
 order: 1
@@ -9,15 +9,18 @@ order: 1
 
 # Introduction
 
-**webmcpui** is a framework-agnostic, WebMCP-native web component library. Phase 1 ships form primitives — shared behavior (form association, validation, WebMCP exposure, theming) lives in a `WmcpFormControl` base class, and each element is a thin subclass that supplies its control and specifics.
+**webmcpui** is a framework-agnostic, WebMCP-native web component library. Every element is a proper, accessible HTML control first and, when you opt in, also registers an imperative [WebMCP](/docs/webmcp) tool an agent can call.
 
-Shipped so far: `<wmcp-input>`, `<wmcp-textarea>`, `<wmcp-select>`, `<wmcp-checkbox>`, `<wmcp-radio>` / `<wmcp-radio-group>`.
+Two families of primitives:
+
+- **Form controls** expose a *value* an agent can set — `<wmcp-input>`, `<wmcp-textarea>`, `<wmcp-select>`, `<wmcp-checkbox>`, `<wmcp-radio>` / `<wmcp-radio-group>`. Shared behavior (form association, validation, WebMCP exposure, theming) lives in a `WmcpFormControl` base.
+- **Interaction primitives** expose an *action* an agent can trigger — `<wmcp-button>`, `<wmcp-dialog>`, `<wmcp-menu>`, `<wmcp-tabs>`, `<wmcp-popover>` — or, for `<wmcp-toast>`, a *reading* an agent can perceive. They share a `WmcpAction` / `WmcpExposable` base.
 
 ## Why it exists
 
-The same form a person fills in by typing, an agent should be able to fill by calling a tool. webmcpui's elements are proper, accessible, form-associated controls first — and, when you opt in, they also register imperative [WebMCP](/docs/webmcp) tools an agent can discover and call.
+The same control a person operates by hand, an agent should be able to operate by calling a tool — fill a field, click a button, open a dialog, switch a tab, or read a notification. webmcpui's elements are good, accessible controls first; agent-exposure is additive and opt-in.
 
-It's all additive and feature-detected: with no agent present (the common case today), the WebMCP layer is a complete no-op, so your inputs are always good form controls.
+It's all feature-detected: with no agent present (the common case today), the WebMCP layer is a complete no-op, so your controls are always good HTML.
 
 ## One source of truth, two channels
 

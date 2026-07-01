@@ -15,6 +15,12 @@ declare global {
     'wmcp-checkbox': import('./index.js').WmcpCheckbox;
     'wmcp-radio': import('./index.js').WmcpRadio;
     'wmcp-radio-group': import('./index.js').WmcpRadioGroup;
+    'wmcp-button': import('./index.js').WmcpButton;
+    'wmcp-dialog': import('./index.js').WmcpDialog;
+    'wmcp-menu': import('./index.js').WmcpMenu;
+    'wmcp-tabs': import('./index.js').WmcpTabs;
+    'wmcp-popover': import('./index.js').WmcpPopover;
+    'wmcp-toast': import('./index.js').WmcpToast;
   }
 }
 `;

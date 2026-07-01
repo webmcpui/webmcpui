@@ -55,6 +55,14 @@ Controls with enumerated values (`<wmcp-select>`, `<wmcp-radio-group>`) generate
 
 WebMCP is a secure-context feature, so `document.modelContext` exists only on **HTTPS** pages — it's `undefined` on plain HTTP (`localhost` counts as secure). webmcpui's feature detection reads that as "no host present" and quietly does nothing, so your controls stay perfectly good form controls. If you're testing exposure on an `http://` staging box and see no tools, that's why.
 
+## Designed for a human in the loop
+
+WebMCP is explicitly a **human-in-the-loop** API — its own goals call out cooperative workflows where a person delegates to an agent while keeping visibility and control, and rule out fully autonomous, headless operation. There is, as yet, **no built-in confirmation or user-prompting primitive** in `registerTool` (it's an [open question](https://github.com/webmachinelearning/webmcp/issues/165)). So consent stays a UI decision you make: an agent can *set* a value or *open* a [dialog](/docs/elements/dialog), but the consequential step — submitting, confirming — remains a deliberate human action. That's the line webmcpui draws by default.
+
+## Imperative and declarative
+
+The API webmcpui builds on is the **imperative** one (`registerTool`). A **declarative** companion is also being standardized: native attributes (`toolname`, `tooldescription`, `toolparamdescription`, `toolautosubmit`) that annotate a plain `<form>` directly. The two describe the same kind of tool; webmcpui uses the imperative path under the hood because it's the lower-level primitive and the only one that covers interaction beyond forms — a [button](/docs/elements/button)'s click or a dialog's open aren't expressible as form annotations.
+
 ## Spec status
 
-As of mid-2026 WebMCP is early but moving: it's in a **public origin trial in Chrome 149+**, with Gemini in Chrome as the first consumer. The surface is still shifting month to month — the API moved to `document.modelContext` (with `navigator.modelContext` deprecated in Chrome 150), and it's `undefined` for almost everyone else. Everything here is additive and feature-detected, so adopting webmcpui costs nothing today and pays off as hosts ship. webmcpui detects both surfaces and prefers `document.modelContext`. To exercise exposure now, use the [fake agent](/docs/testing).
+As of mid-2026 WebMCP is early but moving: a **public origin trial in Chrome 149+**, with Gemini in Chrome as the first consumer. The surface still shifts month to month — it moved to `document.modelContext` (with `navigator.modelContext` deprecated in Chrome 150), and is `undefined` for almost everyone else. Everything here is additive and feature-detected, so adopting webmcpui costs nothing today and pays off as hosts ship. webmcpui detects both surfaces and prefers `document.modelContext`. To exercise exposure now, use the [fake agent](/docs/testing).

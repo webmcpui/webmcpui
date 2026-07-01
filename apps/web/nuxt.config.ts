@@ -12,9 +12,13 @@ export default defineNuxtConfig({
     build: {
       markdown: {
         highlight: {
+          // Ayu Dark for dark mode (the dark-first default). Ayu *Light* fails
+          // WCAG AA on our near-white code background (strings/tags/attrs land
+          // ~2.0–2.4:1, well under 4.5:1), so the light pair is GitHub's
+          // contrast-tuned light theme instead.
           theme: {
-            default: 'github-light',
-            dark: 'github-dark',
+            default: 'github-light-default',
+            dark: 'ayu-dark',
           },
           langs: ['html', 'ts', 'js', 'bash', 'json', 'vue', 'css'],
         },

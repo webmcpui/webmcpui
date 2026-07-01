@@ -62,6 +62,53 @@ const installCdn = `<link rel="stylesheet"
 const tab = ref<'build' | 'cdn'>('build');
 
 const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
+
+// Phase 2 — interaction primitives. Each exposes an *action* (or, for toast, a
+// *reading*) rather than a form value.
+const interaction = [
+  {
+    icon: 'lucide:mouse-pointer-click',
+    name: 'Button',
+    tag: '<wmcp-button>',
+    to: '/docs/elements/button',
+    body: 'A click an agent can trigger — submit, reset, any action.',
+  },
+  {
+    icon: 'lucide:square-stack',
+    name: 'Dialog',
+    tag: '<wmcp-dialog>',
+    to: '/docs/elements/dialog',
+    body: 'Modals the agent opens and the human confirms.',
+  },
+  {
+    icon: 'lucide:list',
+    name: 'Menu',
+    tag: '<wmcp-menu>',
+    to: '/docs/elements/menu',
+    body: 'Pick an item — a parameterized action over an enum.',
+  },
+  {
+    icon: 'lucide:panels-top-left',
+    name: 'Tabs',
+    tag: '<wmcp-tabs>',
+    to: '/docs/elements/tabs',
+    body: 'Switch a persistent, agent-movable selection.',
+  },
+  {
+    icon: 'lucide:message-square-more',
+    name: 'Popover',
+    tag: '<wmcp-popover>',
+    to: '/docs/elements/popover',
+    body: 'Anchored panels and tooltips, opened on demand.',
+  },
+  {
+    icon: 'lucide:bell',
+    name: 'Toast',
+    tag: '<wmcp-toast>',
+    to: '/docs/elements/toast',
+    body: 'Notifications an agent can read to see what happened.',
+  },
+];
 </script>
 
 <template>
@@ -78,16 +125,16 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
             />
             <span class="relative inline-flex h-2 w-2 rounded-full bg-brand" />
           </span>
-          WebMCP-native · Phase 1: form primitives
+          WebMCP-native · forms + interaction primitives
         </span>
       </div>
 
       <h1
-        class="animate-rise mt-6 max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl"
+        class="animate-rise mt-6 max-w-3xl text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl"
         style="animation-delay: 60ms"
       >
         <span class="text-foreground">Agent-aware web components.</span><br />
-        <span class="text-muted-foreground">Forms your AI can fill.</span>
+        <span class="text-muted-foreground">Components your AI can drive.</span>
       </h1>
 
       <p
@@ -166,8 +213,8 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
         </span>
       </div>
 
-      <h2 class="mt-8 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-        <span class="text-foreground">One element.</span>
+      <h2 class="mt-8 max-w-2xl text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+        <span class="text-foreground">One element.</span>{{ ' ' }}
         <span class="text-muted-foreground">A human control and an agent tool.</span>
       </h2>
 
@@ -189,19 +236,69 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
     </div>
   </section>
 
+  <!-- ===================== COMPONENTS ===================== -->
+  <section id="components" class="scroll-mt-24 px-6 pt-28">
+    <div class="mx-auto max-w-5xl">
+      <div class="flex items-center gap-4">
+        <span class="font-mono text-sm text-muted-foreground">02</span>
+        <div class="h-px flex-1 bg-border" />
+        <span class="text-xs uppercase tracking-widest text-muted-foreground">
+          Components
+        </span>
+      </div>
+
+      <h2 class="mt-8 max-w-2xl text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+        <span class="text-foreground">Form controls to fill.</span>{{ ' ' }}
+        <span class="text-muted-foreground">Interactions to drive.</span>
+      </h2>
+      <p class="mt-4 max-w-xl text-muted-foreground">
+        Start with the
+        <NuxtLink to="/docs/elements/input" class="text-brand hover:underline">form primitives</NuxtLink>
+        — accessible, validated, agent-fillable. Then reach for the interaction
+        primitives: each exposes an <em>action</em> an agent can trigger, not just
+        a value to set.
+      </p>
+
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <NuxtLink
+          v-for="c in interaction"
+          :key="c.name"
+          :to="c.to"
+          class="bouncy group rounded-card border border-border bg-card p-6 hover:-translate-y-1 hover:shadow-soft"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand"
+            >
+              <Icon :name="c.icon" class="h-5 w-5" />
+            </span>
+            <Icon
+              name="lucide:arrow-up-right"
+              class="h-4 w-4 text-muted-foreground transition-colors group-hover:text-brand"
+            />
+          </div>
+          <h3 class="mt-4 font-mono text-sm text-foreground">{{ c.tag }}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {{ c.body }}
+          </p>
+        </NuxtLink>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== FEATURES ===================== -->
   <section id="features" class="scroll-mt-24 px-6 pt-28">
     <div class="mx-auto max-w-5xl">
       <div class="flex items-center gap-4">
-        <span class="font-mono text-sm text-muted-foreground">02</span>
+        <span class="font-mono text-sm text-muted-foreground">03</span>
         <div class="h-px flex-1 bg-border" />
         <span class="text-xs uppercase tracking-widest text-muted-foreground">
           Features
         </span>
       </div>
 
-      <h2 class="mt-8 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-        <span class="text-foreground">Built as a form library.</span>
+      <h2 class="mt-8 max-w-2xl text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+        <span class="text-foreground">Built form-first.</span>{{ ' ' }}
         <span class="text-muted-foreground">Agent-ready on purpose.</span>
       </h2>
 
@@ -229,14 +326,14 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
   <section id="install" class="scroll-mt-24 px-6 pt-28">
     <div class="mx-auto max-w-5xl">
       <div class="flex items-center gap-4">
-        <span class="font-mono text-sm text-muted-foreground">03</span>
+        <span class="font-mono text-sm text-muted-foreground">04</span>
         <div class="h-px flex-1 bg-border" />
         <span class="text-xs uppercase tracking-widest text-muted-foreground">
           Install
         </span>
       </div>
 
-      <h2 class="mt-8 text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h2 class="mt-8 text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
         <span class="text-foreground">Add it in one line.</span>
       </h2>
       <p class="mt-4 max-w-xl text-muted-foreground">
@@ -294,7 +391,7 @@ const trustedBy = ['Webflow', 'WordPress', 'Astro', 'Vite', 'Next.js', 'Nuxt'];
           );
         "
       />
-      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h2 class="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
         <span class="text-foreground">Build forms for people</span><br />
         <span class="text-muted-foreground">and the agents working for them.</span>
       </h2>

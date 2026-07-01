@@ -2,6 +2,7 @@
 const nav = [
   { label: 'Docs', to: '/docs' },
   { label: 'How it works', to: '/#how' },
+  { label: 'Components', to: '/#components' },
   { label: 'Features', to: '/#features' },
 ];
 

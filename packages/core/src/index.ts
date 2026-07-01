@@ -33,6 +33,27 @@ export {
   WmcpRadioGroup,
   type WmcpRadioOption,
 } from './elements/radio.js';
+export { WmcpExposable } from './elements/exposable.js';
+export { WmcpAction } from './elements/action.js';
+export {
+  WmcpButton,
+  type WmcpButtonVariant,
+  type WmcpButtonSize,
+  type WmcpButtonType,
+} from './elements/button.js';
+export { WmcpDialog } from './elements/dialog.js';
+export { WmcpMenu, type WmcpMenuItem } from './elements/menu.js';
+export { WmcpTabs, type WmcpTabInfo } from './elements/tabs.js';
+export {
+  WmcpPopover,
+  type WmcpPopoverPlacement,
+  type WmcpPopoverTrigger,
+} from './elements/popover.js';
+export {
+  WmcpToast,
+  type WmcpToastVariant,
+  type WmcpToastOptions,
+} from './elements/toast.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer
