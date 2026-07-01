@@ -61,7 +61,13 @@ It's feature-detected against `document.modelContext` (the WebMCP API) — a com
 
 ## What ships
 
-`<wmcp-input>` · `<wmcp-textarea>` · `<wmcp-select>` · `<wmcp-checkbox>` · `<wmcp-radio-group>` — all form-associated (real `<form>` participation via `ElementInternals`), accessible, and Standard Schema-validatable.
+**Form controls** — expose a _value_ an agent can set. Form-associated (real `<form>` participation via `ElementInternals`), accessible, and Standard Schema-validatable:
+
+`<wmcp-input>` · `<wmcp-textarea>` · `<wmcp-select>` · `<wmcp-checkbox>` · `<wmcp-radio-group>`
+
+**Interaction primitives** — expose an _action_ an agent can trigger (or, for toast, a _reading_ an agent can perceive):
+
+`<wmcp-button>` · `<wmcp-dialog>` · `<wmcp-menu>` · `<wmcp-tabs>` · `<wmcp-popover>` · `<wmcp-toast>`
 
 ## Packages
 

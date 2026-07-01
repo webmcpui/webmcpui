@@ -1,5 +1,17 @@
 # @webmcpui/tokens
 
+## 0.2.1
+
+### Patch Changes
+
+- docs: update package READMEs for 0.2.0.
+
+  The core README still described only the Phase 1 form primitives (and referenced
+  the deprecated `navigator.modelContext`); rewrite it to cover both families —
+  form controls and the six interaction primitives — and the canonical
+  `document.modelContext` exposure. Add a README to `@webmcpui/tokens`, which
+  previously shipped without one.
+
 ## 0.2.0
 
 ### Minor Changes
