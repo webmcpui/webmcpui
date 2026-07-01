@@ -9,6 +9,9 @@ import { WmcpMenu } from './elements/menu.js';
 import { WmcpTabs } from './elements/tabs.js';
 import { WmcpPopover } from './elements/popover.js';
 import { WmcpToast } from './elements/toast.js';
+import { WmcpSwitch } from './elements/switch.js';
+import { WmcpBadge } from './elements/badge.js';
+import { WmcpSeparator } from './elements/separator.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -29,6 +32,9 @@ const elements: WmcpElementCtor[] = [
   WmcpTabs,
   WmcpPopover,
   WmcpToast,
+  WmcpSwitch,
+  WmcpBadge,
+  WmcpSeparator,
 ];
 
 /**

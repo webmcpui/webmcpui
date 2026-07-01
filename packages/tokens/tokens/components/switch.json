@@ -1,0 +1,14 @@
+{
+  "components": {
+    "switch": {
+      "track": { "$type": "color", "$value": "{base.input}" },
+      "track-on": { "$type": "color", "$value": "{base.primary}" },
+      "thumb-color": { "$type": "color", "$value": "{base.background}" },
+
+      "width": { "$type": "dimension", "$value": "2.25rem" },
+      "height": { "$type": "dimension", "$value": "1.35rem" },
+      "thumb": { "$type": "dimension", "$value": "1.05rem" },
+      "gap": { "$type": "dimension", "$value": "0.15rem" }
+    }
+  }
+}

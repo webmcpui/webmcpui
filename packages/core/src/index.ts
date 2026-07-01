@@ -54,6 +54,9 @@ export {
   type WmcpToastVariant,
   type WmcpToastOptions,
 } from './elements/toast.js';
+export { WmcpSwitch } from './elements/switch.js';
+export { WmcpBadge, type WmcpBadgeVariant } from './elements/badge.js';
+export { WmcpSeparator } from './elements/separator.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

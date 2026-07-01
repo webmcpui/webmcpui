@@ -14,10 +14,14 @@ export { Button } from './button.js';
 export { Input } from './input.js';
 export { Dialog } from './dialog.js';
 export { Tabs } from './tabs.js';
+export { Switch } from './switch.js';
+export { Badge } from './badge.js';
+export { Separator } from './separator.js';
 
 export type {
   WmcpButtonVariant,
   WmcpButtonSize,
   WmcpButtonType,
   WmcpInputType,
+  WmcpBadgeVariant,
 } from '@webmcpui/core';
