@@ -1,0 +1,12 @@
+import { defineConfig } from 'tsup';
+
+// ESM package. Vue, @webmcpui/core, and Lit stay external — the consumer's
+// bundler resolves and dedupes them (one core registry).
+export default defineConfig({
+  entry: { index: 'src/index.ts' },
+  format: ['esm'],
+  dts: true,
+  clean: true,
+  target: 'es2022',
+  external: ['vue', '@webmcpui/core', 'lit'],
+});
