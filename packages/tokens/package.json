@@ -25,7 +25,10 @@
       "types": "./dist/js/tokens.d.ts",
       "import": "./dist/js/tokens.js"
     },
-    "./css": "./dist/css/tokens.css",
+    "./css": {
+      "types": "./dist/css/tokens.d.ts",
+      "default": "./dist/css/tokens.css"
+    },
     "./figma": "./dist/figma/tokens.json"
   },
   "files": [
