@@ -11,10 +11,14 @@
  */
 
 export { Button } from './button.js';
+export { Input } from './input.js';
+export { Dialog } from './dialog.js';
+export { Tabs } from './tabs.js';
 
 // Re-export the element-level types so consumers can annotate props/values.
 export type {
   WmcpButtonVariant,
   WmcpButtonSize,
   WmcpButtonType,
+  WmcpInputType,
 } from '@webmcpui/core';
