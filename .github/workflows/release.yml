@@ -107,6 +107,28 @@ jobs:
             npm publish --access public
           fi
 
+      # Framework wrappers (npm only; they're React/Vue-specific). First publish
+      # of each is a manual bootstrap + Trusted Publisher setup — see RELEASING.md.
+      - name: Publish @webmcpui/react to npm
+        working-directory: packages/react
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/react@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/react@$VER already on npm — skipping."
+          else
+            npm publish --access public
+          fi
+
+      - name: Publish @webmcpui/vue to npm
+        working-directory: packages/vue
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/vue@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/vue@$VER already on npm — skipping."
+          else
+            npm publish --access public
+          fi
+
       # --- JSR (tokenless OIDC; core only — CSS can't live on JSR) ---
 
       - name: Publish @webmcpui/core to JSR
