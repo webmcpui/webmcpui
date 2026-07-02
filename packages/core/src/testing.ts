@@ -6,7 +6,7 @@
  * records registered tools and lets you invoke them as an agent would.
  */
 
-import type { WebMCPToolResult } from './webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** A tool an element registered with the {@link FakeAgent}, as recorded for inspection. */
 export interface RegisteredTool {
