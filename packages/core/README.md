@@ -12,12 +12,22 @@ imperative [WebMCP](https://webmcpui.com/docs/webmcp) tool an agent can call.
   Standard Schema validation, a11y, theming) lives in a `WmcpFormControl` base.
 - **Interaction primitives** expose an _action_ an agent can trigger —
   `<wmcp-button>`, `<wmcp-dialog>`, `<wmcp-menu>`, `<wmcp-tabs>`,
-  `<wmcp-popover>` — or, for `<wmcp-toast>`, a _reading_ an agent can perceive.
-  They share a `WmcpAction` / `WmcpExposable` base.
+  `<wmcp-popover>`, `<wmcp-switch>`, `<wmcp-tooltip>` — or, for `<wmcp-toast>`, a
+  _reading_ an agent can perceive. They share a `WmcpAction` / `WmcpExposable`
+  base.
+- **Presentational primitives** are plain accessible controls (no agent surface)
+  that round out the kit — `<wmcp-badge>`, `<wmcp-separator>`, `<wmcp-alert>`,
+  `<wmcp-progress>`, `<wmcp-avatar>`.
 
 One source of truth (vanilla custom elements built with [Lit](https://lit.dev)),
 two distribution channels: an ESM package for build tools, and a single-file
 CDN bundle for no-build environments (Webflow, WordPress, plain HTML).
+
+**Using React or Vue?** Typed, idiomatic wrappers ship as
+[`@webmcpui/react`](https://www.npmjs.com/package/@webmcpui/react) and
+[`@webmcpui/vue`](https://www.npmjs.com/package/@webmcpui/vue) — same elements,
+same WebMCP exposure, with framework-native props, `v-model`/state, and events.
+See the [Frameworks guide](https://webmcpui.com/docs/frameworks).
 
 ## Install (build-tool consumers)
 
