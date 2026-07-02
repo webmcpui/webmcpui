@@ -1,6 +1,6 @@
 {
   "name": "@webmcpui/core",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Agent-aware, framework-agnostic web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with Standard Schema validation.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",

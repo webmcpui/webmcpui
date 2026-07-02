@@ -43,7 +43,7 @@
     "@lit/react": "^1.0.7"
   },
   "peerDependencies": {
-    "@webmcpui/core": ">=0.2.0",
+    "@webmcpui/core": ">=0.3.0",
     "react": ">=18",
     "react-dom": ">=18"
   },

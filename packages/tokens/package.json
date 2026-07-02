@@ -1,6 +1,6 @@
 {
   "name": "@webmcpui/tokens",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Design token dictionary for webmcpui — source of truth in tokens/*.json, built with Style Dictionary into CSS custom properties, TS types, and a Figma import.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
