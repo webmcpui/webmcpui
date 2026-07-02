@@ -11,10 +11,13 @@ order: 1
 
 **webmcpui** is a framework-agnostic, WebMCP-native web component library. Every element is a proper, accessible HTML control first and, when you opt in, also registers an imperative [WebMCP](/docs/webmcp) tool an agent can call.
 
-Two families of primitives:
+Three families of primitives:
 
 - **Form controls** expose a *value* an agent can set — `<wmcp-input>`, `<wmcp-textarea>`, `<wmcp-select>`, `<wmcp-checkbox>`, `<wmcp-radio>` / `<wmcp-radio-group>`. Shared behavior (form association, validation, WebMCP exposure, theming) lives in a `WmcpFormControl` base.
-- **Interaction primitives** expose an *action* an agent can trigger — `<wmcp-button>`, `<wmcp-dialog>`, `<wmcp-menu>`, `<wmcp-tabs>`, `<wmcp-popover>` — or, for `<wmcp-toast>`, a *reading* an agent can perceive. They share a `WmcpAction` / `WmcpExposable` base.
+- **Interaction primitives** expose an *action* an agent can trigger — `<wmcp-button>`, `<wmcp-dialog>`, `<wmcp-menu>`, `<wmcp-tabs>`, `<wmcp-popover>`, `<wmcp-switch>`, `<wmcp-tooltip>` — or, for `<wmcp-toast>`, a *reading* an agent can perceive. They share a `WmcpAction` / `WmcpExposable` base.
+- **Presentational primitives** are accessible, themed controls with no agent surface — `<wmcp-badge>`, `<wmcp-separator>`, `<wmcp-alert>`, `<wmcp-progress>`, `<wmcp-avatar>`.
+
+Building in React or Vue? [`@webmcpui/react`](/docs/frameworks) and [`@webmcpui/vue`](/docs/frameworks) wrap these elements with typed, idiomatic components — same behavior, framework-native ergonomics.
 
 ## Why it exists
 
