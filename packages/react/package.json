@@ -1,6 +1,6 @@
 {
   "name": "@webmcpui/react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Idiomatic, typed React components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/core.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
