@@ -1,0 +1,52 @@
+{
+  "name": "@webmcpui/vue",
+  "version": "0.3.0",
+  "description": "Idiomatic, typed Vue components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/core.",
+  "license": "MIT",
+  "author": "Gary Pfaff (Pfaff Digital)",
+  "homepage": "https://webmcpui.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmcpui/webmcpui.git",
+    "directory": "packages/vue"
+  },
+  "bugs": {
+    "url": "https://github.com/webmcpui/webmcpui/issues"
+  },
+  "keywords": [
+    "webmcp",
+    "vue",
+    "ai-agents",
+    "components",
+    "shadcn",
+    "web-components"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@webmcpui/core": ">=0.3.0",
+    "vue": ">=3.4"
+  },
+  "devDependencies": {
+    "@webmcpui/core": "workspace:*",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vue": "^3.5.13"
+  }
+}

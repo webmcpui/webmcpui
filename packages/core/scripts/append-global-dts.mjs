@@ -21,6 +21,13 @@ declare global {
     'wmcp-tabs': import('./index.js').WmcpTabs;
     'wmcp-popover': import('./index.js').WmcpPopover;
     'wmcp-toast': import('./index.js').WmcpToast;
+    'wmcp-switch': import('./index.js').WmcpSwitch;
+    'wmcp-badge': import('./index.js').WmcpBadge;
+    'wmcp-separator': import('./index.js').WmcpSeparator;
+    'wmcp-tooltip': import('./index.js').WmcpTooltip;
+    'wmcp-alert': import('./index.js').WmcpAlert;
+    'wmcp-progress': import('./index.js').WmcpProgress;
+    'wmcp-avatar': import('./index.js').WmcpAvatar;
   }
 }
 `;

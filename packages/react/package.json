@@ -1,0 +1,59 @@
+{
+  "name": "@webmcpui/react",
+  "version": "0.3.0",
+  "description": "Idiomatic, typed React components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/core.",
+  "license": "MIT",
+  "author": "Gary Pfaff (Pfaff Digital)",
+  "homepage": "https://webmcpui.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmcpui/webmcpui.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/webmcpui/webmcpui/issues"
+  },
+  "keywords": [
+    "webmcp",
+    "react",
+    "ai-agents",
+    "components",
+    "shadcn",
+    "web-components"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@lit/react": "^1.0.7"
+  },
+  "peerDependencies": {
+    "@webmcpui/core": ">=0.3.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@webmcpui/core": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

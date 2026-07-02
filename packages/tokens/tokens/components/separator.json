@@ -1,0 +1,8 @@
+{
+  "components": {
+    "separator": {
+      "color": { "$type": "color", "$value": "{base.border}" },
+      "size": { "$type": "dimension", "$value": "1px" }
+    }
+  }
+}

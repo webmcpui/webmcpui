@@ -7,5 +7,12 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@webmcpui/web"]
+  "ignore": [
+    "@webmcpui/web",
+    "@webmcpui/react-example",
+    "@webmcpui/vue-example"
+  ],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
 }

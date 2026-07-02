@@ -1,0 +1,17 @@
+{
+  "components": {
+    "alert": {
+      "bg": { "$type": "color", "$value": "{base.background}" },
+      "text": { "$type": "color", "$value": "{base.foreground}" },
+      "message": { "$type": "color", "$value": "{base.muted-foreground}" },
+      "border": { "$type": "color", "$value": "{base.border}" },
+      "accent-info": { "$type": "color", "$value": "{base.primary}" },
+      "accent-success": { "$type": "color", "$value": "oklch(0.627 0.13 160)" },
+      "accent-warning": { "$type": "color", "$value": "oklch(0.7 0.16 75)" },
+      "accent-error": { "$type": "color", "$value": "{base.destructive}" },
+      "radius": { "$type": "dimension", "$value": "{base.radius}" },
+      "padding": { "$type": "dimension", "$value": "0.75rem 1rem" },
+      "font-size": { "$type": "dimension", "$value": "0.875rem" }
+    }
+  }
+}

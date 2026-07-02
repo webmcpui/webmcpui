@@ -1,0 +1,21 @@
+{
+  "name": "@webmcpui/react-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@webmcpui/core": "workspace:*",
+    "@webmcpui/react": "workspace:*",
+    "@webmcpui/tokens": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.0"
+  }
+}

@@ -1,5 +1,21 @@
 # @webmcpui/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 0.3.0 — framework packages + first breadth wave.
+
+  New in core (all additive): `<wmcp-switch>` (boolean form control), and the
+  presentational `<wmcp-badge>`, `<wmcp-separator>`, `<wmcp-alert>`,
+  `<wmcp-progress>`, `<wmcp-avatar>`, plus `<wmcp-tooltip>` (a hover preset of
+  `<wmcp-popover>`). Matching `--switch-*` / `--badge-*` / `--separator-*` /
+  `--alert-*` / `--progress-*` / `--avatar-*` token sets.
+
+  Debuting alongside: **`@webmcpui/react`** and **`@webmcpui/vue`** — idiomatic,
+  typed wrappers over the core custom elements (props, refs / v-model, on\*/@event),
+  shadcn/Tailwind-aligned via the tokens, with an unstyled mode.
+
 ## 0.2.1
 
 ### Patch Changes

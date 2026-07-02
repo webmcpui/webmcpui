@@ -1,0 +1,10 @@
+{
+  "components": {
+    "progress": {
+      "track": { "$type": "color", "$value": "{base.secondary}" },
+      "bar": { "$type": "color", "$value": "{base.primary}" },
+      "height": { "$type": "dimension", "$value": "0.5rem" },
+      "radius": { "$type": "dimension", "$value": "999px" }
+    }
+  }
+}
