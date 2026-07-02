@@ -21,6 +21,9 @@ export { Tooltip } from './tooltip.js';
 export { Alert } from './alert.js';
 export { Progress } from './progress.js';
 export { Avatar } from './avatar.js';
+export { Card } from './card.js';
+export { Skeleton } from './skeleton.js';
+export { Spinner } from './spinner.js';
 
 export type {
   WmcpButtonVariant,

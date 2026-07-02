@@ -6,6 +6,9 @@ import type { WmcpAlert } from './alert.js';
 import type { WmcpProgress } from './progress.js';
 import type { WmcpAvatar } from './avatar.js';
 import type { WmcpTooltip } from './tooltip.js';
+import type { WmcpCard } from './card.js';
+import type { WmcpSkeleton } from './skeleton.js';
+import type { WmcpSpinner } from './spinner.js';
 
 before(() => defineComponents());
 
@@ -77,5 +80,32 @@ describe('presentational elements', () => {
     expect(el.shadowRoot!.querySelector('.panel')!.getAttribute('role')).to.equal(
       'tooltip',
     );
+  });
+
+  it('wmcp-card is a presentational surface that slots its content', async () => {
+    const el = await fixture<WmcpCard>(
+      html`<wmcp-card><h3>Title</h3><p>Body</p></wmcp-card>`,
+    );
+    expect(customElements.get('wmcp-card')).to.exist;
+    expect(el.shadowRoot!.querySelector('slot')).to.exist;
+    // No agent surface — a card exposes no WebMCP tool.
+    expect(el.hasAttribute('role')).to.be.false;
+    expect(el.textContent).to.contain('Body');
+  });
+
+  it('wmcp-skeleton is decorative and hidden from assistive tech', async () => {
+    const el = await fixture<WmcpSkeleton>(html`<wmcp-skeleton></wmcp-skeleton>`);
+    expect(customElements.get('wmcp-skeleton')).to.exist;
+    expect(el.getAttribute('aria-hidden')).to.equal('true');
+  });
+
+  it('wmcp-spinner is role=status and mirrors its label to aria-label', async () => {
+    const el = await fixture<WmcpSpinner>(html`<wmcp-spinner></wmcp-spinner>`);
+    await el.updateComplete;
+    expect(el.getAttribute('role')).to.equal('status');
+    expect(el.getAttribute('aria-label')).to.equal('Loading…');
+    el.label = 'Saving…';
+    await el.updateComplete;
+    expect(el.getAttribute('aria-label')).to.equal('Saving…');
   });
 });

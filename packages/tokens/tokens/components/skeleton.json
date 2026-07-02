@@ -1,0 +1,9 @@
+{
+  "components": {
+    "skeleton": {
+      "bg": { "$type": "color", "$value": "{base.muted}" },
+      "height": { "$type": "dimension", "$value": "1rem" },
+      "radius": { "$type": "dimension", "$value": "{base.radius}" }
+    }
+  }
+}

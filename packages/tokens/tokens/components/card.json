@@ -1,0 +1,15 @@
+{
+  "components": {
+    "card": {
+      "bg": { "$type": "color", "$value": "{base.card}" },
+      "text": { "$type": "color", "$value": "{base.card-foreground}" },
+      "border": { "$type": "color", "$value": "{base.border}" },
+      "radius": { "$type": "dimension", "$value": "{base.radius}" },
+      "padding": { "$type": "dimension", "$value": "1.25rem" },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "0 1px 3px 0 oklch(0 0 0 / 0.08), 0 1px 2px -1px oklch(0 0 0 / 0.08)"
+      }
+    }
+  }
+}
