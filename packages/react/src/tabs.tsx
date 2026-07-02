@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpTabs } from '@webmcpui/core';
+import { WmcpTabs } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpTabs.tagName, WmcpTabs);

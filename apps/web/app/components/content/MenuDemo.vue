@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // The first *parameterized* action: the agent doesn't just trigger the menu,
 // it picks WHICH item — passing one of the enum values the tool advertises.

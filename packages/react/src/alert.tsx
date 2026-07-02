@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpAlert } from '@webmcpui/core';
+import { WmcpAlert } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpAlert.tagName, WmcpAlert);

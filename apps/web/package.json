@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@nuxt/content": "^3.14.0",
-    "@webmcpui/core": "workspace:*",
     "@webmcpui/tokens": "workspace:*",
+    "@webmcpui/components": "workspace:*",
     "nuxt": "^4.0.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

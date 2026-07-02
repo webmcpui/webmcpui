@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpButton } from '@webmcpui/core';
+import { WmcpButton } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpButton.tagName, WmcpButton);
@@ -9,7 +9,7 @@ defineOnce(WmcpButton.tagName, WmcpButton);
  * `<Button>` — an idiomatic, typed React wrapper over `<wmcp-button>`.
  *
  * All the behavior (form-associated submit/reset, WebMCP action exposure, a11y)
- * lives in `@webmcpui/core`; this adds React ergonomics: typed props
+ * lives in `@webmcpui/components`; this adds React ergonomics: typed props
  * (`variant`, `size`, `type`, `disabled`, `expose`, `toolName`, …), `ref`
  * forwarding to the element, and the composed `click` surfaced as `onClick`.
  *

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpDialog } from '@webmcpui/core';
+import { WmcpDialog } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpDialog.tagName, WmcpDialog);

@@ -14,11 +14,11 @@ Two distribution channels from one source of truth. Use the ESM package with you
 ## With a build tool
 
 ```bash
-pnpm add @webmcpui/core @webmcpui/tokens
+pnpm add @webmcpui/components @webmcpui/tokens
 ```
 
 ```ts
-import { defineComponents } from '@webmcpui/core';
+import { defineComponents } from '@webmcpui/components';
 import '@webmcpui/tokens/css'; // theme tokens (CSS custom properties)
 
 defineComponents(); // registers <wmcp-input> and the other <wmcp-*> elements
@@ -39,7 +39,7 @@ For Webflow, WordPress, or hand-written HTML — one tag, every `<wmcp-*>` eleme
 ```html
 <link rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@webmcpui/tokens/dist/css/tokens.css" />
-<script src="https://cdn.jsdelivr.net/npm/@webmcpui/core/dist/webmcpui.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@webmcpui/components/dist/webmcpui.global.js"></script>
 
 <wmcp-input label="Email" name="email" type="email"></wmcp-input>
 ```

@@ -5,7 +5,7 @@ light + dark themes), a typed JS object, and a Figma import file, built from a
 [Style Dictionary](https://styledictionary.com) pipeline. Base names match
 [shadcn](https://ui.shadcn.com)'s 1:1, so they drop into an existing shadcn theme.
 
-The `<wmcp-*>` elements in [`@webmcpui/core`](https://www.npmjs.com/package/@webmcpui/core)
+The `<wmcp-*>` elements in [`@webmcpui/components`](https://www.npmjs.com/package/@webmcpui/components)
 consume these variables (with inline fallbacks, so the elements render correctly
 even without this stylesheet — it themes them).
 

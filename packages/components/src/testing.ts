@@ -2,11 +2,12 @@
  * Fake WebMCP host for tests, demos, and the eventual inspector.
  *
  * No mainstream agent calls WebMCP yet, so this is the only way to exercise
- * tool exposure end to end: install a stub `navigator.modelContext` that
- * records registered tools and lets you invoke them as an agent would.
+ * tool exposure end to end: install a stub on both `document.modelContext` and
+ * `navigator.modelContext` that records registered tools and lets you invoke
+ * them as an agent would.
  */
 
-import type { WebMCPToolResult } from './webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** A tool an element registered with the {@link FakeAgent}, as recorded for inspection. */
 export interface RegisteredTool {
@@ -24,21 +25,30 @@ export interface FakeAgent {
   get(name: string): RegisteredTool | undefined;
   /** Invoke a tool the way an agent would. Throws if the tool is unknown. */
   call(name: string, args?: Record<string, unknown>): Promise<WebMCPToolResult>;
-  /** Restore the previous `navigator.modelContext` (or remove the stub). */
+  /** Restore the previous modelContext values on both document and navigator. */
   restore(): void;
 }
 
+type ModelContextHost = { modelContext?: unknown };
+
 /**
- * Install a fake WebMCP host onto `navigator.modelContext` and return a handle
- * for inspecting and invoking the tools components register. Call `restore()`
- * when done (e.g. in test teardown).
+ * Install a fake WebMCP host onto both `document.modelContext` (the canonical
+ * Chrome 149+ surface) and `navigator.modelContext` (the deprecated fallback),
+ * matching the precedence order in `getModelContext()`. Call `restore()` when
+ * done (e.g. in test teardown).
  */
 export function installFakeAgent(): FakeAgent {
-  const nav = navigator as Navigator & { modelContext?: unknown };
-  const previous = nav.modelContext;
+  const doc = typeof document !== 'undefined'
+    ? (document as Document & ModelContextHost)
+    : undefined;
+  const nav = navigator as Navigator & ModelContextHost;
+
+  const previousDoc = doc?.modelContext;
+  const previousNav = nav.modelContext;
+
   const tools = new Map<string, RegisteredTool>();
 
-  nav.modelContext = {
+  const stub = {
     registerTool(tool: RegisteredTool) {
       tools.set(tool.name, {
         name: tool.name,
@@ -52,6 +62,9 @@ export function installFakeAgent(): FakeAgent {
       tools.delete(name);
     },
   };
+
+  if (doc) doc.modelContext = stub;
+  nav.modelContext = stub;
 
   return {
     get tools() {
@@ -68,10 +81,17 @@ export function installFakeAgent(): FakeAgent {
       return tool.execute(args);
     },
     restore() {
-      if (previous === undefined) {
+      if (doc) {
+        if (previousDoc === undefined) {
+          delete doc.modelContext;
+        } else {
+          doc.modelContext = previousDoc;
+        }
+      }
+      if (previousNav === undefined) {
         delete nav.modelContext;
       } else {
-        nav.modelContext = previous;
+        nav.modelContext = previousNav;
       }
     },
   };

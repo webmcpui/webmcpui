@@ -29,7 +29,7 @@ It's all feature-detected: with no agent present (the common case today), the We
 
 Vanilla custom elements built with [Lit](https://lit.dev), distributed two ways:
 
-- an **ESM package** for build tools (`@webmcpui/core`), and
+- an **ESM package** for build tools (`@webmcpui/components`), and
 - a single-file **CDN bundle** for no-build environments (Webflow, WordPress, plain HTML).
 
 ## Next steps

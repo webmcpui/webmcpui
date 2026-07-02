@@ -1,19 +1,21 @@
 name: Release
 
-# Publishes @webmcpui/core and @webmcpui/tokens to npm (OIDC trusted
-# publishing, with provenance) and @webmcpui/core to JSR (tokenless OIDC).
+# Publishes to npm (OIDC trusted publishing, with provenance):
+#   @webmcpui/tokens, @webmcpui/webmcp, @webmcpui/components,
+#   @webmcpui/react, @webmcpui/vue
+# Publishes to JSR (tokenless OIDC):
+#   @webmcpui/webmcp — zero external deps, fully JSR-compatible.
 # No long-lived tokens are stored anywhere.
 #
-# Trigger: publish a GitHub Release (bump versions, tag e.g. v0.1.0, publish
+# Trigger: publish a GitHub Release (bump versions, tag e.g. v0.4.0, publish
 # the release). workflow_dispatch is provided for manual re-runs.
 #
 # One-time prerequisites in each registry's UI:
-#   npm  — add a Trusted Publisher for BOTH @webmcpui/core and @webmcpui/tokens:
+#   npm  — add a Trusted Publisher for each @webmcpui/* package:
 #          GitHub Actions · repo webmcpui/webmcpui · workflow "release.yml".
-#          Then set each package's publishing access to
-#          "Require two-factor authentication and disallow tokens".
-#   JSR  — link @webmcpui/core to the webmcpui/webmcpui repo
-#          (jsr.io package · Settings · GitHub repository).
+#          Set each package's access to "Require 2FA, disallow tokens".
+#   JSR  — link @webmcpui/webmcp to the webmcpui/webmcpui repo
+#          (jsr.io/@webmcpui/webmcp · Settings · GitHub repository).
 
 on:
   release:
@@ -44,23 +46,30 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browsers
-        working-directory: packages/core
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Build
+        run: pnpm turbo run build --filter='!@webmcpui/web'
 
       - name: Typecheck
-        working-directory: packages/core
+        working-directory: packages/components
         run: pnpm typecheck
 
+      - name: Smoke test
+        working-directory: packages/components
+        run: pnpm test:smoke
+
+      - name: Install Playwright browsers
+        working-directory: packages/components
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Test
-        working-directory: packages/core
+        working-directory: packages/components
         run: pnpm test
 
   release:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: read # checkout
+      contents: read
       id-token: write # OIDC — required for npm trusted publishing AND JSR
     steps:
       - uses: actions/checkout@v4
@@ -83,9 +92,11 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm build
+        run: pnpm turbo run build --filter='!@webmcpui/web'
 
-      # --- npm (OIDC trusted publishing; provenance is automatic) ---
+      # Publish in dependency order so each package is on npm before its
+      # dependents are published. pnpm publish rewrites workspace:* → real
+      # version in the tarball automatically.
 
       - name: Publish @webmcpui/tokens to npm
         working-directory: packages/tokens
@@ -94,21 +105,29 @@ jobs:
           if npm view "@webmcpui/tokens@$VER" version >/dev/null 2>&1; then
             echo "@webmcpui/tokens@$VER already on npm — skipping."
           else
-            npm publish --access public
+            pnpm publish --access public --no-git-checks
           fi
 
-      - name: Publish @webmcpui/core to npm
-        working-directory: packages/core
+      - name: Publish @webmcpui/webmcp to npm
+        working-directory: packages/webmcp
         run: |
           VER=$(node -p "require('./package.json').version")
-          if npm view "@webmcpui/core@$VER" version >/dev/null 2>&1; then
-            echo "@webmcpui/core@$VER already on npm — skipping."
+          if npm view "@webmcpui/webmcp@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/webmcp@$VER already on npm — skipping."
           else
-            npm publish --access public
+            pnpm publish --access public --no-git-checks
           fi
 
-      # Framework wrappers (npm only; they're React/Vue-specific). First publish
-      # of each is a manual bootstrap + Trusted Publisher setup — see RELEASING.md.
+      - name: Publish @webmcpui/components to npm
+        working-directory: packages/components
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/components@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/components@$VER already on npm — skipping."
+          else
+            pnpm publish --access public --no-git-checks
+          fi
+
       - name: Publish @webmcpui/react to npm
         working-directory: packages/react
         run: |
@@ -116,7 +135,7 @@ jobs:
           if npm view "@webmcpui/react@$VER" version >/dev/null 2>&1; then
             echo "@webmcpui/react@$VER already on npm — skipping."
           else
-            npm publish --access public
+            pnpm publish --access public --no-git-checks
           fi
 
       - name: Publish @webmcpui/vue to npm
@@ -126,17 +145,17 @@ jobs:
           if npm view "@webmcpui/vue@$VER" version >/dev/null 2>&1; then
             echo "@webmcpui/vue@$VER already on npm — skipping."
           else
-            npm publish --access public
+            pnpm publish --access public --no-git-checks
           fi
 
-      # --- JSR (tokenless OIDC; core only — CSS can't live on JSR) ---
+      # --- JSR (tokenless OIDC) ---
 
-      - name: Publish @webmcpui/core to JSR
-        working-directory: packages/core
+      - name: Publish @webmcpui/webmcp to JSR
+        working-directory: packages/webmcp
         run: |
           VER=$(node -p "require('./package.json').version")
-          if curl -sfo /dev/null "https://jsr.io/@webmcpui/core/${VER}_meta.json"; then
-            echo "@webmcpui/core@$VER already on JSR — skipping."
+          if curl -sfo /dev/null "https://jsr.io/@webmcpui/webmcp/${VER}_meta.json"; then
+            echo "@webmcpui/webmcp@$VER already on JSR — skipping."
           else
             npx jsr publish
           fi

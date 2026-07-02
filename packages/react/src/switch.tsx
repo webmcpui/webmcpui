@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpSwitch } from '@webmcpui/core';
+import { WmcpSwitch } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpSwitch.tagName, WmcpSwitch);

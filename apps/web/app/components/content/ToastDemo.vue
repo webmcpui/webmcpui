@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // The one component whose agent surface is *perceiving*, not actuating. Page
 // code throws toasts the way it always has; the agent reads them back via

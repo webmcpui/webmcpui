@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { WmcpTabs } from '@webmcpui/core';
+import { WmcpTabs } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpTabs.tagName, WmcpTabs);

@@ -7,7 +7,8 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpAction } from './action.js';
-import type { WebMCPToolResult } from '../webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
+import type { WmcpTagName } from '../register.js';
 
 /** Where the panel sits relative to its trigger. */
 export type WmcpPopoverPlacement = 'top' | 'bottom' | 'left' | 'right';
@@ -30,9 +31,9 @@ export type WmcpPopoverTrigger = 'click' | 'hover';
  * Not auto-registered — call `defineComponents()` (or load the CDN bundle).
  */
 export class WmcpPopover extends WmcpAction {
-  // Typed `string` (not the narrow literal) so subclasses like <wmcp-tooltip>
-  // can override it.
-  static readonly tagName: string = 'wmcp-popover';
+  // Typed as the union (not a bare string) so subclasses like <wmcp-tooltip>
+  // can override with their own narrow literal.
+  static readonly tagName: WmcpTagName = 'wmcp-popover';
 
   static styles: CSSResultGroup = css`
     :host {

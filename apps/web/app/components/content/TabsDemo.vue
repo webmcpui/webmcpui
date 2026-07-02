@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // The first *stateful* action: the tab set holds a persistent `active` tab, and
 // the agent's tool both reads it (via the result) and changes it — switching to

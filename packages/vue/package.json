@@ -1,7 +1,7 @@
 {
   "name": "@webmcpui/vue",
   "version": "0.3.1",
-  "description": "Idiomatic, typed Vue components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/core.",
+  "description": "Idiomatic, typed Vue components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/components.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
   "homepage": "https://webmcpui.com",
@@ -40,11 +40,11 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@webmcpui/core": ">=0.3.0",
+    "@webmcpui/components": ">=0.3.1",
     "vue": ">=3.4"
   },
   "devDependencies": {
-    "@webmcpui/core": "workspace:*",
+    "@webmcpui/components": "workspace:*",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vue": "^3.5.13"

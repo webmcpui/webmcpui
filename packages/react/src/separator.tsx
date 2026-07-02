@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpSeparator } from '@webmcpui/core';
+import { WmcpSeparator } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpSeparator.tagName, WmcpSeparator);

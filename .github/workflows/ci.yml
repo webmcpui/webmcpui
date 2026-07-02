@@ -25,14 +25,21 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browsers
-        working-directory: packages/core
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Build
+        run: pnpm turbo run build --filter='!@webmcpui/web'
 
       - name: Typecheck
-        working-directory: packages/core
+        working-directory: packages/components
         run: pnpm typecheck
 
+      - name: Smoke test
+        working-directory: packages/components
+        run: pnpm test:smoke
+
+      - name: Install Playwright browsers
+        working-directory: packages/components
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Test
-        working-directory: packages/core
+        working-directory: packages/components
         run: pnpm test

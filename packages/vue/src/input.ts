@@ -3,7 +3,7 @@ import {
   WmcpInput,
   type WmcpInputType,
   type StandardSchemaV1,
-} from '@webmcpui/core';
+} from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpInput.tagName, WmcpInput);

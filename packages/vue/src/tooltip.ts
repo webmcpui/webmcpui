@@ -3,7 +3,7 @@ import {
   WmcpTooltip,
   type WmcpPopoverPlacement,
   type WmcpPopoverTrigger,
-} from '@webmcpui/core';
+} from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpTooltip.tagName, WmcpTooltip);

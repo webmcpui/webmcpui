@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // An agent-triggered modal the user reviews and confirms. The agent can OPEN
 // the dialog; the confirm itself stays the human's click — the consent gate.

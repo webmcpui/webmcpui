@@ -2,7 +2,7 @@ import '@webmcpui/tokens/css';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Button, Input, Dialog, Tabs } from '@webmcpui/react';
-import { installFakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent } from '@webmcpui/components/testing';
 
 // Install the fake WebMCP host BEFORE any element mounts.
 const agent = installFakeAgent();

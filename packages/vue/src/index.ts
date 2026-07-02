@@ -1,7 +1,7 @@
 /**
  * `@webmcpui/vue` — idiomatic, typed Vue components for webmcpui.
  *
- * Each component wraps the corresponding `@webmcpui/core` custom element, so
+ * Each component wraps the corresponding `@webmcpui/components` custom element, so
  * the WebMCP exposure, form association, and accessibility live once (in core)
  * and Vue consumers get typed props, `v-model`, `@event` listeners, and slots —
  * with no `isCustomElement` config required. Load `@webmcpui/tokens/css` for
@@ -29,4 +29,4 @@ export type {
   WmcpInputType,
   WmcpBadgeVariant,
   WmcpAlertVariant,
-} from '@webmcpui/core';
+} from '@webmcpui/components';

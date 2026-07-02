@@ -17,9 +17,9 @@ importers:
 
   apps/react-example:
     dependencies:
-      '@webmcpui/core':
+      '@webmcpui/components':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/components
       '@webmcpui/react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -42,9 +42,9 @@ importers:
 
   apps/vue-example:
     dependencies:
-      '@webmcpui/core':
+      '@webmcpui/components':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/components
       '@webmcpui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -67,9 +67,9 @@ importers:
       '@nuxt/content':
         specifier: ^3.14.0
         version: 3.14.0(better-sqlite3@12.10.1)(magicast@0.5.3)
-      '@webmcpui/core':
+      '@webmcpui/components':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/components
       '@webmcpui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -108,8 +108,11 @@ importers:
         specifier: ^4.0.0
         version: 4.3.1
 
-  packages/core:
+  packages/components:
     dependencies:
+      '@webmcpui/webmcp':
+        specifier: workspace:*
+        version: link:../webmcp
       lit:
         specifier: ^3.2.1
         version: 3.3.3
@@ -148,9 +151,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.0
         version: 19.2.3(@types/react@19.2.17)
-      '@webmcpui/core':
+      '@webmcpui/components':
         specifier: workspace:*
-        version: link:../core
+        version: link:../components
       react:
         specifier: ^19.0.0
         version: 19.2.7
@@ -172,9 +175,9 @@ importers:
 
   packages/vue:
     devDependencies:
-      '@webmcpui/core':
+      '@webmcpui/components':
         specifier: workspace:*
-        version: link:../core
+        version: link:../components
       tsup:
         specifier: ^8.3.5
         version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
@@ -184,6 +187,15 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.38(typescript@5.9.3)
+
+  packages/webmcp:
+    devDependencies:
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
 
 packages:
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // Like the dialog, the agent's action is *open* — but non-modal and anchored.
 // The agent surfaces the panel; closing stays a light-dismiss / human step.

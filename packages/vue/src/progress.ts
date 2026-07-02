@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { WmcpProgress } from '@webmcpui/core';
+import { WmcpProgress } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpProgress.tagName, WmcpProgress);

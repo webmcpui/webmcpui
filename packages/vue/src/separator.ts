@@ -1,5 +1,5 @@
 import { defineComponent, h, type PropType } from 'vue';
-import { WmcpSeparator } from '@webmcpui/core';
+import { WmcpSeparator } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpSeparator.tagName, WmcpSeparator);

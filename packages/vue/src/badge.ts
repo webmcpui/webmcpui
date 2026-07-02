@@ -1,5 +1,5 @@
 import { defineComponent, h, type PropType } from 'vue';
-import { WmcpBadge, type WmcpBadgeVariant } from '@webmcpui/core';
+import { WmcpBadge, type WmcpBadgeVariant } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpBadge.tagName, WmcpBadge);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpBadge } from '@webmcpui/core';
+import { WmcpBadge } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpBadge.tagName, WmcpBadge);

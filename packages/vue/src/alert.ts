@@ -1,5 +1,5 @@
 import { defineComponent, h, type PropType } from 'vue';
-import { WmcpAlert, type WmcpAlertVariant } from '@webmcpui/core';
+import { WmcpAlert, type WmcpAlertVariant } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpAlert.tagName, WmcpAlert);

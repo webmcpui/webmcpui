@@ -4,7 +4,7 @@ import {
   type WmcpButtonVariant,
   type WmcpButtonSize,
   type WmcpButtonType,
-} from '@webmcpui/core';
+} from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpButton.tagName, WmcpButton);
@@ -13,7 +13,7 @@ defineOnce(WmcpButton.tagName, WmcpButton);
  * `<Button>` — an idiomatic, typed Vue wrapper over `<wmcp-button>`.
  *
  * Behavior (form-associated submit/reset, WebMCP action exposure, a11y) lives
- * in `@webmcpui/core`; this adds Vue ergonomics: typed props and a component
+ * in `@webmcpui/components`; this adds Vue ergonomics: typed props and a component
  * you can use in templates without configuring `isCustomElement` (the
  * `<wmcp-button>` tag only appears inside this render function). Attributes and
  * listeners (`@click`, `class`, `style`, …) fall through to the element.

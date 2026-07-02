@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { WmcpDialog } from '@webmcpui/core';
+import { WmcpDialog } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpDialog.tagName, WmcpDialog);

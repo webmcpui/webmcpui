@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // A real, end-to-end demo: we install the fake WebMCP host BEFORE the live
 // <wmcp-input expose> mounts, so the element registers its `fill_email` tool

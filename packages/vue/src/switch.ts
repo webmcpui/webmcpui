@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { WmcpSwitch } from '@webmcpui/core';
+import { WmcpSwitch } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpSwitch.tagName, WmcpSwitch);

@@ -3,7 +3,7 @@
 Idiomatic, typed **React** components for [webmcpui](https://webmcpui.com) —
 WebMCP-native, accessible, shadcn/Tailwind-aligned.
 
-Each component wraps the corresponding [`@webmcpui/core`](https://www.npmjs.com/package/@webmcpui/core)
+Each component wraps the corresponding [`@webmcpui/components`](https://www.npmjs.com/package/@webmcpui/components)
 custom element via [`@lit/react`](https://www.npmjs.com/package/@lit/react), so
 the WebMCP tool exposure, form association, and accessibility live **once** (in
 core) and you get typed props, `ref` forwarding, and `on*` event handlers.
@@ -11,7 +11,7 @@ core) and you get typed props, `ref` forwarding, and `on*` event handlers.
 ## Install
 
 ```bash
-pnpm add @webmcpui/react @webmcpui/core react react-dom
+pnpm add @webmcpui/react @webmcpui/components react react-dom
 # optional theme (shadcn-aligned):
 pnpm add @webmcpui/tokens
 ```

@@ -9,12 +9,12 @@ order: 6
 
 # React & Vue
 
-The core is framework-agnostic custom elements — they work in any framework as-is. But `@webmcpui/react` and `@webmcpui/vue` give you **idiomatic, typed** components: real props, `ref`s / `v-model`, and `on*` / `@event` handlers. They're thin wrappers — the WebMCP exposure, form association, and accessibility all live once in [`@webmcpui/core`](/docs), so there's no second implementation to drift.
+The core is framework-agnostic custom elements — they work in any framework as-is. But `@webmcpui/react` and `@webmcpui/vue` give you **idiomatic, typed** components: real props, `ref`s / `v-model`, and `on*` / `@event` handlers. They're thin wrappers — the WebMCP exposure, form association, and accessibility all live once in [`@webmcpui/components`](/docs), so there's no second implementation to drift.
 
 ## React
 
 ```bash
-pnpm add @webmcpui/react @webmcpui/core react react-dom
+pnpm add @webmcpui/react @webmcpui/components react react-dom
 ```
 
 ```tsx
@@ -38,7 +38,7 @@ Props mirror the [element attributes](/docs/elements/input), camelCased. Imperat
 ## Vue
 
 ```bash
-pnpm add @webmcpui/vue @webmcpui/core vue
+pnpm add @webmcpui/vue @webmcpui/components vue
 ```
 
 ```vue

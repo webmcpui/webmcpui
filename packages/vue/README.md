@@ -3,7 +3,7 @@
 Idiomatic, typed **Vue** components for [webmcpui](https://webmcpui.com) —
 WebMCP-native, accessible, shadcn/Tailwind-aligned.
 
-Each component wraps the corresponding [`@webmcpui/core`](https://www.npmjs.com/package/@webmcpui/core)
+Each component wraps the corresponding [`@webmcpui/components`](https://www.npmjs.com/package/@webmcpui/components)
 custom element, so the WebMCP tool exposure, form association, and accessibility
 live **once** (in core) and you get typed props, `v-model`, `@event` listeners,
 and slots — with **no `isCustomElement` config** (the `wmcp-*` tag only appears
@@ -12,7 +12,7 @@ inside the component's render function, never your templates).
 ## Install
 
 ```bash
-pnpm add @webmcpui/vue @webmcpui/core vue
+pnpm add @webmcpui/vue @webmcpui/components vue
 # optional theme (shadcn-aligned):
 pnpm add @webmcpui/tokens
 ```

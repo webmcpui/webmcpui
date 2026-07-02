@@ -1,7 +1,7 @@
 /**
  * `@webmcpui/react` — idiomatic, typed React components for webmcpui.
  *
- * Each component wraps the corresponding `@webmcpui/core` custom element via
+ * Each component wraps the corresponding `@webmcpui/components` custom element via
  * `@lit/react`, so the WebMCP exposure, form association, and accessibility
  * live once (in core) and React consumers get typed props, refs, and `on*`
  * event handlers. Load `@webmcpui/tokens/css` for the themed (shadcn-aligned)
@@ -30,4 +30,4 @@ export type {
   WmcpInputType,
   WmcpBadgeVariant,
   WmcpAlertVariant,
-} from '@webmcpui/core';
+} from '@webmcpui/components';

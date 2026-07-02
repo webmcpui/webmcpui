@@ -7,21 +7,22 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl } from './form-control.js';
-import type { JSONSchema } from '../webmcp.js';
+import type { JSONSchema } from '@webmcpui/webmcp';
 
 /**
- * `<wmcp-switch>` — a form-associated, agent-operable toggle.
+ * `<wmcp-checkbox>` — a form-associated, agent-operable boolean checkbox.
  *
- * A boolean control like `<wmcp-checkbox>`, but presented as a switch
- * (`role="switch"`) — on/off rather than checked/unchecked. Its state is the
- * boolean `checked`; `value` is the string submitted to the form *when on*.
- * (checkbox and switch are two boolean controls now — a shared
- * `WmcpBooleanControl` base is a future extraction.)
+ * The first non-string control. Its primary state is the boolean `checked`;
+ * `value` is the string submitted to the form *when checked* (native default
+ * `"on"`). This is why {@link WmcpFormControl} exposes hooks: checkbox overrides
+ * `getFormValue` (conditional), `validationValue` (the boolean),
+ * `applyAgentValue` / `toolInputSchema` (a `checked` boolean), and
+ * `formResetCallback` (restore the initial checked state).
  *
  * Not auto-registered — call `defineComponents()` (or load the CDN bundle).
  */
-export class WmcpSwitch extends WmcpFormControl {
-  static readonly tagName = 'wmcp-switch';
+export class WmcpCheckbox extends WmcpFormControl {
+  static readonly tagName = 'wmcp-checkbox';
 
   static styles: CSSResultGroup = [
     WmcpFormControl.styles,
@@ -35,48 +36,24 @@ export class WmcpSwitch extends WmcpFormControl {
       }
       .row:has(.control:disabled) {
         cursor: not-allowed;
-        color: var(--input-text-disabled, var(--muted-foreground, oklch(0.556 0 0)));
+        color: var(
+          --input-text-disabled,
+          var(--muted-foreground, oklch(0.556 0 0))
+        );
       }
       .control {
-        appearance: none;
         box-sizing: border-box;
-        position: relative;
-        flex-shrink: 0;
-        width: var(--switch-width, 2.25rem);
-        height: var(--switch-height, 1.35rem);
+        width: var(--checkbox-size, 1.05rem);
+        height: var(--checkbox-size, 1.05rem);
         margin: 0;
-        padding: 0;
-        border-radius: 999px;
-        background: var(--switch-track, var(--input, oklch(0.922 0 0)));
+        accent-color: var(--checkbox-accent, var(--primary, oklch(0.205 0 0)));
         cursor: inherit;
-        transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .control::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: var(--switch-gap, 0.15rem);
-        width: var(--switch-thumb, 1.05rem);
-        height: var(--switch-thumb, 1.05rem);
-        border-radius: 50%;
-        background: var(--switch-thumb-color, var(--background, oklch(1 0 0)));
-        translate: 0 -50%;
-        transition: translate 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 1px 2px color-mix(in oklch, oklch(0 0 0) 25%, transparent);
-      }
-      .control:checked {
-        background: var(--switch-track-on, var(--primary, oklch(0.205 0 0)));
-      }
-      .control:checked::before {
-        translate: calc(var(--switch-width, 2.25rem) - var(--switch-thumb, 1.05rem) - var(--switch-gap, 0.15rem) * 2) -50%;
       }
       .control:focus-visible {
         outline: none;
+        border-radius: 0.25rem;
         box-shadow: 0 0 0 var(--ring-width, 3px)
           color-mix(in oklch, var(--ring, oklch(0.708 0 0)) 40%, transparent);
-      }
-      .control:disabled {
-        opacity: 0.5;
       }
       .label-text {
         font-size: var(--input-font-size, 0.875rem);
@@ -85,19 +62,19 @@ export class WmcpSwitch extends WmcpFormControl {
     `,
   ];
 
-  /** Whether the switch is on. */
+  /** Whether the box is checked. */
   @property({ type: Boolean, reflect: true }) checked = false;
 
   private defaultChecked = false;
 
   constructor() {
     super();
-    // Submits this value to the form when on (native checkbox default is "on").
+    // A checkbox submits this value when checked (native default is "on").
     this.value = 'on';
   }
 
   protected override get controlNoun(): string {
-    return 'switch';
+    return 'checkbox';
   }
 
   override connectedCallback(): void {
@@ -118,7 +95,7 @@ export class WmcpSwitch extends WmcpFormControl {
   }
 
   protected override get requiredMessageDefault(): string {
-    return 'Please turn this on.';
+    return 'Please check this box.';
   }
 
   protected override toolInputSchema(): JSONSchema {
@@ -127,7 +104,8 @@ export class WmcpSwitch extends WmcpFormControl {
       properties: {
         checked: {
           type: 'boolean',
-          description: this.label || this.name || 'Whether the switch is on.',
+          description:
+            this.label || this.name || 'Whether the box is checked.',
         },
       },
       required: ['checked'],
@@ -144,7 +122,7 @@ export class WmcpSwitch extends WmcpFormControl {
   }
 
   protected override stateDescription(): string {
-    return this.checked ? 'on' : 'off';
+    return this.checked ? 'checked' : 'unchecked';
   }
 
   override formResetCallback(): void {
@@ -166,7 +144,6 @@ export class WmcpSwitch extends WmcpFormControl {
         class="control"
         part="control"
         type="checkbox"
-        role="switch"
         .checked=${this.checked}
         ?required=${this.required}
         ?disabled=${this.disabled}

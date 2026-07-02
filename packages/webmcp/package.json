@@ -1,25 +1,23 @@
 {
-  "name": "@webmcpui/react",
+  "name": "@webmcpui/webmcp",
   "version": "0.3.1",
-  "description": "Idiomatic, typed React components for webmcpui — WebMCP-native, accessible, shadcn/Tailwind-aligned. Wraps @webmcpui/components.",
+  "description": "WebMCP browser integration layer — imperative tool registration API for AI agent-aware web applications.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
   "homepage": "https://webmcpui.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webmcpui/webmcpui.git",
-    "directory": "packages/react"
+    "directory": "packages/webmcp"
   },
   "bugs": {
     "url": "https://github.com/webmcpui/webmcpui/issues"
   },
   "keywords": [
     "webmcp",
-    "react",
     "ai-agents",
-    "components",
-    "shadcn",
-    "web-components"
+    "modelcontext",
+    "tool-use"
   ],
   "type": "module",
   "exports": {
@@ -39,20 +37,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@lit/react": "^1.0.7"
-  },
-  "peerDependencies": {
-    "@webmcpui/components": ">=0.3.1",
-    "react": ">=18",
-    "react-dom": ">=18"
-  },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@webmcpui/components": "workspace:*",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }

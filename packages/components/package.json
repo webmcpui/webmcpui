@@ -1,14 +1,14 @@
 {
-  "name": "@webmcpui/core",
+  "name": "@webmcpui/components",
   "version": "0.3.1",
-  "description": "Agent-aware, framework-agnostic web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with Standard Schema validation.",
+  "description": "Agent-aware web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with Standard Schema validation.",
   "license": "MIT",
   "author": "Gary Pfaff (Pfaff Digital)",
   "homepage": "https://webmcpui.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webmcpui/webmcpui.git",
-    "directory": "packages/core"
+    "directory": "packages/components"
   },
   "bugs": {
     "url": "https://github.com/webmcpui/webmcpui/issues"
@@ -32,6 +32,10 @@
     "./testing": {
       "types": "./dist/testing.d.ts",
       "import": "./dist/testing.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js"
     }
   },
   "unpkg": "./dist/webmcpui.global.js",
@@ -51,6 +55,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@webmcpui/webmcp": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

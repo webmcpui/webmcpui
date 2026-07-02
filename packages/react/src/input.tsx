@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpInput } from '@webmcpui/core';
+import { WmcpInput } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpInput.tagName, WmcpInput);

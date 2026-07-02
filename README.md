@@ -4,9 +4,9 @@
 
 # webmcpui
 
-[![npm](https://img.shields.io/npm/v/@webmcpui/core?logo=npm&label=%40webmcpui%2Fcore)](https://www.npmjs.com/package/@webmcpui/core)
-[![JSR](https://jsr.io/badges/@webmcpui/core)](https://jsr.io/@webmcpui/core)
-[![license](https://img.shields.io/npm/l/@webmcpui/core)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/@webmcpui/components?logo=npm&label=%40webmcpui%2Fcore)](https://www.npmjs.com/package/@webmcpui/components)
+[![JSR](https://jsr.io/badges/@webmcpui/components)](https://jsr.io/@webmcpui/components)
+[![license](https://img.shields.io/npm/l/@webmcpui/components)](./LICENSE)
 
 Agent-aware, framework-agnostic web components for the WebMCP era — accessible, form-associated controls an AI agent can fill, with [Standard Schema](https://standardschema.dev) validation.
 
@@ -19,11 +19,11 @@ Each `<wmcp-*>` element is a great, accessible form control first. When a [WebMC
 **With a build tool** (Vite, Next, Nuxt, anything):
 
 ```bash
-pnpm add @webmcpui/core @webmcpui/tokens
+pnpm add @webmcpui/components @webmcpui/tokens
 ```
 
 ```ts
-import { defineComponents } from '@webmcpui/core';
+import { defineComponents } from '@webmcpui/components';
 import '@webmcpui/tokens/css'; // theme tokens (CSS custom properties)
 
 defineComponents(); // registers <wmcp-input>, <wmcp-select>, …
@@ -37,7 +37,7 @@ defineComponents(); // registers <wmcp-input>, <wmcp-select>, …
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@webmcpui/tokens/dist/css/tokens.css" />
-<script src="https://cdn.jsdelivr.net/npm/@webmcpui/core/dist/webmcpui.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@webmcpui/components/dist/webmcpui.global.js"></script>
 
 <wmcp-input label="Email" name="email" type="email"></wmcp-input>
 ```
@@ -45,7 +45,7 @@ defineComponents(); // registers <wmcp-input>, <wmcp-select>, …
 **Deno / JSR:**
 
 ```bash
-deno add jsr:@webmcpui/core
+deno add jsr:@webmcpui/components
 ```
 
 ## Expose a control to an agent
@@ -73,7 +73,7 @@ It's feature-detected against `document.modelContext` (the WebMCP API) — a com
 
 | Package | Registry | What |
 | --- | --- | --- |
-| [`@webmcpui/core`](packages/core) | [npm](https://www.npmjs.com/package/@webmcpui/core) · [JSR](https://jsr.io/@webmcpui/core) | The custom elements (built on [Lit](https://lit.dev)) |
+| [`@webmcpui/components`](packages/components) | [npm](https://www.npmjs.com/package/@webmcpui/components) · [JSR](https://jsr.io/@webmcpui/components) | The custom elements (built on [Lit](https://lit.dev)) |
 | [`@webmcpui/tokens`](packages/tokens) | [npm](https://www.npmjs.com/package/@webmcpui/tokens) | Design tokens — CSS custom properties, TS, Figma |
 
 This is a pnpm + Turborepo monorepo; the [webmcpui.com](https://webmcpui.com) site lives in [`apps/web`](apps/web).

@@ -1,7 +1,8 @@
-// Runtime smoke test for the non-DOM core utilities, run against the built
-// dist. Element/DOM behavior is covered separately by a browser test runner.
+// Runtime smoke test for the non-DOM utilities, run against the built dist.
+// Imports from ./utils (no Lit, no HTMLElement) so this runs cleanly in Node.
+// Element/DOM behaviour is covered separately by the browser test runner.
 import assert from 'node:assert/strict';
-import { validateStandard, exposeTool } from '../dist/index.js';
+import { validateStandard, exposeTool } from '../dist/utils.js';
 import { installFakeAgent } from '../dist/testing.js';
 
 // Node may expose a read-only `navigator`; ensure one exists for the harness.

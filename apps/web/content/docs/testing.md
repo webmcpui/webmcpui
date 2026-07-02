@@ -9,10 +9,10 @@ order: 5
 
 # Testing with the fake agent
 
-No mainstream agent calls WebMCP yet, so `@webmcpui/core/testing` ships a fake host that lets you exercise exposure end to end. It installs a stub `navigator.modelContext`, records the tools your elements register, and lets you invoke them exactly as an agent would.
+No mainstream agent calls WebMCP yet, so `@webmcpui/components/testing` ships a fake host that lets you exercise exposure end to end. It installs a stub `navigator.modelContext`, records the tools your elements register, and lets you invoke them exactly as an agent would.
 
 ```ts
-import { installFakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent } from '@webmcpui/components/testing';
 
 const agent = installFakeAgent();
 

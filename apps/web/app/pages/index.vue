@@ -52,10 +52,10 @@ const steps = [
   },
 ];
 
-const installBuild = `pnpm add @webmcpui/core @webmcpui/tokens`;
+const installBuild = `pnpm add @webmcpui/components @webmcpui/tokens`;
 const installCdn = `<link rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@webmcpui/tokens/dist/css/tokens.css" />
-<script src="https://cdn.jsdelivr.net/npm/@webmcpui/core/dist/webmcpui.global.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/@webmcpui/components/dist/webmcpui.global.js"><\/script>
 
 <wmcp-input label="Email" name="email" type="email" expose></wmcp-input>`;
 

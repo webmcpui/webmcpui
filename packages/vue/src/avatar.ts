@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { WmcpAvatar } from '@webmcpui/core';
+import { WmcpAvatar } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpAvatar.tagName, WmcpAvatar);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { installFakeAgent, type FakeAgent } from '@webmcpui/core/testing';
+import { installFakeAgent, type FakeAgent } from '@webmcpui/components/testing';
 
 // Action exposure at its simplest: a <wmcp-button expose> registers a no-arg
 // tool that activates the button exactly as a human click would.

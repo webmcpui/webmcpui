@@ -1,19 +1,19 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig([
-  // ESM package for build-tool consumers (React / Vue / Vite / etc).
+  // ESM library for build-tool consumers (React / Vue / Vite / etc).
   // Lit stays external — the consumer's bundler resolves and dedupes it.
   {
-    entry: { index: 'src/index.ts', testing: 'src/testing.ts' },
+    entry: { index: 'src/index.ts', testing: 'src/testing.ts', utils: 'src/utils.ts' },
     format: ['esm'],
     dts: true,
     clean: true,
     target: 'es2022',
-    external: ['lit'],
+    external: ['lit', '@webmcpui/webmcp'],
   },
   // Single-file IIFE bundle for no-build consumers (Webflow / WordPress /
-  // plain HTML). Auto-registers every <wmcp-*> element on load. Lit is
-  // inlined so it's one <script src> with no dependencies.
+  // plain HTML). Auto-registers every <wmcp-*> element on load. Lit and all
+  // deps are inlined so it's one <script src> with no dependencies.
   {
     entry: { webmcpui: 'src/cdn.ts' },
     format: ['iife'],

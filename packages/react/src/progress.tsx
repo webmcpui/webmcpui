@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpProgress } from '@webmcpui/core';
+import { WmcpProgress } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpProgress.tagName, WmcpProgress);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { WmcpTooltip } from '@webmcpui/core';
+import { WmcpTooltip } from '@webmcpui/components';
 import { defineOnce } from './define.js';
 
 defineOnce(WmcpTooltip.tagName, WmcpTooltip);
