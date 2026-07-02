@@ -8,7 +8,7 @@ import {
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpAction } from './action.js';
-import type { JSONSchema, WebMCPToolResult } from '../webmcp.js';
+import type { JSONSchema, WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** A single tab derived from a `[tab]` panel child of `<wmcp-tabs>`. */
 export interface WmcpTabInfo {

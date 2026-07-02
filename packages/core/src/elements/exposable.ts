@@ -5,7 +5,7 @@ import {
   type JSONSchema,
   type ToolDisposer,
   type WebMCPToolResult,
-} from '../webmcp.js';
+} from '@webmcpui/webmcp';
 
 /**
  * Base for every element that can register itself as a WebMCP tool — both the

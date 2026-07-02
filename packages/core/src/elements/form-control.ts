@@ -18,7 +18,7 @@ import {
   supportsFormAssociation,
   warnFormAssociationUnavailable,
 } from '../internals.js';
-import type { JSONSchema, WebMCPToolResult } from '../webmcp.js';
+import type { JSONSchema, WebMCPToolResult } from '@webmcpui/webmcp';
 
 /**
  * Base class for form-associated, agent-operable controls.

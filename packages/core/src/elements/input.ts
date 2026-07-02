@@ -7,7 +7,7 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl, textFieldStyles } from './form-control.js';
-import type { JSONSchema } from '../webmcp.js';
+import type { JSONSchema } from '@webmcpui/webmcp';
 
 /** The `type` variants `<wmcp-input>` supports (mirrors native input types). */
 export type WmcpInputType =

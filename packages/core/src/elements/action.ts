@@ -1,6 +1,6 @@
 import { property } from 'lit/decorators.js';
 import { WmcpExposable } from './exposable.js';
-import type { WebMCPToolResult } from '../webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /**
  * Base class for agent-operable *action* elements.

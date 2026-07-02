@@ -9,7 +9,7 @@
  * invoke them as an agent would. Pass `surface` to stub just one of the two.
  */
 
-import type { WebMCPToolResult } from './webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** A tool an element registered with the {@link FakeAgent}, as recorded for inspection. */
 export interface RegisteredTool {

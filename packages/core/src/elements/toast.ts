@@ -8,7 +8,7 @@ import {
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpExposable } from './exposable.js';
-import type { WebMCPToolResult } from '../webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** A toast's severity, used for styling and the agent-readable summary. */
 export type WmcpToastVariant = 'info' | 'success' | 'warning' | 'error';
