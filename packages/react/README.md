@@ -65,7 +65,7 @@ Themed through the [design tokens](https://www.npmjs.com/package/@webmcpui/token
   inline fallbacks; style them yourself via the CSS custom properties or the
   `::part()` selectors each element exposes.
 
-## Server rendering (Next.js, Remix, …)
+## Server rendering (Next.js, React Router, …)
 
 These are **client-rendered custom elements** — importing them evaluates
 `class extends HTMLElement`, which has no meaning on the server. In an SSR/RSC
