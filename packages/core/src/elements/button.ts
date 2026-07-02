@@ -8,7 +8,7 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpAction } from './action.js';
-import type { WebMCPToolResult } from '../webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /** Visual variants `<wmcp-button>` supports (shadcn-aligned). */
 export type WmcpButtonVariant =

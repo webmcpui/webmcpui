@@ -29,6 +29,9 @@ jobs:
         working-directory: packages/core
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Build @webmcpui/webmcp
+        run: pnpm --filter @webmcpui/webmcp build
+
       - name: Typecheck
         working-directory: packages/core
         run: pnpm typecheck

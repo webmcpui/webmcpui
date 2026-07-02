@@ -13,7 +13,7 @@ import {
   type StandardSchemaV1,
 } from '../standard-schema.js';
 import { WmcpExposable } from './exposable.js';
-import type { JSONSchema, WebMCPToolResult } from '../webmcp.js';
+import type { JSONSchema, WebMCPToolResult } from '@webmcpui/webmcp';
 
 /**
  * Base class for form-associated, agent-operable controls.

@@ -6,7 +6,7 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpAction } from './action.js';
-import type { WebMCPToolResult } from '../webmcp.js';
+import type { WebMCPToolResult } from '@webmcpui/webmcp';
 
 /**
  * `<wmcp-dialog>` — a modal dialog whose *action* is being opened. The second

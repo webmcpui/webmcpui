@@ -67,12 +67,12 @@ export { defineComponents } from './register.js';
 export {
   exposeTool,
   isWebMCPAvailable,
+  type JSONSchema,
   type WebMCPToolDefinition,
   type WebMCPToolResult,
   type WebMCPToolResultContent,
   type ToolDisposer,
-  type JSONSchema,
-} from './webmcp.js';
+} from "@webmcpui/webmcp";
 
 // Standard Schema validation
 export {

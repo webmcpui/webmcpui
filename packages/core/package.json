@@ -51,6 +51,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@webmcpui/webmcp": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {
