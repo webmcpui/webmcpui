@@ -28,6 +28,9 @@ declare global {
     'wmcp-alert': import('./index.js').WmcpAlert;
     'wmcp-progress': import('./index.js').WmcpProgress;
     'wmcp-avatar': import('./index.js').WmcpAvatar;
+    'wmcp-card': import('./index.js').WmcpCard;
+    'wmcp-skeleton': import('./index.js').WmcpSkeleton;
+    'wmcp-spinner': import('./index.js').WmcpSpinner;
   }
 }
 `;

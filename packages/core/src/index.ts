@@ -61,6 +61,9 @@ export { WmcpTooltip } from './elements/tooltip.js';
 export { WmcpAlert, type WmcpAlertVariant } from './elements/alert.js';
 export { WmcpProgress } from './elements/progress.js';
 export { WmcpAvatar } from './elements/avatar.js';
+export { WmcpCard } from './elements/card.js';
+export { WmcpSkeleton } from './elements/skeleton.js';
+export { WmcpSpinner } from './elements/spinner.js';
 export { defineComponents } from './register.js';
 
 // WebMCP exposure layer

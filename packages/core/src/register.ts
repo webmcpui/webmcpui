@@ -16,6 +16,9 @@ import { WmcpTooltip } from './elements/tooltip.js';
 import { WmcpAlert } from './elements/alert.js';
 import { WmcpProgress } from './elements/progress.js';
 import { WmcpAvatar } from './elements/avatar.js';
+import { WmcpCard } from './elements/card.js';
+import { WmcpSkeleton } from './elements/skeleton.js';
+import { WmcpSpinner } from './elements/spinner.js';
 
 interface WmcpElementCtor {
   readonly tagName: string;
@@ -43,6 +46,9 @@ const elements: WmcpElementCtor[] = [
   WmcpAlert,
   WmcpProgress,
   WmcpAvatar,
+  WmcpCard,
+  WmcpSkeleton,
+  WmcpSpinner,
 ];
 
 /**

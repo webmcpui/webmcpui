@@ -1,0 +1,10 @@
+{
+  "components": {
+    "spinner": {
+      "track": { "$type": "color", "$value": "{base.secondary}" },
+      "color": { "$type": "color", "$value": "{base.primary}" },
+      "size": { "$type": "dimension", "$value": "1.25rem" },
+      "width": { "$type": "dimension", "$value": "2px" }
+    }
+  }
+}
