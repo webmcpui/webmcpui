@@ -46,6 +46,32 @@ describe('presentational elements', () => {
     expect(info.getAttribute('role')).to.equal('status');
   });
 
+  it('wmcp-alert re-evaluates role when variant changes at runtime', async () => {
+    // Regression: role was set once in connectedCallback and went stale on an
+    // info→error escalation, so the error was never announced assertively.
+    const el = await fixture<WmcpAlert>(html`<wmcp-alert>Heads up</wmcp-alert>`);
+    expect(el.getAttribute('role')).to.equal('status');
+    el.variant = 'error';
+    await el.updateComplete;
+    expect(el.getAttribute('role')).to.equal('alert');
+    el.variant = 'info';
+    await el.updateComplete;
+    expect(el.getAttribute('role')).to.equal('status');
+  });
+
+  it('wmcp-separator syncs aria-orientation when orientation changes', async () => {
+    // Regression: aria-orientation was set once and not cleared when flipped
+    // back to horizontal.
+    const el = await fixture<WmcpSeparator>(
+      html`<wmcp-separator orientation="vertical"></wmcp-separator>`,
+    );
+    await el.updateComplete;
+    expect(el.getAttribute('aria-orientation')).to.equal('vertical');
+    el.orientation = 'horizontal';
+    await el.updateComplete;
+    expect(el.hasAttribute('aria-orientation')).to.be.false;
+  });
+
   it('wmcp-progress wires progressbar a11y from value/max', async () => {
     const el = await fixture<WmcpProgress>(
       html`<wmcp-progress value="30" max="120"></wmcp-progress>`,
@@ -58,6 +84,27 @@ describe('presentational elements', () => {
     const ind = await fixture<WmcpProgress>(html`<wmcp-progress></wmcp-progress>`);
     await ind.updateComplete;
     expect(ind.hasAttribute('aria-valuenow')).to.be.false;
+  });
+
+  it('wmcp-progress clamps aria-valuenow to max and survives max<=0', async () => {
+    // Regression: aria-valuenow was reported unclamped (could exceed max) and the
+    // width calc divided by max with no guard for max<=0 (NaN/Infinity).
+    const over = await fixture<WmcpProgress>(
+      html`<wmcp-progress value="200" max="100"></wmcp-progress>`,
+    );
+    await over.updateComplete;
+    expect(over.getAttribute('aria-valuenow')).to.equal('100');
+    const bar = over.shadowRoot!.querySelector('.bar') as HTMLElement;
+    expect(bar.style.width).to.equal('100%');
+
+    const zeroMax = await fixture<WmcpProgress>(
+      html`<wmcp-progress value="10" max="0"></wmcp-progress>`,
+    );
+    await zeroMax.updateComplete;
+    const zbar = zeroMax.shadowRoot!.querySelector('.bar') as HTMLElement;
+    // No NaN/Infinity in the width; bar collapses to 0.
+    expect(zbar.style.width === '0%' || zbar.style.width === '').to.be.true;
+    expect(zeroMax.getAttribute('aria-valuenow')).to.equal('0');
   });
 
   it('wmcp-avatar shows the image, falling back to text on error', async () => {

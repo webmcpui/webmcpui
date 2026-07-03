@@ -39,8 +39,16 @@ export class WmcpSeparator extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', 'separator');
+  }
+
+  override updated(): void {
+    // `orientation` is reactive; keep aria-orientation in sync. A separator's
+    // default orientation is horizontal, so only the vertical case is marked —
+    // and it must be cleared if flipped back to horizontal.
     if (this.orientation === 'vertical') {
       this.setAttribute('aria-orientation', 'vertical');
+    } else {
+      this.removeAttribute('aria-orientation');
     }
   }
 }

@@ -70,18 +70,27 @@ export class WmcpProgress extends LitElement {
     return this.indeterminate || this.value == null;
   }
 
+  /** `value` clamped to `[0, max]` — never exceeds the max the bar is capped at. */
+  private get clampedValue(): number {
+    const v = Math.max(0, Math.min(this.max, this.value ?? 0));
+    return Number.isFinite(v) ? v : 0;
+  }
+
   override updated(): void {
     this.setAttribute('role', 'progressbar');
     this.setAttribute('aria-valuemin', '0');
     this.setAttribute('aria-valuemax', String(this.max));
     if (this.isIndeterminate) this.removeAttribute('aria-valuenow');
-    else this.setAttribute('aria-valuenow', String(this.value));
+    // Report the clamped value so aria-valuenow never disagrees with the bar.
+    else this.setAttribute('aria-valuenow', String(this.clampedValue));
   }
 
   override render(): TemplateResult {
-    const pct = this.isIndeterminate
-      ? 0
-      : Math.max(0, Math.min(100, ((this.value ?? 0) / this.max) * 100));
+    // Guard max<=0 so the width isn't NaN/Infinity (division by a non-positive max).
+    const pct =
+      this.isIndeterminate || !(this.max > 0)
+        ? 0
+        : Math.max(0, Math.min(100, (this.clampedValue / this.max) * 100));
     return html`<div
       class="bar ${this.isIndeterminate ? 'indeterminate' : ''}"
       style=${this.isIndeterminate ? '' : `width: ${pct}%`}

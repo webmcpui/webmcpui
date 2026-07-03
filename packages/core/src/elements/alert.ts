@@ -64,8 +64,11 @@ export class WmcpAlert extends LitElement {
   /** Optional bold heading above the message. */
   @property() title = '';
 
-  override connectedCallback(): void {
-    super.connectedCallback();
+  override updated(): void {
+    // `variant` is reactive, so recompute the role on every change — not just at
+    // connect. An alert escalated info→error at runtime must switch
+    // role="status" → role="alert" to be announced assertively. (Runs on the
+    // first render too, so the role is set once mounted.)
     this.setAttribute(
       'role',
       this.variant === 'error' || this.variant === 'warning' ? 'alert' : 'status',
