@@ -56,6 +56,22 @@ describe('wmcp-input', () => {
       expect(data.get('email')).to.equal('a@b.com');
     });
 
+    it('submits under a name set as a property, not just an attribute', async () => {
+      // React/Vue bind `name` as a DOM property. Form-associated custom elements
+      // are submitted under their name *attribute*, so without `reflect: true`
+      // the attribute is never written and FormData drops the field. Regression
+      // for the framework path (PR #5).
+      const form = await fixture<HTMLFormElement>(
+        html`<form><wmcp-input></wmcp-input></form>`,
+      );
+      const el = form.querySelector<WmcpInput>('wmcp-input')!;
+      el.name = 'email'; // set as a property, as a framework binding would
+      el.value = 'a@b.com';
+      await el.updateComplete;
+      expect(el.getAttribute('name')).to.equal('email');
+      expect(new FormData(form).get('email')).to.equal('a@b.com');
+    });
+
     it('clears on form reset', async () => {
       const form = await fixture<HTMLFormElement>(
         html`<form>

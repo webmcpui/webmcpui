@@ -126,8 +126,15 @@ export abstract class WmcpFormControl extends WmcpExposable {
   /** Visible label text. */
   @property() label = '';
 
-  /** Form control name (used for submission and the default tool name). */
-  @property() name = '';
+  /**
+   * Form control name (used for submission and the default tool name).
+   *
+   * Reflected: form-associated custom elements are submitted under their `name`
+   * *attribute*, so when a framework (React/Vue) sets `name` as a DOM property,
+   * it must reflect to the attribute — otherwise `new FormData(form)` drops the
+   * field entirely.
+   */
+  @property({ reflect: true }) name = '';
 
   /** Current value (reflected to the form). */
   @property() value = '';
