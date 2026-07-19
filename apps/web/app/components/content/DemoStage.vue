@@ -22,20 +22,27 @@ const props = withDefaults(
     description?: string;
     icon?: string;
     tool?: ToolInfo | null;
+    tools?: ToolInfo[] | null;
     log?: LogLine[];
     running?: boolean;
     canRun?: boolean;
+    showRun?: boolean;
   }>(),
   {
     url: 'app.example.com',
     description: '',
     icon: 'lucide:sparkles',
     tool: null,
+    tools: null,
     log: () => [],
     running: false,
     canRun: true,
+    showRun: true,
   },
 );
+
+// Single-tool demos pass `tool`; multi-tool example demos pass `tools`.
+const toolList = computed(() => props.tools ?? (props.tool ? [props.tool] : []));
 
 const emit = defineEmits<{
   run: [];
@@ -155,6 +162,7 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
               </div>
               <div class="mt-6 flex flex-wrap gap-2">
                 <button
+                  v-if="showRun"
                   type="button"
                   class="bouncy flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-medium text-brand-foreground hover:brightness-105 active:scale-[0.98] disabled:opacity-60"
                   :disabled="running || !canRun"
@@ -177,24 +185,57 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
               </div>
             </section>
 
-            <!-- The exposed tool -->
-            <section class="flex min-w-0 flex-col bg-card p-6 sm:p-8">
+            <!-- The exposed tool(s) -->
+            <section class="flex min-h-0 min-w-0 flex-col overflow-y-auto bg-card p-6 sm:p-8">
+              <slot name="prompt" />
+
               <p
                 class="mb-5 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground"
               >
-                <span class="h-1.5 w-1.5 rounded-full bg-muted-foreground" /> Exposed WebMCP tool
+                <span class="h-1.5 w-1.5 rounded-full bg-muted-foreground" />
+                Exposed WebMCP tool{{ toolList.length > 1 ? 's' : '' }}
               </p>
 
-              <div v-if="tool" class="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
+              <!-- One tool: today's full layout. -->
+              <div v-if="toolList.length === 1" class="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
                 <span
                   class="w-fit rounded-md bg-brand-soft px-2 py-1 font-mono text-xs font-semibold text-brand"
                 >
-                  {{ tool.name }}
+                  {{ toolList[0]!.name }}
                 </span>
-                <p class="text-sm text-muted-foreground">{{ tool.description }}</p>
+                <p class="text-sm text-muted-foreground">{{ toolList[0]!.description }}</p>
                 <pre
                   class="min-w-0 max-w-full overflow-auto rounded-lg bg-surface-2 p-3 font-mono text-[0.72rem] leading-relaxed text-foreground"
-                >{{ JSON.stringify(tool.schema, null, 2) }}</pre>
+                >{{ JSON.stringify(toolList[0]!.schema, null, 2) }}</pre>
+              </div>
+
+              <!-- Several tools: collapsible, so six schemas don't swamp the panel. -->
+              <div v-else-if="toolList.length" class="min-w-0 space-y-2">
+                <details
+                  v-for="t in toolList"
+                  :key="t.name"
+                  class="group rounded-lg border border-border"
+                >
+                  <summary
+                    class="flex cursor-pointer list-none items-center gap-2 px-3 py-2 [&::-webkit-details-marker]:hidden"
+                  >
+                    <Icon
+                      name="lucide:chevron-right"
+                      class="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform group-open:rotate-90"
+                    />
+                    <span
+                      class="rounded-md bg-brand-soft px-2 py-0.5 font-mono text-xs font-semibold text-brand"
+                    >
+                      {{ t.name }}
+                    </span>
+                  </summary>
+                  <div class="space-y-2 px-3 pb-3">
+                    <p class="text-sm text-muted-foreground">{{ t.description }}</p>
+                    <pre
+                      class="min-w-0 max-w-full overflow-auto rounded-lg bg-surface-2 p-3 font-mono text-[0.72rem] leading-relaxed text-foreground"
+                    >{{ JSON.stringify(t.schema, null, 2) }}</pre>
+                  </div>
+                </details>
               </div>
               <p v-else class="font-mono text-xs text-muted-foreground">registering…</p>
 
