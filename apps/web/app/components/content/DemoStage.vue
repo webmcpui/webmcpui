@@ -83,7 +83,7 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
        interactive surface even on light docs pages (it dissolves otherwise). -->
   <button
     type="button"
-    class="dark bouncy not-prose group my-6 flex w-full items-center gap-4 rounded-card border border-border bg-card p-5 text-left text-foreground hover:-translate-y-1 hover:shadow-soft"
+    class="dark bouncy not-prose group my-6 flex w-full flex-wrap items-center gap-4 rounded-card border border-border bg-card p-5 text-left text-foreground hover:-translate-y-1 hover:shadow-soft sm:flex-nowrap"
     @click="launch"
   >
     <span
@@ -91,11 +91,11 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
     >
       <Icon :name="icon" class="h-5 w-5" />
     </span>
-    <span class="min-w-0 flex-1">
-      <span class="flex items-center gap-2">
+    <span class="min-w-0 flex-1 basis-48">
+      <span class="flex flex-wrap items-center gap-2">
         <span class="font-medium text-foreground">{{ title }}</span>
         <span
-          class="rounded-full bg-surface-2 px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground"
+          class="shrink-0 whitespace-nowrap rounded-full bg-surface-2 px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground"
         >
           Live demo
         </span>
@@ -105,7 +105,7 @@ const roleGlyph = { agent: '→', tool: '←', user: '•' } as const;
       </span>
     </span>
     <span
-      class="bouncy flex h-9 items-center gap-1.5 rounded-full bg-brand px-4 text-sm font-medium text-brand-foreground group-hover:brightness-105"
+      class="bouncy flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-brand px-4 text-sm font-medium text-brand-foreground group-hover:brightness-105"
     >
       Try it
       <Icon name="lucide:arrow-up-right" class="h-4 w-4" />
