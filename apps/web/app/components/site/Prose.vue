@@ -142,11 +142,20 @@
   margin-block: 2.5rem;
 }
 
+/* Tables render inside a ProseTable wrapper so wide tables scroll in place
+   on small screens instead of overflowing the page. */
+.prose-doc .prose-table-wrap {
+  overflow-x: auto;
+  margin-block: 1.5rem;
+}
 .prose-doc table {
   width: 100%;
   border-collapse: collapse;
   margin-block: 1.5rem;
   font-size: 0.9rem;
+}
+.prose-doc .prose-table-wrap table {
+  margin-block: 0;
 }
 .prose-doc th,
 .prose-doc td {

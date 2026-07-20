@@ -109,6 +109,52 @@ const interaction = [
     body: 'Notifications an agent can read to see what happened.',
   },
 ];
+
+// Real-world example demos — whole workflows, not single controls.
+const examples = [
+  {
+    icon: 'lucide:shopping-cart',
+    name: 'Recipe → grocery cart',
+    tag: 'Everyday',
+    to: '/docs/examples/recipe-cart',
+    body: 'Paste a recipe; the agent adds every ingredient to your cart.',
+  },
+  {
+    icon: 'lucide:utensils',
+    name: 'Restaurant booking',
+    tag: 'Everyday',
+    to: '/docs/examples/restaurant-booking',
+    body: '“Table for 4 on Friday at 7” becomes a filled form you confirm.',
+  },
+  {
+    icon: 'lucide:list-checks',
+    name: 'Brain-dump → to-dos',
+    tag: 'Everyday',
+    to: '/docs/examples/brain-dump',
+    body: 'A rambling paragraph becomes prioritized tasks.',
+  },
+  {
+    icon: 'lucide:contact',
+    name: 'Email → CRM lead',
+    tag: 'Business',
+    to: '/docs/examples/crm-lead',
+    body: 'A messy inquiry email files itself as a clean lead.',
+  },
+  {
+    icon: 'lucide:receipt',
+    name: 'Receipt → expense',
+    tag: 'Business',
+    to: '/docs/examples/expense-report',
+    body: 'Vendor, total, date, category — filed without retyping.',
+  },
+  {
+    icon: 'lucide:chart-column',
+    name: 'Dashboard control',
+    tag: 'Business',
+    to: '/docs/examples/dashboard',
+    body: 'The agent sets the filters, then reads the answer off the page.',
+  },
+];
 </script>
 
 <template>
@@ -286,11 +332,60 @@ const interaction = [
     </div>
   </section>
 
+  <!-- ===================== EXAMPLES ===================== -->
+  <section id="examples" class="scroll-mt-24 px-6 pt-28">
+    <div class="mx-auto max-w-5xl">
+      <div class="flex items-center gap-4">
+        <span class="font-mono text-sm text-muted-foreground">03</span>
+        <div class="h-px flex-1 bg-border" />
+        <span class="text-xs uppercase tracking-widest text-muted-foreground">
+          Examples
+        </span>
+      </div>
+
+      <h2 class="mt-8 max-w-2xl text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+        <span class="text-foreground">Not just controls.</span>{{ ' ' }}
+        <span class="text-muted-foreground">Whole workflows an agent can drive.</span>
+      </h2>
+      <p class="mt-4 max-w-xl text-muted-foreground">
+        Paste a recipe and the cart fills itself. Paste an email and the CRM
+        form files itself. Six live demos —
+        <NuxtLink to="/docs/examples" class="text-brand hover:underline">see all examples</NuxtLink>.
+      </p>
+
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <NuxtLink
+          v-for="e in examples"
+          :key="e.name"
+          :to="e.to"
+          class="bouncy group rounded-card border border-border bg-card p-6 hover:-translate-y-1 hover:shadow-soft"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand"
+            >
+              <Icon :name="e.icon" class="h-5 w-5" />
+            </span>
+            <span
+              class="rounded-full bg-surface-2 px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground"
+            >
+              {{ e.tag }}
+            </span>
+          </div>
+          <h3 class="mt-4 text-sm font-medium text-foreground">{{ e.name }}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {{ e.body }}
+          </p>
+        </NuxtLink>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== FEATURES ===================== -->
   <section id="features" class="scroll-mt-24 px-6 pt-28">
     <div class="mx-auto max-w-5xl">
       <div class="flex items-center gap-4">
-        <span class="font-mono text-sm text-muted-foreground">03</span>
+        <span class="font-mono text-sm text-muted-foreground">04</span>
         <div class="h-px flex-1 bg-border" />
         <span class="text-xs uppercase tracking-widest text-muted-foreground">
           Features
@@ -326,7 +421,7 @@ const interaction = [
   <section id="install" class="scroll-mt-24 px-6 pt-28">
     <div class="mx-auto max-w-5xl">
       <div class="flex items-center gap-4">
-        <span class="font-mono text-sm text-muted-foreground">04</span>
+        <span class="font-mono text-sm text-muted-foreground">05</span>
         <div class="h-px flex-1 bg-border" />
         <span class="text-xs uppercase tracking-widest text-muted-foreground">
           Install
