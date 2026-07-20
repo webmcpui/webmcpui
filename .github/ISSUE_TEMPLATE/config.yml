@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Docs
+    url: https://webmcpui.com/docs
+    about: Guides, live demos, and API reference for every element.
+  - name: Roadmap & open decisions
+    url: https://github.com/webmcpui/webmcpui/blob/main/ROADMAP.md
+    about: Where the project is headed and which design calls are still open.
