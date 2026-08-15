@@ -32,8 +32,10 @@ export type WmcpButtonType = 'button' | 'submit' | 'reset';
  * an *action* an agent can trigger. When a WebMCP host is present and the
  * button opts in (`expose`), it registers a tool that activates the button
  * exactly as a human click would — running light-DOM `click` handlers and, for
- * `type="submit"`/`"reset"`, driving the associated form. With no agent
- * present (the common case today) it is simply a good, accessible button.
+ * `type="submit"`/`"reset"`, driving the associated form. The tool's result
+ * reports the outcome it observed rather than the outcome it intended: a submit
+ * counts as submitted only if the form's `submit` event actually fired. With no
+ * agent present (the common case today) it is simply a good, accessible button.
  *
  * Activation has a single path: both a real click and an agent tool call route
  * through the inner native `<button>`, so behavior, focus, and form
@@ -210,6 +212,16 @@ export class WmcpButton extends WmcpAction {
     return `Click the "${this.actionNoun}" button.`;
   }
 
+  /**
+   * Click the button and report *what actually happened*.
+   *
+   * The truthful-result contract: a submit is reported as submitted only when
+   * the form's `submit` event really dispatched. A submit button with no form,
+   * or one whose form is blocked by constraint validation, reports an error —
+   * the agent is never told a submission happened that didn't. The click itself
+   * always runs (light-DOM handlers may be the point), even when there is no
+   * form to drive.
+   */
   protected override executeTool(): WebMCPToolResult {
     const noun = this.actionNoun;
     if (this.disabled) {
@@ -223,17 +235,83 @@ export class WmcpButton extends WmcpAction {
         isError: true,
       };
     }
+
+    if (this.type === 'submit') {
+      const form = this.internals.form;
+      if (!form) {
+        this.activate();
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Clicked the "${noun}" button, but it is not inside a form — nothing was submitted.`,
+            },
+          ],
+          isError: true,
+        };
+      }
+      // `requestSubmit()` dispatches `submit` synchronously when constraint
+      // validation passes and fires `invalid` events (no `submit`) when it
+      // doesn't — so a listener spanning the click is an exact witness. Capture
+      // phase and `once` keep it out of the page's way; a page handler calling
+      // `preventDefault()` still counts as submitted.
+      let submitted = false;
+      const witness = (): void => {
+        submitted = true;
+      };
+      form.addEventListener('submit', witness, { once: true, capture: true });
+      try {
+        this.activate();
+      } finally {
+        form.removeEventListener('submit', witness, { capture: true });
+      }
+      return submitted
+        ? {
+            content: [
+              {
+                type: 'text',
+                text: `Clicked the "${noun}" button and submitted the form.`,
+              },
+            ],
+          }
+        : {
+            content: [
+              {
+                type: 'text',
+                text: `Clicked the "${noun}" button, but the form failed validation and was not submitted. Fix the invalid fields and try again.`,
+              },
+            ],
+            isError: true,
+          };
+    }
+
+    if (this.type === 'reset') {
+      // Reset has no constraint gate: it succeeds whenever there is a form.
+      const form = this.internals.form;
+      this.activate();
+      return form
+        ? {
+            content: [
+              {
+                type: 'text',
+                text: `Clicked the "${noun}" button and reset the form.`,
+              },
+            ],
+          }
+        : {
+            content: [
+              {
+                type: 'text',
+                text: `Clicked the "${noun}" button, but it is not inside a form — nothing was reset.`,
+              },
+            ],
+            isError: true,
+          };
+    }
+
     this.activate();
-    const effect =
-      this.type === 'submit'
-        ? ' (submitted the form)'
-        : this.type === 'reset'
-          ? ' (reset the form)'
-          : '';
     return {
-      content: [
-        { type: 'text', text: `Clicked the "${noun}" button${effect}.` },
-      ],
+      content: [{ type: 'text', text: `Clicked the "${noun}" button.` }],
     };
   }
 
