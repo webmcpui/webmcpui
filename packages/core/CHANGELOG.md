@@ -1,5 +1,14 @@
 # @webmcpui/core
 
+## 0.4.0
+
+### Minor Changes
+
+- Tool results now always tell the agent the truth, and the library survives partial-DOM test environments.
+  - **Truthful button tool results.** `<wmcp-button type="submit">` reports "submitted the form" only when the form's `submit` event actually dispatched. A submit button outside any form, or one whose form fails constraint validation, returns `isError: true` with a message saying exactly what didn't happen (the click itself still fires for light-DOM handlers). Reset likewise reports an error when there is no form. Previously the tool claimed a submit unconditionally.
+  - **Graceful degradation without ElementInternals.** Components no longer hard-crash in jsdom (`setFormValue` missing) or happy-dom (`attachInternals` missing): they construct, render, validate, and expose their WebMCP tools, with native `<form>` participation disabled behind a single dev-mode console warning linking to the testing docs. Real browsers are unaffected.
+  - **`installFakeAgent()` stubs the canonical surface.** The fake WebMCP host now installs on `document.modelContext` (what the library prefers) as well as `navigator.modelContext` (the deprecated fallback) — the same host object on both, so tools register exactly once. A new `surface: 'document' | 'navigator' | 'both'` option narrows it, and `restore()` puts back each surface's prior state. Zero-argument calls are unchanged.
+
 ## 0.3.1
 
 ### Patch Changes
