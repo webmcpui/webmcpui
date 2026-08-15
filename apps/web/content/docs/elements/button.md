@@ -63,7 +63,21 @@ The exposed tool takes **no arguments** — calling it *is* the action:
 }
 ```
 
-When the agent calls it, the button activates exactly as a click would; the tool result reports what happened (and whether a form was submitted or reset). Activating a `disabled` button returns an error result instead.
+When the agent calls it, the button activates exactly as a click would. The tool result is the agent's only feedback channel, so it reports the outcome the button *observed* — never the outcome it merely intended. A `type="submit"` call is reported as submitted only if the form's `submit` event actually fired; if a page handler calls `preventDefault()` on that event, it still counts as submitted, because the form *was* submitted as far as the DOM is concerned.
+
+In every message below, `<noun>` is the button's `label`, else its trimmed text content, else its `name`, else `"button"`.
+
+| Case | Outcome | Message |
+| --- | --- | --- |
+| `disabled` (any `type`) | error | `The "<noun>" button is disabled and can't be activated.` |
+| `type="button"` | success | `Clicked the "<noun>" button.` |
+| `type="submit"`, form submits | success | `Clicked the "<noun>" button and submitted the form.` |
+| `type="submit"`, not inside a form | error | `Clicked the "<noun>" button, but it is not inside a form — nothing was submitted.` |
+| `type="submit"`, form fails validation | error | `Clicked the "<noun>" button, but the form failed validation and was not submitted. Fix the invalid fields and try again.` |
+| `type="reset"`, inside a form | success | `Clicked the "<noun>" button and reset the form.` |
+| `type="reset"`, not inside a form | error | `Clicked the "<noun>" button, but it is not inside a form — nothing was reset.` |
+
+"error" means the result comes back with `isError: true`, so an agent orchestrator can branch on it without parsing the message text. Note that in the "not inside a form" cases the click still runs — light-DOM `click` handlers fire as normal — only the form step is skipped.
 
 ## Theming
 

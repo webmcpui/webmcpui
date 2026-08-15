@@ -26,6 +26,20 @@ agent.restore(); // remove the stub
 
 > **Order matters.** Install the fake agent *before* the element connects — controls register their tool in `connectedCallback`, so the host must already be present.
 
+## Environments
+
+`<wmcp-*>` form controls are form-associated custom elements built on `ElementInternals`, so run component tests in a real browser — `@web/test-runner`, Vitest browser mode, and Playwright component testing all work.
+
+As of v0.4, jsdom and happy-dom degrade gracefully instead of crashing: components render, validate, and expose their WebMCP tools, and a single console warning is logged. What doesn't work under jsdom/happy-dom is native `<form>` participation — `FormData`, `form.checkValidity()`, and `requestSubmit()`-driven submits are all disabled. Anything asserting on form submission needs a real browser.
+
+| | Real browser | jsdom / happy-dom |
+| --- | --- | --- |
+| Render, validate, expose tools | yes | yes |
+| `FormData` includes control values | yes | no |
+| `form.checkValidity()` | yes | no |
+| `requestSubmit()`-driven submit | yes | no |
+| Console warning on load | no | yes (once) |
+
 ## Options
 
 `installFakeAgent(options?)` accepts:

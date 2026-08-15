@@ -55,3 +55,5 @@ Because these are standard custom elements, they work anywhere HTML renders. The
 ## FAQ
 
 **Does webmcpui pull another UI framework into my bundle?** The components are built with [Lit 3](https://lit.dev), declared as a regular dependency of `@webmcpui/core`. Lit is a small runtime (~15 kB min+gzip), and if your app already uses Lit 3, npm dedupes the two down to a single copy.
+
+**Testing in jsdom or happy-dom?** See [testing environments](/docs/testing#environments) — component tests want a real browser.
