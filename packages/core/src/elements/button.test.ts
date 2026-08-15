@@ -2,6 +2,7 @@ import { fixture, html, expect } from '@open-wc/testing';
 import { defineComponents } from '../register.js';
 import { installFakeAgent } from '../testing.js';
 import type { WmcpButton } from './button.js';
+import type { WmcpInput } from './input.js';
 
 before(() => defineComponents());
 
@@ -158,9 +159,41 @@ describe('wmcp-button', () => {
       try {
         const form = await fixture<HTMLFormElement>(
           html`<form>
+            <wmcp-input name="who" value="ada"></wmcp-input>
             <wmcp-button name="book" type="submit" expose>Book</wmcp-button>
           </form>`,
         );
+        const el = form.querySelector<WmcpButton>('wmcp-button')!;
+        await el.updateComplete;
+        let submitted = false;
+        // preventDefault keeps the test page from navigating; per the ratified
+        // semantics the submit still counts as having happened.
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          submitted = true;
+        });
+
+        const result = await agent.call('click_book');
+        expect(submitted).to.be.true;
+        expect(result.isError).to.not.equal(true);
+        expect(result.content[0]!.text).to.contain('submitted the form');
+      } finally {
+        agent.restore();
+      }
+    });
+
+    it('reports a validation-blocked submit as not submitted', async () => {
+      const agent = installFakeAgent();
+      try {
+        const form = await fixture<HTMLFormElement>(
+          html`<form>
+            <wmcp-input name="email" required></wmcp-input>
+            <wmcp-button name="book" type="submit" expose>Book</wmcp-button>
+          </form>`,
+        );
+        const input = form.querySelector<WmcpInput>('wmcp-input')!;
+        await input.updateComplete;
+        await input.validate(false);
         const el = form.querySelector<WmcpButton>('wmcp-button')!;
         await el.updateComplete;
         let submitted = false;
@@ -170,8 +203,69 @@ describe('wmcp-button', () => {
         });
 
         const result = await agent.call('click_book');
-        expect(submitted).to.be.true;
-        expect(result.content[0]!.text).to.contain('submitted the form');
+        expect(submitted).to.be.false;
+        expect(result.isError).to.be.true;
+        expect(result.content[0]!.text).to.contain('was not submitted');
+      } finally {
+        agent.restore();
+      }
+    });
+
+    it('reports a submit button with no form as nothing submitted', async () => {
+      const agent = installFakeAgent();
+      try {
+        const el = await fixture<WmcpButton>(
+          html`<wmcp-button name="book" type="submit" expose>Book</wmcp-button>`,
+        );
+        await el.updateComplete;
+        let clicks = 0;
+        el.addEventListener('click', () => (clicks += 1));
+
+        const result = await agent.call('click_book');
+        expect(clicks).to.equal(1);
+        expect(result.isError).to.be.true;
+        expect(result.content[0]!.text).to.contain('not inside a form');
+      } finally {
+        agent.restore();
+      }
+    });
+
+    it('resets the form when the agent calls a reset button', async () => {
+      const agent = installFakeAgent();
+      try {
+        const form = await fixture<HTMLFormElement>(
+          html`<form>
+            <wmcp-input name="who" value="ada"></wmcp-input>
+            <wmcp-button name="clear" type="reset" expose>Clear</wmcp-button>
+          </form>`,
+        );
+        const input = form.querySelector<WmcpInput>('wmcp-input')!;
+        const el = form.querySelector<WmcpButton>('wmcp-button')!;
+        await el.updateComplete;
+
+        const result = await agent.call('click_clear');
+        expect(input.value).to.equal('');
+        expect(result.isError).to.not.equal(true);
+        expect(result.content[0]!.text).to.contain('reset the form');
+      } finally {
+        agent.restore();
+      }
+    });
+
+    it('claims no form effect for a plain button', async () => {
+      const agent = installFakeAgent();
+      try {
+        const form = await fixture<HTMLFormElement>(
+          html`<form>
+            <wmcp-button name="go" type="button" expose>Go</wmcp-button>
+          </form>`,
+        );
+        const el = form.querySelector<WmcpButton>('wmcp-button')!;
+        await el.updateComplete;
+
+        const result = await agent.call('click_go');
+        expect(result.isError).to.not.equal(true);
+        expect(result.content[0]!.text).to.equal('Clicked the "Go" button.');
       } finally {
         agent.restore();
       }

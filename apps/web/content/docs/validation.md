@@ -20,9 +20,22 @@ input.schema = z.string().email('Enter a valid email');
 
 Validation runs on input and during native form validation. On failure the element:
 
-- sets `aria-invalid`,
+- sets `aria-invalid="true"` on the native control inside its shadow root (the actual `<input>` / `<textarea>` / `<select>` — not the `<wmcp-*>` host element),
+- reflects an `invalid` attribute on the host element (see [Styling invalid controls](#styling-invalid-controls)),
 - renders the error message in a live region (announced to assistive tech), and
 - propagates the failure to the containing `<form>` via `ElementInternals`, so native form submission is blocked just like a built-in control.
+
+## Styling invalid controls
+
+Because `aria-invalid` lives inside the shadow root, page CSS can't target it. Instead, use the `invalid` attribute the host reflects whenever a visible validation error is active:
+
+```css
+wmcp-input[invalid] {
+  /* e.g. shake animation, outline, spacing tweaks */
+}
+```
+
+The built-in error border uses this same hook internally (`:host([invalid]) .control`), and you can retheme it with the `--input-border-error` custom property without any selector work.
 
 ## Required fields
 

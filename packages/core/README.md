@@ -134,9 +134,12 @@ pnpm test         # @web/test-runner in real Chromium
 pnpm test:smoke   # node smoke check against the built dist
 ```
 
-Tests run in a genuine browser via the Playwright launcher — form-associated
-custom elements and `ElementInternals` don't work under jsdom. First run needs
-the browser binary:
+Tests run in a genuine browser via the Playwright launcher — native form
+participation needs real `ElementInternals`. (In jsdom/happy-dom the elements
+degrade gracefully: they render, validate, and expose tools, with one console
+warning and no `<form>` association — see
+[webmcpui.com/docs/testing#environments](https://webmcpui.com/docs/testing#environments).)
+First run needs the browser binary:
 
 ```bash
 pnpm exec playwright install chromium
