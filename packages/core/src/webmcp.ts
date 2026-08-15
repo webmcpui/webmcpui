@@ -80,7 +80,10 @@ export function isWebMCPAvailable(): boolean {
 // Node types in this browser package) — it's undefined in the browser, so the
 // CDN bundle warns, while bundlers that define NODE_ENV silence it for
 // production. Fail-open: anything but an explicit "production" warns.
-const isDevEnv =
+//
+// Exported for the other dev-warning sites (see `internals.ts`) so there is one
+// definition of "are we in dev". Internal — not re-exported from `index.ts`.
+export const isDevEnv =
   (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
     ?.NODE_ENV !== 'production';
 

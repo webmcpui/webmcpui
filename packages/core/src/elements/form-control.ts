@@ -13,6 +13,11 @@ import {
   type StandardSchemaV1,
 } from '../standard-schema.js';
 import { WmcpExposable } from './exposable.js';
+import {
+  attachInternalsSafe,
+  supportsFormAssociation,
+  warnFormAssociationUnavailable,
+} from '../internals.js';
 import type { JSONSchema, WebMCPToolResult } from '../webmcp.js';
 
 /**
@@ -162,7 +167,23 @@ export abstract class WmcpFormControl extends WmcpExposable {
 
   @state() protected error = '';
 
-  protected readonly internals: ElementInternals = this.attachInternals();
+  /**
+   * `ElementInternals`, or `null` in an environment without `attachInternals`
+   * (happy-dom). Never touched directly — every use is gated on
+   * {@link formAssociationAvailable}.
+   */
+  protected readonly internals: ElementInternals | null =
+    attachInternalsSafe(this);
+
+  /**
+   * Whether native `<form>` participation actually works here. False only in
+   * partial-DOM test environments, where the control still renders, validates,
+   * and exposes its WebMCP tool — it just doesn't join a form. The `internals`
+   * null check at each call site is what narrows the type; this flag is the
+   * behavioral gate.
+   */
+  protected readonly formAssociationAvailable: boolean =
+    supportsFormAssociation(this.internals);
 
   /** Noun used in default tool names/descriptions when `name` is empty. */
   protected get controlNoun(): string {
@@ -201,8 +222,17 @@ export abstract class WmcpFormControl extends WmcpExposable {
     return this.value;
   }
 
-  /** Push the current form value into ElementInternals. */
+  /**
+   * Push the current form value into ElementInternals.
+   *
+   * The first place a control reaches for form association, so it is also where
+   * the one-time "no form association here" warning fires.
+   */
   protected syncFormValue(): void {
+    if (!this.internals || !this.formAssociationAvailable) {
+      warnFormAssociationUnavailable();
+      return;
+    }
     this.internals.setFormValue(this.getFormValue());
   }
 
@@ -349,10 +379,15 @@ export abstract class WmcpFormControl extends WmcpExposable {
    */
   async validate(show = true): Promise<boolean> {
     const { valid, message, flags } = await this.computeValidity();
-    if (valid) {
-      this.internals.setValidity({});
-    } else {
-      this.internals.setValidity(flags, message, this.control ?? undefined);
+    // Validation itself is environment-independent; only *reflecting* it to the
+    // form needs ElementInternals, so a partial-DOM environment still gets the
+    // computed result, the `invalid` attribute, and the visible message.
+    if (this.internals && this.formAssociationAvailable) {
+      if (valid) {
+        this.internals.setValidity({});
+      } else {
+        this.internals.setValidity(flags, message, this.control ?? undefined);
+      }
     }
     if (show) {
       this.error = valid ? '' : message;
@@ -363,7 +398,12 @@ export abstract class WmcpFormControl extends WmcpExposable {
 
   /** Reveal the validation message when the form reports validity (submit). */
   private readonly onInvalid = (): void => {
-    this.error = this.internals.validationMessage;
+    // Without form association a form can't report validity, so this only ever
+    // fires from a hand-dispatched event; keep the last computed message rather
+    // than blanking it.
+    if (this.internals && this.formAssociationAvailable) {
+      this.error = this.internals.validationMessage;
+    }
     this.toggleAttribute('invalid', true);
   };
 

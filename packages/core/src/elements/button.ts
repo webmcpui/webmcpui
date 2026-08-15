@@ -8,6 +8,11 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpAction } from './action.js';
+import {
+  attachInternalsSafe,
+  supportsFormAssociation,
+  warnFormAssociationUnavailable,
+} from '../internals.js';
 import type { WebMCPToolResult } from '../webmcp.js';
 
 /** Visual variants `<wmcp-button>` supports (shadcn-aligned). */
@@ -186,11 +191,33 @@ export class WmcpButton extends WmcpAction {
   /** Disables the button for both humans and agents. */
   @property({ type: Boolean, reflect: true }) disabled = false;
 
-  private readonly internals: ElementInternals = this.attachInternals();
+  /** `ElementInternals`, or `null` where the platform lacks it (happy-dom). */
+  private readonly internals: ElementInternals | null =
+    attachInternalsSafe(this);
+
+  /** Whether native `<form>` participation actually works in this environment. */
+  private readonly formAssociationAvailable: boolean = supportsFormAssociation(
+    this.internals,
+  );
 
   /** The inner native `<button>` that owns activation, focus, and a11y. */
   private get button(): HTMLButtonElement | null {
     return this.renderRoot?.querySelector('button') ?? null;
+  }
+
+  /**
+   * The form this button drives, or `null` when there is none.
+   *
+   * Also the button's one form-association touchpoint, so it is where the
+   * one-time environment warning fires — and only for a `submit`/`reset` button,
+   * the only kind that needs a form. A plain button never asks for one, so a
+   * page of plain buttons in jsdom stays quiet.
+   */
+  private get associatedForm(): HTMLFormElement | null {
+    if (this.type !== 'button' && !this.formAssociationAvailable) {
+      warnFormAssociationUnavailable();
+    }
+    return this.internals?.form ?? null;
   }
 
   // --- WmcpAction hooks ---------------------------------------------------
@@ -237,7 +264,7 @@ export class WmcpButton extends WmcpAction {
     }
 
     if (this.type === 'submit') {
-      const form = this.internals.form;
+      const form = this.associatedForm;
       if (!form) {
         this.activate();
         return {
@@ -287,7 +314,7 @@ export class WmcpButton extends WmcpAction {
 
     if (this.type === 'reset') {
       // Reset has no constraint gate: it succeeds whenever there is a form.
-      const form = this.internals.form;
+      const form = this.associatedForm;
       this.activate();
       return form
         ? {
@@ -334,9 +361,9 @@ export class WmcpButton extends WmcpAction {
   private onInnerClick(): void {
     if (this.disabled) return;
     if (this.type === 'submit') {
-      this.internals.form?.requestSubmit();
+      this.associatedForm?.requestSubmit();
     } else if (this.type === 'reset') {
-      this.internals.form?.reset();
+      this.associatedForm?.reset();
     }
   }
 
