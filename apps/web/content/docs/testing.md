@@ -9,7 +9,7 @@ order: 5
 
 # Testing with the fake agent
 
-No mainstream agent calls WebMCP yet, so `@webmcpui/core/testing` ships a fake host that lets you exercise exposure end to end. It installs a stub `navigator.modelContext`, records the tools your elements register, and lets you invoke them exactly as an agent would.
+No mainstream agent calls WebMCP yet, so `@webmcpui/core/testing` ships a fake host that lets you exercise exposure end to end. It installs a stub WebMCP host on `document.modelContext` (and `navigator.modelContext` for the legacy fallback), records the tools your elements register, and lets you invoke them exactly as an agent would.
 
 ```ts
 import { installFakeAgent } from '@webmcpui/core/testing';
@@ -26,6 +26,14 @@ agent.restore(); // remove the stub
 
 > **Order matters.** Install the fake agent *before* the element connects — controls register their tool in `connectedCallback`, so the host must already be present.
 
+## Options
+
+`installFakeAgent(options?)` accepts:
+
+| Option | Description |
+| --- | --- |
+| `surface` | Which host surface(s) to stub: `'document'`, `'navigator'`, or `'both'` (default). With `'both'`, the same host object is set on both `document.modelContext` and `navigator.modelContext`, so exposure works regardless of which one a component checks. |
+
 ## The handle
 
 `installFakeAgent()` returns:
@@ -35,6 +43,6 @@ agent.restore(); // remove the stub
 | `tools` | All currently-registered tools, in registration order. |
 | `get(name)` | Look up a registered tool by name. |
 | `call(name, args?)` | Invoke a tool as an agent would; throws if unknown. |
-| `restore()` | Restore the previous `navigator.modelContext`. |
+| `restore()` | Restore whatever `document.modelContext` and `navigator.modelContext` were before install — including removing the property entirely if it was absent. |
 
 This is exactly what powers the live demo on the [homepage](/) — the same fake host, driving real elements.
