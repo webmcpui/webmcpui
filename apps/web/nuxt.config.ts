@@ -119,6 +119,14 @@ export default defineNuxtConfig({
         },
         { name: 'twitter:image', content: 'https://webmcpui.com/og.png' },
       ],
+      script: [
+        // Google AdSense site verification.
+        {
+          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2861080570176925',
+          async: true,
+          crossorigin: 'anonymous',
+        },
+      ],
     },
   },
 
