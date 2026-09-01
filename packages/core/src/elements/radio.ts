@@ -8,7 +8,7 @@ import {
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpFormControl } from './form-control.js';
-import type { JSONSchema } from '../webmcp.js';
+import type { JSONSchema } from '@webmcpui/webmcp';
 
 /** One choice in a `<wmcp-radio-group>`, set declaratively via the `options` property. */
 export interface WmcpRadioOption {

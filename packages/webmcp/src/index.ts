@@ -81,8 +81,9 @@ export function isWebMCPAvailable(): boolean {
 // CDN bundle warns, while bundlers that define NODE_ENV silence it for
 // production. Fail-open: anything but an explicit "production" warns.
 //
-// Exported for the other dev-warning sites (see `internals.ts`) so there is one
-// definition of "are we in dev". Internal — not re-exported from `index.ts`.
+// Exported so dependents' dev-warning sites (e.g. `@webmcpui/core`'s
+// `internals.ts`) share one definition of "are we in dev". Effectively
+// internal API — dependents should not re-export it to their own consumers.
 export const isDevEnv =
   (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
     ?.NODE_ENV !== 'production';

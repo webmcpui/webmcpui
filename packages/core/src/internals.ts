@@ -25,7 +25,7 @@
  * Internal module — not re-exported from `index.ts`.
  */
 
-import { isDevEnv } from './webmcp.js';
+import { isDevEnv } from '@webmcpui/webmcp';
 
 /**
  * Attach `ElementInternals`, or return `null` where the platform doesn't

@@ -7,7 +7,7 @@ import {
 } from 'lit';
 import { property } from 'lit/decorators.js';
 import { WmcpFormControl } from './form-control.js';
-import type { JSONSchema } from '../webmcp.js';
+import type { JSONSchema } from '@webmcpui/webmcp';
 
 /**
  * `<wmcp-switch>` — a form-associated, agent-operable toggle.

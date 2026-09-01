@@ -1,14 +1,15 @@
 name: Release
 
-# Publishes @webmcpui/core and @webmcpui/tokens to npm (OIDC trusted
-# publishing, with provenance) and @webmcpui/core to JSR (tokenless OIDC).
-# No long-lived tokens are stored anywhere.
+# Publishes @webmcpui/webmcp, @webmcpui/core, @webmcpui/tokens, @webmcpui/react,
+# and @webmcpui/vue to npm (OIDC trusted publishing, with provenance) and
+# @webmcpui/core to JSR (tokenless OIDC). No long-lived tokens are stored anywhere.
 #
 # Trigger: publish a GitHub Release (bump versions, tag e.g. v0.1.0, publish
 # the release). workflow_dispatch is provided for manual re-runs.
 #
 # One-time prerequisites in each registry's UI:
-#   npm  — add a Trusted Publisher for BOTH @webmcpui/core and @webmcpui/tokens:
+#   npm  — add a Trusted Publisher for each package (@webmcpui/webmcp,
+#          @webmcpui/core, @webmcpui/tokens, @webmcpui/react, @webmcpui/vue):
 #          GitHub Actions · repo webmcpui/webmcpui · workflow "release.yml".
 #          Then set each package's publishing access to
 #          "Require two-factor authentication and disallow tokens".
@@ -86,6 +87,16 @@ jobs:
         run: pnpm build
 
       # --- npm (OIDC trusted publishing; provenance is automatic) ---
+
+      - name: Publish @webmcpui/webmcp to npm
+        working-directory: packages/webmcp
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if npm view "@webmcpui/webmcp@$VER" version >/dev/null 2>&1; then
+            echo "@webmcpui/webmcp@$VER already on npm — skipping."
+          else
+            npm publish --access public
+          fi
 
       - name: Publish @webmcpui/tokens to npm
         working-directory: packages/tokens

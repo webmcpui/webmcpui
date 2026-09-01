@@ -1,0 +1,43 @@
+{
+  "name": "@webmcpui/webmcp",
+  "version": "1.0.0-beta.1",
+  "description": "Imperative WebMCP exposure layer — register browser-side tools with the model context host.",
+  "license": "MIT",
+  "author": "Gary Pfaff (Pfaff Digital)",
+  "homepage": "https://webmcpui.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmcpui/webmcpui.git",
+    "directory": "packages/webmcp"
+  },
+  "bugs": {
+    "url": "https://github.com/webmcpui/webmcpui/issues"
+  },
+  "keywords": [
+    "webmcp",
+    "modelcontext",
+    "ai-agents"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

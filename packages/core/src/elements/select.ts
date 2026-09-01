@@ -8,7 +8,7 @@ import {
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { WmcpFormControl, textFieldStyles } from './form-control.js';
-import type { JSONSchema } from '../webmcp.js';
+import type { JSONSchema } from '@webmcpui/webmcp';
 
 /** A single selectable option in a `<wmcp-select>`. */
 export interface WmcpSelectOption {
