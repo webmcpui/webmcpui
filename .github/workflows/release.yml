@@ -49,6 +49,11 @@ jobs:
         working-directory: packages/core
         run: pnpm exec playwright install --with-deps chromium
 
+      # dist/ is gitignored; core's typecheck/tests resolve @webmcpui/webmcp
+      # from its built output (same step as ci.yml).
+      - name: Build @webmcpui/webmcp
+        run: pnpm --filter @webmcpui/webmcp build
+
       - name: Typecheck
         working-directory: packages/core
         run: pnpm typecheck
