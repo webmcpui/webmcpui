@@ -84,7 +84,7 @@ export function isWebMCPAvailable(): boolean {
 // Exported so dependents' dev-warning sites (e.g. `@webmcpui/core`'s
 // `internals.ts`) share one definition of "are we in dev". Effectively
 // internal API — dependents should not re-export it to their own consumers.
-export const isDevEnv =
+export const isDevEnv: boolean =
   (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
     ?.NODE_ENV !== 'production';
 

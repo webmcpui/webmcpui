@@ -13,8 +13,8 @@ name: Release
 #          GitHub Actions · repo webmcpui/webmcpui · workflow "release.yml".
 #          Then set each package's publishing access to
 #          "Require two-factor authentication and disallow tokens".
-#   JSR  — link @webmcpui/core to the webmcpui/webmcpui repo
-#          (jsr.io package · Settings · GitHub repository).
+#   JSR  — link @webmcpui/webmcp and @webmcpui/core to the webmcpui/webmcpui
+#          repo (jsr.io package · Settings · GitHub repository).
 
 on:
   release:
@@ -140,7 +140,18 @@ jobs:
             npm publish --access public
           fi
 
-      # --- JSR (tokenless OIDC; core only — CSS can't live on JSR) ---
+      # --- JSR (tokenless OIDC; webmcp + core only — the others can't live on
+      # JSR). webmcp publishes first: core's jsr.json depends on it. ---
+
+      - name: Publish @webmcpui/webmcp to JSR
+        working-directory: packages/webmcp
+        run: |
+          VER=$(node -p "require('./package.json').version")
+          if curl -sfo /dev/null "https://jsr.io/@webmcpui/webmcp/${VER}_meta.json"; then
+            echo "@webmcpui/webmcp@$VER already on JSR — skipping."
+          else
+            npx jsr publish
+          fi
 
       - name: Publish @webmcpui/core to JSR
         working-directory: packages/core

@@ -1,9 +1,10 @@
 # Releasing webmcpui
 
-How to cut a coordinated release of the four packages:
+How to cut a coordinated release of the five packages:
 
 | Package | npm | JSR | Notes |
 |---|---|---|---|
+| `@webmcpui/webmcp` | ✅ | ✅ | Lit-free imperative exposure layer (core depends on it) |
 | `@webmcpui/core` | ✅ | ✅ | the custom elements |
 | `@webmcpui/tokens` | ✅ | — | CSS custom properties (can't live on JSR) |
 | `@webmcpui/react` | ✅ | — | typed React wrappers over core |
@@ -26,36 +27,36 @@ coherent. react/vue peer-depend on core — see the ⚠️ major-bump gotcha in 
 - [ ] Feature/fix work committed and green.
 - [ ] **Docs updated for anything new:**
   - [ ] Site: `apps/web/content/docs/**`, the homepage (`app/pages/index.vue`), and the Introduction (`content/docs/index.md`). **When adding elements, update the element lists in BOTH the homepage and the Introduction; when adding a package, make sure the homepage + Introduction name it.**
-  - [ ] ⚠️ **Package READMEs — all four that ship:** `packages/core/README.md`, `packages/tokens/README.md`, `packages/react/README.md`, `packages/vue/README.md`. These are what npm shows, and **npm only refreshes them on republish**, so they must be current *before* you tag. The core README enumerates every element — keep that list and the API examples in sync with what actually ships.
+  - [ ] ⚠️ **Package READMEs — all five that ship:** `packages/webmcp/README.md`, `packages/core/README.md`, `packages/tokens/README.md`, `packages/react/README.md`, `packages/vue/README.md`. These are what npm shows, and **npm only refreshes them on republish**, so they must be current *before* you tag. The core README enumerates every element — keep that list and the API examples in sync with what actually ships.
   - `llms.txt` / `llms-full.txt` regenerate at build (`apps/web/scripts/gen-llms.mjs`) — no manual step.
 - [ ] **Review:** run `/code-review` (or the `code-review` workflow) on `main..HEAD`. Fix real findings; add regression tests.
 - [ ] **Green gates:**
   - [ ] `pnpm build` (repo root — builds all packages)
   - [ ] `pnpm test` (from `packages/core`)
   - [ ] Typecheck **each package that changed**: `packages/core`, `packages/react`, `packages/vue` (`pnpm typecheck` / `npx tsc --noEmit`).
-  - [ ] `npx jsr publish --dry-run --allow-slow-types` (from `packages/core`)
+  - [ ] `npx jsr publish --dry-run --allow-slow-types` (from `packages/core`), and plain `npx jsr publish --dry-run` (from `packages/webmcp` — it has fast types; keep it that way)
 
 ## 2 · Version bump
 
 - [ ] Add a changeset: `pnpm changeset` — `minor` for features, `patch` for fixes/docs. Select **every** package that changed.
 - [ ] `pnpm version-packages` — bumps `package.json`s, writes CHANGELOGs, consumes the changeset.
 - [ ] ⚠️ **Verify react/vue did NOT jump a major.** They peer-depend on core, and Changesets by default treats a peer-dependent as needing a **major** bump when the dependency bumps (this once shoved react/vue to `1.0.0`). Guard is `___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange: true` in `.changeset/config.json` — keep it. After `version-packages`, **eyeball all four `package.json` versions**; if react/vue over-bumped, reset them by hand and delete any spurious CHANGELOG entries.
-- [ ] ⚠️ **Sync `packages/core/jsr.json` `version` by hand** to match `package.json`. Changesets does **not** touch `jsr.json`, and `jsr publish` uses it — if it lags, JSR publishes the wrong (or an already-taken) version.
+- [ ] ⚠️ **Sync BOTH `jsr.json` `version`s by hand** — `packages/webmcp/jsr.json` and `packages/core/jsr.json` — to match their `package.json`s, and bump the `@webmcpui/webmcp` dependency range in `packages/core/jsr.json` if webmcp bumped. Changesets does **not** touch `jsr.json`, and `jsr publish` uses it — if it lags, JSR publishes the wrong (or an already-taken) version.
 - [ ] Commit the bump.
 
 ## 3 · Ship
 
 - [ ] Push the branch, open a PR, merge to `main`. *(Merging to `main` auto-deploys the docs site via Cloudflare Pages.)*
 - [ ] **First-ever publish of a NEW package?** Do the one-time bootstrap FIRST — see the gotcha below — before tagging. (Already-published packages need nothing here.)
-- [ ] `gh release create vX.Y.Z --target main` with notes. This fires `release.yml` → publishes core + tokens + react + vue to npm (provenanced) + core to JSR. Idempotent (skips versions already on a registry).
+- [ ] `gh release create vX.Y.Z --target main` with notes. This fires `release.yml` → publishes webmcp + core + tokens + react + vue to npm (provenanced) + webmcp + core to JSR. Idempotent (skips versions already on a registry).
 - [ ] Watch it: `gh run watch $(gh run list --workflow=release.yml --limit 1 --json databaseId --jq '.[0].databaseId') --exit-status`.
 
 ## 4 · Verify after publish
 
-- [ ] npm: `npm view @webmcpui/<pkg> version` == new version for **all four** (`core`, `tokens`, `react`, `vue`).
+- [ ] npm: `npm view @webmcpui/<pkg> version` == new version for **all five** (`webmcp`, `core`, `tokens`, `react`, `vue`).
   - ⚠️ `npm view` can 404 a just-published version for a few minutes — that's registry lag, **not** a failed publish. Confirm on the npm web UI, or note that a retry `npm publish` returns E403 "cannot publish over previously published version" (which proves it's there).
 - [ ] Provenance: `npm view @webmcpui/core dist.attestations.provenance` present (same for tokens/react/vue **if** they published via CI — a manually bootstrapped first release has none; that's expected).
-- [ ] JSR: `curl -sf https://jsr.io/@webmcpui/core/<ver>_meta.json` → 200.
+- [ ] JSR: `curl -sf https://jsr.io/@webmcpui/core/<ver>_meta.json` → 200 (same for `@webmcpui/webmcp/<its ver>`).
 - [ ] CDN: `curl -sf https://cdn.jsdelivr.net/npm/@webmcpui/core@<ver>/dist/webmcpui.global.js` and `.../@webmcpui/tokens@<ver>/dist/css/tokens.css` → 200. jsDelivr can lag a couple minutes.
 - [ ] Site: `webmcpui.com` up, new docs pages resolve, `/llms.txt` is current.
 - [ ] npm README sanity: `npm view @webmcpui/core@<ver> readme` shows the update (and that it lists any new elements).

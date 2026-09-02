@@ -7,7 +7,7 @@
     "./testing": "./src/testing.ts"
   },
   "dependencies": {
-    "@webmcpui/webmcp": "npm:@webmcpui/webmcp@^1.0.0-beta.1"
+    "@webmcpui/webmcp": "jsr:@webmcpui/webmcp@^1.0.0-beta.1"
   },
   "publish": {
     "include": [
