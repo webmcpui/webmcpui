@@ -11,10 +11,10 @@
     "@webmcpui/core": "workspace:*",
     "@webmcpui/tokens": "workspace:*",
     "@webmcpui/vue": "workspace:*",
-    "vue": "^3.5.13"
+    "vue": "^3.5.42"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "vite": "^6.0.0"
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.2"
   }
 }

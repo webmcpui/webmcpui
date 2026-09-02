@@ -53,17 +53,17 @@
   },
   "dependencies": {
     "@webmcpui/webmcp": "workspace:*",
-    "lit": "^3.2.1"
+    "lit": "^3.3.3"
   },
   "devDependencies": {
-    "@open-wc/testing": "^4.0.0",
-    "@web/dev-server-esbuild": "^1.0.5",
-    "@web/test-runner": "^0.20.2",
-    "@web/test-runner-playwright": "^0.11.1",
+    "@open-wc/testing": "^5.0.0",
+    "@web/dev-server-esbuild": "^2.0.0",
+    "@web/test-runner": "^1.0.0",
+    "@web/test-runner-playwright": "^1.0.0",
     "jsdom": "^30.0.1",
-    "playwright": "^1.60.0",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2",
-    "zod": "^4.4.3"
+    "playwright": "^1.62.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "zod": "^4.5.4"
   }
 }

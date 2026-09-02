@@ -43,6 +43,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "style-dictionary": "^4.3.0"
+    "style-dictionary": "^5.5.2"
   }
 }

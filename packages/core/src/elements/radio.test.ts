@@ -74,7 +74,10 @@ describe('wmcp-radio-group', () => {
       </wmcp-radio-group>
     `);
     const radio = el.querySelector<WmcpRadio>('wmcp-radio')!;
-    expect(getComputedStyle(radio).display).to.equal('none');
+    // Unslotted light-DOM members are outside the flat tree, where newer
+    // Chromium returns an empty getComputedStyle per the CSSWG resolution —
+    // so assert the element's own hiding (connectedCallback inline style).
+    expect(radio.style.display).to.equal('none');
   });
 
   it('renders from the options property (takes precedence)', async () => {
