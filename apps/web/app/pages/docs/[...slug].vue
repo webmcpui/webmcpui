@@ -1,9 +1,15 @@
 <script setup lang="ts">
 const route = useRoute();
 
+// Cloudflare Pages serves prerendered pages at the trailing-slash URL (308
+// from the bare path), but content paths are stored without one — normalize
+// so direct/external visits query (and key the payload) the same as SPA
+// navigation from the sidebar.
+const path = route.path.replace(/\/+$/, '') || '/';
+
 // The current page.
-const { data: page } = await useAsyncData(`doc-${route.path}`, () =>
-  queryCollection('docs').path(route.path).first(),
+const { data: page } = await useAsyncData(`doc-${path}`, () =>
+  queryCollection('docs').path(path).first(),
 );
 
 if (!page.value) {
@@ -29,7 +35,7 @@ const ordered = computed(() =>
 );
 
 const currentIndex = computed(() =>
-  ordered.value.findIndex((d) => d.path === route.path),
+  ordered.value.findIndex((d) => d.path === path),
 );
 
 const prev = computed(() => {
