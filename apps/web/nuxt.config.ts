@@ -1,5 +1,18 @@
 import tailwindcss from '@tailwindcss/vite';
 
+// --- Google tags ------------------------------------------------------------
+// Google Tag Manager container for webmcpui.com. GA4 lives INSIDE GTM (a
+// "Google Tag" with the G-… measurement ID, published from the GTM UI), so
+// analytics changes never need a site deploy. An empty ID omits the snippet
+// entirely — set it once the container exists.
+const GTM_ID = '';
+// Search Console fallback: the `google-site-verification` meta token. Not
+// needed when verifying a Domain property over DNS (the recommended path) or
+// via the GTM container above; empty omits the tag.
+const GOOGLE_SITE_VERIFICATION = '';
+// Keep tracking out of `nuxt dev`; `nuxt build`/`generate` run as production.
+const isProdBuild = process.env.NODE_ENV === 'production';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
@@ -118,6 +131,17 @@ export default defineNuxtConfig({
             'Framework-agnostic, WebMCP-native web components. Form primitives your AI agent can fill — with Standard Schema validation and design tokens.',
         },
         { name: 'twitter:image', content: 'https://webmcpui.com/og.png' },
+
+        // Search Console URL-prefix verification (only when a token is set —
+        // see GOOGLE_SITE_VERIFICATION above).
+        ...(GOOGLE_SITE_VERIFICATION
+          ? [
+              {
+                name: 'google-site-verification',
+                content: GOOGLE_SITE_VERIFICATION,
+              },
+            ]
+          : []),
       ],
       script: [
         // Google AdSense site verification.
@@ -126,6 +150,31 @@ export default defineNuxtConfig({
           async: true,
           crossorigin: 'anonymous',
         },
+        // Google Tag Manager (production builds only, and only once GTM_ID is
+        // set). GA4 page views — including SPA navigations after hydration —
+        // come from the Google Tag configured inside the container.
+        ...(GTM_ID && isProdBuild
+          ? [
+              {
+                innerHTML:
+                  `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});` +
+                  `var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';` +
+                  `j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})` +
+                  `(window,document,'script','dataLayer','${GTM_ID}');`,
+              },
+            ]
+          : []),
+      ],
+      noscript: [
+        // GTM's no-JS fallback, right after <body> opens.
+        ...(GTM_ID && isProdBuild
+          ? [
+              {
+                innerHTML: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+                tagPosition: 'bodyOpen' as const,
+              },
+            ]
+          : []),
       ],
     },
   },
