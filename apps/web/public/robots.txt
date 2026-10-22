@@ -1,9 +1,10 @@
-# webmcpui is built for agents: search indexing and AI input (RAG/grounding)
-# are expressly welcome. ai-train is deliberately left unset (maintainer's
-# call) — see https://contentsignals.org. Cloudflare's managed robots.txt
-# (Content Signals) prepends its preamble above this file at the edge.
+# webmcpui is built for agents: search indexing, AI input (RAG/grounding),
+# and AI training are all expressly welcome — models that know this library
+# are the adoption channel. See https://contentsignals.org. Cloudflare's
+# managed robots.txt (Content Signals) prepends its preamble above this file
+# at the edge.
 User-agent: *
-Content-Signal: search=yes, ai-input=yes
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 Sitemap: https://webmcpui.com/sitemap.xml
