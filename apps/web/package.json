@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxt/content": "^3.16.0",
+    "@nuxtjs/sitemap": "^8.6.2",
     "@webmcpui/core": "workspace:*",
     "@webmcpui/tokens": "workspace:*",
     "nuxt": "^4.5.2",
