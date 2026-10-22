@@ -18,20 +18,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
-  modules: [
-    '@nuxt/content',
-    '@nuxtjs/color-mode',
-    '@nuxt/icon',
-    '@nuxt/fonts',
-    '@nuxtjs/sitemap',
-  ],
-
-  // Canonical site identity — @nuxtjs/sitemap uses this to emit absolute URLs
-  // in /sitemap.xml (robots.txt in public/ points crawlers at it).
-  site: {
-    url: 'https://webmcpui.com',
-    name: 'webmcpui',
-  },
+  modules: ['@nuxt/content', '@nuxtjs/color-mode', '@nuxt/icon', '@nuxt/fonts'],
 
   content: {
     // Code blocks: Shiki themes for light + dark, driven by the `.dark` class.
@@ -197,9 +184,7 @@ export default defineNuxtConfig({
     preset: 'cloudflare-pages',
     prerender: {
       crawlLinks: true,
-      // /sitemap.xml is a nitro route from @nuxtjs/sitemap — prerender it
-      // explicitly so the static Cloudflare Pages build ships the file.
-      routes: ['/', '/sitemap.xml'],
+      routes: ['/'],
     },
   },
 });

@@ -1,7 +1,10 @@
-// Generate /llms.txt (index) and /llms-full.txt (full docs) from content/docs,
-// following the llmstxt.org convention, so agents have a machine-readable map
-// of the library at the site root. Runs before `nuxt build`; output lands in
-// public/ and is served at https://webmcpui.com/llms.txt and /llms-full.txt.
+// Generate /llms.txt (index), /llms-full.txt (full docs), and /sitemap.xml
+// from content/docs, so agents have a machine-readable map of the library at
+// the site root and crawlers get a sitemap (robots.txt points at it). The
+// sitemap is deliberately generated here — fully static — rather than by a
+// sitemap module: module runtimes end up in the Cloudflare Pages worker, where
+// std-env's init-time `process.stdout` read breaks worker publish. Runs before
+// `nuxt build`; output lands in public/.
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -87,8 +90,17 @@ for (const p of parsed) {
   full += `\n${p.body}\n`;
 }
 
+// --- sitemap.xml: homepage + every docs page, in reading order ---
+const sitemapUrls = ['/', ...parsed.map((p) => p.url)];
+const sitemap =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  sitemapUrls.map((u) => `  <url><loc>${SITE}${u}</loc></url>`).join('\n') +
+  `\n</urlset>\n`;
+
 await writeFile(join(PUBLIC_DIR, 'llms.txt'), index);
 await writeFile(join(PUBLIC_DIR, 'llms-full.txt'), full);
+await writeFile(join(PUBLIC_DIR, 'sitemap.xml'), sitemap);
 console.log(
-  `gen-llms: wrote public/llms.txt (${groups.size} groups, ${parsed.length} pages) + llms-full.txt`,
+  `gen-llms: wrote public/llms.txt (${groups.size} groups, ${parsed.length} pages) + llms-full.txt + sitemap.xml (${sitemapUrls.length} URLs)`,
 );
