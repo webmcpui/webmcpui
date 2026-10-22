@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // "Google Tag" with the G-… measurement ID, published from the GTM UI), so
 // analytics changes never need a site deploy. An empty ID omits the snippet
 // entirely — set it once the container exists.
-const GTM_ID = '';
+const GTM_ID = 'GTM-WBFMN73R';
 // Search Console fallback: the `google-site-verification` meta token. Not
 // needed when verifying a Domain property over DNS (the recommended path) or
 // via the GTM container above; empty omits the tag.
